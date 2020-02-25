@@ -44,7 +44,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1582638060248</updated>
-      <workItem from="1582638061564" duration="2921000" />
+      <workItem from="1582638061564" duration="3305000" />
     </task>
     <task id="LOCAL-00001" summary="index.md">
       <created>1582638108041</created>
@@ -92,6 +92,14 @@
     <state x="307" y="30" key="CommitChangelistDialog2/0.23.1440.797@0.23.1440.797" timestamp="1582639358022" />
     <state x="307" y="30" key="CommitChangelistDialog2/0.23.1440.798@0.23.1440.798" timestamp="1582639413087" />
     <state x="307" y="30" key="CommitChangelistDialog2/0.23.1440.801@0.23.1440.801" timestamp="1582640671210" />
+    <state x="79" y="75" key="MergeDialog" timestamp="1582644094396">
+      <screen x="0" y="23" width="1440" height="801" />
+    </state>
+    <state x="79" y="75" key="MergeDialog/0.23.1440.801@0.23.1440.801" timestamp="1582644094396" />
+    <state x="829" y="125" key="MultipleFileMergeDialog" timestamp="1582644094460">
+      <screen x="0" y="23" width="1440" height="801" />
+    </state>
+    <state x="829" y="125" key="MultipleFileMergeDialog/0.23.1440.801@0.23.1440.801" timestamp="1582644094460" />
     <state x="315" y="183" key="Vcs.Push.Dialog.v2" timestamp="1582640673162">
       <screen x="0" y="23" width="1440" height="801" />
     </state>
