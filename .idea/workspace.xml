@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0d9a1a0f-2f11-41dd-aa47-520b965873bd" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectId" id="1YIlbZIjEnLCGLc2tgC92Fy4nSk" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0d9a1a0f-2f11-41dd-aa47-520b965873bd" name="Default Changelist" comment="" />
+      <created>1582638060248</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1582638060248</updated>
+      <workItem from="1582638061564" duration="2921000" />
+    </task>
+    <task id="LOCAL-00001" summary="index.md">
+      <created>1582638108041</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1582638108041</updated>
+    </task>
+    <task id="LOCAL-00002" summary="index.md">
+      <created>1582639413310</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1582639413310</updated>
+    </task>
+    <task id="LOCAL-00003" summary="index.md">
+      <created>1582640307381</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1582640307381</updated>
+    </task>
+    <task id="LOCAL-00004" summary="index.md">
+      <created>1582640671368</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1582640671368</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="index.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="index.md" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="307" y="30" key="CommitChangelistDialog2" timestamp="1582640671210">
+      <screen x="0" y="23" width="1440" height="801" />
+    </state>
+    <state x="307" y="30" key="CommitChangelistDialog2/0.23.1440.797@0.23.1440.797" timestamp="1582639358022" />
+    <state x="307" y="30" key="CommitChangelistDialog2/0.23.1440.798@0.23.1440.798" timestamp="1582639413087" />
+    <state x="307" y="30" key="CommitChangelistDialog2/0.23.1440.801@0.23.1440.801" timestamp="1582640671210" />
+    <state x="315" y="183" key="Vcs.Push.Dialog.v2" timestamp="1582640673162">
+      <screen x="0" y="23" width="1440" height="801" />
+    </state>
+    <state x="315" y="182" key="Vcs.Push.Dialog.v2/0.23.1440.798@0.23.1440.798" timestamp="1582639415755" />
+    <state x="315" y="183" key="Vcs.Push.Dialog.v2/0.23.1440.801@0.23.1440.801" timestamp="1582640673162" />
+    <state x="496" y="167" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog" timestamp="1582639356624">
+      <screen x="0" y="23" width="1440" height="797" />
+    </state>
+    <state x="496" y="167" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog/0.23.1440.797@0.23.1440.797" timestamp="1582639356624" />
+  </component>
+</project>
