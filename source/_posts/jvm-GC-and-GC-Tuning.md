@@ -1,92 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-
-  
-  <title>Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="https://jiangcoder.github.io/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-<meta name="generator" content="Hexo 4.2.0"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jiangcoder.github.io"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-jvm-GC-and-GC-Tuning" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/02/26/jvm-GC-and-GC-Tuning/" class="article-date">
-  <time datetime="2020-02-26T02:29:19.384Z" itemprop="datePublished">2020-02-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/02/26/jvm-GC-and-GC-Tuning/">jvm-GC-and-GC-Tuning</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <div id="article_content" class="article_content clearfix">
+<div id="article_content" class="article_content clearfix">
             <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/ck_htmledit_views-833878f763.css">
                                         <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/ck_htmledit_views-833878f763.css">
                 <div class="htmledit_views" id="content_views">
@@ -135,22 +47,22 @@
 <p>内存分配与回收方式：</p>
 
 <ul><li>
-    <p>C语言：malloc、free</p>
-    </li>
-    <li>
-    <p>C++：new、delete</p>
-    </li>
-    <li>
-    <p>Java：new&nbsp; 自动回收内存</p>
-    </li>
+	<p>C语言：malloc、free</p>
+	</li>
+	<li>
+	<p>C++：new、delete</p>
+	</li>
+	<li>
+	<p>Java：new&nbsp; 自动回收内存</p>
+	</li>
 </ul><p>自动回收内存系统不容易出错，手动回收内存，容易出现以下的错误：</p>
 
 <ul><li>
-    <p>忘记回收</p>
-    </li>
-    <li>
-    <p>多次回收</p>
-    </li>
+	<p>忘记回收</p>
+	</li>
+	<li>
+	<p>多次回收</p>
+	</li>
 </ul><p>垃圾的定义：没有任何引用指向的一个对象或者多个对象(循环引用）。</p>
 
 <p><img alt="" height="263" src="https://img-blog.csdnimg.cn/20200218153041603.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="489"></p>
@@ -166,8 +78,8 @@
 <h1 id="2%E3%80%81%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D%E5%9E%83%E5%9C%BE"><a name="t3"></a><a name="t3"></a>2、如何定位垃圾</h1>
 
 <ul><li>
-    <h2 id="reference%20count"><a name="t4"></a><a name="t4"></a>reference count</h2>
-    </li>
+	<h2 id="reference%20count"><a name="t4"></a><a name="t4"></a>reference count</h2>
+	</li>
 </ul><h2><a name="t5"></a><img alt="" height="381" src="https://img-blog.csdnimg.cn/20200218160722764.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="508"></h2>
 
 <p>当引用计数变为0的时候，这个对象就成为垃圾了。但是引用计数不能解决对象循环引用</p>
@@ -179,8 +91,8 @@
 <p>每个引用计数都是1，但是它们全部是垃圾，所以用引用计数的方式的话，这些垃圾就找不到了，会发生内存泄漏。</p>
 
 <ul><li>
-    <h2 id="Root%20Searching"><a name="t6"></a><a name="t6"></a>Root Searching</h2>
-    </li>
+	<h2 id="Root%20Searching"><a name="t6"></a><a name="t6"></a>Root Searching</h2>
+	</li>
 </ul><p>根可达或者根搜索算法。</p>
 
 <p>通过程序找到一些根对象，通过根对象找到它所连接的那些对象不是垃圾，其他的都是垃圾。</p>
@@ -192,8 +104,8 @@
 <h1 id="3%E3%80%81%E5%B8%B8%E8%A7%81%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95"><a name="t8"></a><a name="t8"></a>3、常见的垃圾回收算法</h1>
 
 <ul><li>
-    <h2 id="Mark-Sweep(%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4)"><a name="t9"></a><a name="t9"></a>Mark-Sweep(标记清除)</h2>
-    </li>
+	<h2 id="Mark-Sweep(%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4)"><a name="t9"></a><a name="t9"></a>Mark-Sweep(标记清除)</h2>
+	</li>
 </ul><p><img alt="" height="461" src="https://img-blog.csdnimg.cn/2020021817055046.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="698"></p>
 
 <p>将可回收的对象标记为非垃圾。</p>
@@ -201,8 +113,8 @@
 <p>缺点：位置不连续，产生内存碎片。</p>
 
 <ul><li>
-    <h2 id="Copying(%E6%8B%B7%E8%B4%9D%E7%AE%97%E6%B3%95%EF%BC%89"><a name="t10"></a><a name="t10"></a>Copying(拷贝算法）</h2>
-    </li>
+	<h2 id="Copying(%E6%8B%B7%E8%B4%9D%E7%AE%97%E6%B3%95%EF%BC%89"><a name="t10"></a><a name="t10"></a>Copying(拷贝算法）</h2>
+	</li>
 </ul><p><img alt="" height="409" src="https://img-blog.csdnimg.cn/20200218171626281.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="697"></p>
 
 <p>内存一分为二，将存活对象复制到未使用的内存中，原内存全部标记为可使用；新分配内存时先分配存活对象所在的那段内存，垃圾回收时，重复上述操作。</p>
@@ -210,8 +122,8 @@
 <p>特点：没有碎片，但是内浪费空间。最大的问题：内存浪费。</p>
 
 <ul><li>
-    <h2 id="Mark-Compact%EF%BC%88%E6%A0%87%E8%AE%B0%E5%8E%8B%E7%BC%A9)"><a name="t11"></a><a name="t11"></a>Mark-Compact（标记压缩)</h2>
-    </li>
+	<h2 id="Mark-Compact%EF%BC%88%E6%A0%87%E8%AE%B0%E5%8E%8B%E7%BC%A9)"><a name="t11"></a><a name="t11"></a>Mark-Compact（标记压缩)</h2>
+	</li>
 </ul><h2><a name="t12"></a><img alt="" height="460" src="https://img-blog.csdnimg.cn/20200218174827773.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="691"></h2>
 
 <p>将存活对象依次复制到垃圾对象和未使用的区域中，结合了标记清除和拷贝的做法，但是效率比copy略低。</p>
@@ -225,9 +137,9 @@
 <p>JVM中分代：新生代+老年代+永久代(JDK1.7)/元数据区(JDK1.8)Metaspace。</p>
 
 <ul><li>永久代和元数据区是装载Class的，将硬盘上的Class对象load到内存的时候，装载了永久代或者元数据区域，具体放在哪里区别于使用的JDK版本</li>
-    <li>永久代必须指定大小限制，而元数据可以设置，也可不设置，无上限(受限于物理内存）</li>
-    <li>字符串常量在JDK1.7中，是放在永久代区域；而JDK1.8中，是放在堆里</li>
-    <li>MethodArea是一个逻辑概念，并不是指的一个区域，在JDK1.7中对应的就是永久代，JDK1.8中对应的是元数据</li>
+	<li>永久代必须指定大小限制，而元数据可以设置，也可不设置，无上限(受限于物理内存）</li>
+	<li>字符串常量在JDK1.7中，是放在永久代区域；而JDK1.8中，是放在堆里</li>
+	<li>MethodArea是一个逻辑概念，并不是指的一个区域，在JDK1.7中对应的就是永久代，JDK1.8中对应的是元数据</li>
 </ul><h2 id="%E5%A0%86%E5%86%85%E5%AD%98%E9%80%BB%E8%BE%91%E5%88%86%E5%8C%BA"><a name="t14"></a><a name="t14"></a>堆内存逻辑分区</h2>
 
 <p><img alt="" height="467" src="https://img-blog.csdnimg.cn/20200220122652988.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="817"></p>
@@ -240,14 +152,14 @@
 <p><span style="color:#f33b45;"><strong>新生代 = Eden + 2个survivor区(survivor0、survivor1）</strong>：</span></p>
 
 <ul><li>YGC(Young GC)回收后，大多数的对象会被回收，活着的对象进入survivor0</li>
-    <li>再次YGC，活着的对象eden+s0拷贝到s1，将eden和s0清空</li>
-    <li>再次YGC，活着的对象eden+s1拷贝到s0，将eden和s1清空</li>
-    <li>年龄足够-&gt;老年代(年龄足够：15，CMS 6)</li>
-    <li>survivor区装不下的时候，装不下的部分直接进入老年代</li>
+	<li>再次YGC，活着的对象eden+s0拷贝到s1，将eden和s0清空</li>
+	<li>再次YGC，活着的对象eden+s1拷贝到s0，将eden和s1清空</li>
+	<li>年龄足够-&gt;老年代(年龄足够：15，CMS 6)</li>
+	<li>survivor区装不下的时候，装不下的部分直接进入老年代</li>
 </ul><p><span style="color:#f33b45;"><strong>老年代：</strong></span></p>
 
 <ul><li>顽固份子</li>
-    <li>老年代区域满了，就进行Full GC(简称FGC, FGC包括新生代和老年代同时GC)</li>
+	<li>老年代区域满了，就进行Full GC(简称FGC, FGC包括新生代和老年代同时GC)</li>
 </ul><p><span style="color:#f33b45;"><strong>GC Tuning：</strong></span>尽量减少FGC。</p>
 
 <h1 id="5%E3%80%81%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><a name="t15"></a><a name="t15"></a>5、垃圾回收器</h1>
@@ -255,10 +167,10 @@
 <p><img alt="" height="414" src="https://img-blog.csdnimg.cn/20200220125708117.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="863"></p>
 
 <ul><li>Serial、ParNew、Parallel Scavenge是用于回收Young Generation</li>
-    <li>CMS、Serial Old、Parallel Old是用于回收Old Generation</li>
-    <li>G1、ZGC、Shenandoah不区分老年代和新生代。</li>
-    <li>Epsilon是一个空的GC，仅仅用于调试JDK。</li>
-    <li>图中的红色虚线表示可以配合使用。</li>
+	<li>CMS、Serial Old、Parallel Old是用于回收Old Generation</li>
+	<li>G1、ZGC、Shenandoah不区分老年代和新生代。</li>
+	<li>Epsilon是一个空的GC，仅仅用于调试JDK。</li>
+	<li>图中的红色虚线表示可以配合使用。</li>
 </ul><h2 id="Serial"><a name="t16"></a><a name="t16"></a>Serial</h2>
 
 <p><img alt="" height="436" src="https://img-blog.csdnimg.cn/20200220130215487.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="815"></p>
@@ -302,113 +214,18 @@
 <p>JVM参数分类：</p>
 
 <ul><li>标准：-开头，所有的HotSpot都支持。 如：java -version</li>
-    <li>非标准：-X开头，特定版本HotSpot支持特定命令</li>
-    <li>不稳定：-XX开头，下个版本可能取消
-    <ol><li>-XX: +PrintFlagsFinal &nbsp; --- 设置值（最终生效值)</li>
-        <li>-XX:+PrintFlagsInitial &nbsp;--- 默认值</li>
-        <li>-XX:+PrintCommandLineFlags ---命令行参数</li>
-    </ol></li>
+	<li>非标准：-X开头，特定版本HotSpot支持特定命令</li>
+	<li>不稳定：-XX开头，下个版本可能取消
+	<ol><li>-XX: +PrintFlagsFinal &nbsp; --- 设置值（最终生效值)</li>
+		<li>-XX:+PrintFlagsInitial &nbsp;--- 默认值</li>
+		<li>-XX:+PrintCommandLineFlags ---命令行参数</li>
+	</ol></li>
 </ul><h1 id="7%E3%80%81%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE"><a name="t23"></a><a name="t23"></a>7、思维导图</h1>
 
 <p><img alt="" src="https://img-blog.csdnimg.cn/20200220151948590.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70"></p>
 
 <p>参考文档：</p>
 
-<p><a href="https://blogs.oracle.com/jonthecollector/our-collectors" target="_blank" rel="nofollow noopener">https://blogs.oracle.com/jonthecollector/our-collectors</a></p>
+<p><a href="https://blogs.oracle.com/jonthecollector/our-collectors" rel="nofollow">https://blogs.oracle.com/jonthecollector/our-collectors</a></p>
 
-<p><a href="https://blogs.oracle.com/jonthecollector/why-not-a-grand-unified-garbage-collector" target="_blank" rel="nofollow noopener">https://blogs.oracle.com/jonthecollector/why-not-a-grand-unified-garbage-collector</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/02/26/jvm-GC-and-GC-Tuning/" data-id="ck72qeb610000z42whbkx3i2x" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2020/02/26/jvm-GC-and-GC-Tuning/">jvm-GC-and-GC-Tuning</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2020 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
-  
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-
-  
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-  </div>
-</body>
-</html>
+<p><a href="https://blogs.oracle.com/jonthecollector/why-not-a-grand-unified-garbage-collector" rel="nofollow">https://blogs.oracle.com/jonthecollector/why-not-a-grand-unified-garbage-collector</a></p>
