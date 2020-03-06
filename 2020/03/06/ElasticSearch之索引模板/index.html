@@ -7,15 +7,15 @@
   
   <title>ElasticSearch之索引模板 | 一亩三分地</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="[b]一，模板简述：[&#x2F;b]template大致分成setting和mappings两部分：索引可使用预定义的模板进行创建,这个模板称作Index templates。模板设置包括settings和mappings，通过模式匹配的方式使得多个索引重用一个模板。   settings主要作用于index的一些相关配置信息，如分片数、副本数，tranlog同步条件、refresh等。  mapping">
+  <meta name="description" content="一，模板简述template大致分成setting和mappings两部分：索引可使用预定义的模板进行创建,这个模板称作Index templates。模板设置包括settings和mappings，通过模式匹配的方式使得多个索引重用一个模板。   settings主要作用于index的一些相关配置信息，如分片数、副本数，tranlog同步条件、refresh等。  mappings主要是一些说明">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ElasticSearch之索引模板">
 <meta property="og:url" content="https://jiangcoder.github.io/2020/03/06/ElasticSearch%E4%B9%8B%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF/index.html">
 <meta property="og:site_name" content="一亩三分地">
-<meta property="og:description" content="[b]一，模板简述：[&#x2F;b]template大致分成setting和mappings两部分：索引可使用预定义的模板进行创建,这个模板称作Index templates。模板设置包括settings和mappings，通过模式匹配的方式使得多个索引重用一个模板。   settings主要作用于index的一些相关配置信息，如分片数、副本数，tranlog同步条件、refresh等。  mapping">
+<meta property="og:description" content="一，模板简述template大致分成setting和mappings两部分：索引可使用预定义的模板进行创建,这个模板称作Index templates。模板设置包括settings和mappings，通过模式匹配的方式使得多个索引重用一个模板。   settings主要作用于index的一些相关配置信息，如分片数、副本数，tranlog同步条件、refresh等。  mappings主要是一些说明">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-03-06T09:26:22.429Z">
-<meta property="article:modified_time" content="2020-03-06T09:26:31.658Z">
+<meta property="article:modified_time" content="2020-03-06T09:31:51.346Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -88,7 +88,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>[b]一，模板简述：[/b]template大致分成setting和mappings两部分：<br>索引可使用预定义的模板进行创建,这个模板称作Index templates。模板设置包括settings和mappings，通过模式匹配的方式使得多个索引重用一个模板。 </p>
+        <h2 id="一，模板简述"><a href="#一，模板简述" class="headerlink" title="一，模板简述"></a>一，模板简述</h2><p>template大致分成setting和mappings两部分：<br>索引可使用预定义的模板进行创建,这个模板称作Index templates。模板设置包括settings和mappings，通过模式匹配的方式使得多个索引重用一个模板。 </p>
 <ol>
 <li><p>settings主要作用于index的一些相关配置信息，如分片数、副本数，tranlog同步条件、refresh等。</p>
 </li>
@@ -97,7 +97,8 @@
 <p>  (2) _source：主要指的是SourceField字段，Source可以理解为ES除了将数据保存在索引文件中，另外还有一份源数据。_source字段在我们进行检索时相当重要，如果在{“enabled” : false}情况下默认检索只会返回ID， 你需要通过Fields字段去到索引中去取数据，效率不是很高。但是enabled设置为true时，索引会比较大，这时可以通过Compress进行压缩和inclueds、excludes来在字段级别上进行一些限制，自定义哪些字段允许存储。</p>
 <p>  (3) properties：这是最重要的步骤，主要针对索引结构和字段级别上的一些设置。</p>
 </li>
-<li><p>咱们通常在elasticsearch中 post mapping信息，每重新创建索引便到设置mapping，分片，副本信息。非常繁琐。强烈建议大家通过设置template方式设置索引信息。设置索引名，通过正则匹配的方式匹配到相应的模板。ps:直接修改mapping的优先级&gt;索引template。索引匹配了多个template，当属性等配置出现不一致的，以order的最大值为准，order默认值为0<br>[b]二，创建模板：[/b]<br>例如：<br>[code]{<br>“template”: “pmall*”,<br>“settings”: {<br>  “index.number_of_shards”: 1,<br>  “number_of_replicas”: 4,<br>  “similarity”: {</p>
+<li><p>咱们通常在elasticsearch中 post mapping信息，每重新创建索引便到设置mapping，分片，副本信息。非常繁琐。强烈建议大家通过设置template方式设置索引信息。设置索引名，通过正则匹配的方式匹配到相应的模板。ps:直接修改mapping的优先级&gt;索引template。索引匹配了多个template，当属性等配置出现不一致的，以order的最大值为准，order默认值为0</p>
+<h2 id="二，创建模板"><a href="#二，创建模板" class="headerlink" title="二，创建模板"></a>二，创建模板</h2><p>例如：<br>[code]{<br>“template”: “pmall*”,<br>“settings”: {<br>  “index.number_of_shards”: 1,<br>  “number_of_replicas”: 4,<br>  “similarity”: {</p>
 <pre><code>&quot;IgnoreTFSimilarity&quot;: {
   &quot;type&quot;: &quot;IgoreTFSimilarity&quot;
 }</code></pre><p>  }<br>},<br>“mappings”: {<br>  “<em>default</em>“: {</p>
@@ -140,25 +141,24 @@
 }</code></pre><p>  }<br>}<br>}[/code]</p>
 </li>
 </ol>
-<p>[b]三，删除模板：[/b][code]<br>DELETE /_template/template_1[/code]</p>
-<p>[b]四，查看模板：[/b]<br> [code]GET /_template/template_1[/code]</p>
+<h2 id="三，删除模板"><a href="#三，删除模板" class="headerlink" title="三，删除模板"></a>三，删除模板</h2><p>[code]<br>DELETE /_template/template_1[/code]</p>
+<h2 id="四，查看模板："><a href="#四，查看模板：" class="headerlink" title="四，查看模板："></a>四，查看模板：</h2><p> [code]GET /_template/template_1[/code]</p>
 <p>也可以通过模糊匹配得到多个模板信息[code]GET /_template/temp* [/code]</p>
 <p>可以批量查看模板[code]GET /_template/template_1,template_2[/code]</p>
 <p>验证模板是否存在：<br> [code]HEAD _template/template_1[/code]</p>
-<p>[b]五：多个模板同时匹配，以order顺序倒排，order越大，优先级越高[/b]<br> [code]</p>
+<h2 id="五：多个模板同时匹配，以order顺序倒排，order越大，优先级越高"><a href="#五：多个模板同时匹配，以order顺序倒排，order越大，优先级越高" class="headerlink" title="五：多个模板同时匹配，以order顺序倒排，order越大，优先级越高"></a>五：多个模板同时匹配，以order顺序倒排，order越大，优先级越高</h2><p> [code]</p>
 <p>PUT /_template/template_1<br>{<br>    “template” : “*”,<br>    “order” : 0,<br>    “settings” : {<br>        “number_of_shards” : 1<br>    },<br>    “mappings” : {<br>        “type1” : {<br>            “_source” : { “enabled” : false }<br>        }<br>    }<br>}</p>
 <p>PUT /_template/template_2<br>{<br>    “template” : “te*”,<br>    “order” : 1,<br>    “settings” : {<br>        “number_of_shards” : 1<br>    },<br>    “mappings” : {<br>        “type1” : {<br>            “_source” : { “enabled” : true }<br>        }<br>    }<br>}[/code]</p>
-<p>[b]六，模板版本号：[/b]</p>
-<p>模板可以选择添加版本号，这可以是任何整数值，以便简化外部系统的模板管理。版本字段是完全可选的，它仅用于模板的外部管理。要取消设置版本，只需替换模板即可</p>
+<h2 id="六，模板版本号"><a href="#六，模板版本号" class="headerlink" title="六，模板版本号"></a>六，模板版本号</h2><p>模板可以选择添加版本号，这可以是任何整数值，以便简化外部系统的模板管理。版本字段是完全可选的，它仅用于模板的外部管理。要取消设置版本，只需替换模板即可</p>
 <p>创建模板：[code]PUT /_template/template_1<br>{<br>    “template” : “*”,<br>    “order” : 0,<br>    “settings” : {<br>        “number_of_shards” : 1<br>    },<br>    “version”: 123<br>}[/code]</p>
 <p>查看模板版本号：[code]GET /_template/template_1?filter_path=*.version[/code]</p>
 <p>响应如下：[code]{<br>  “template_1” : {<br>    “version” : 123<br>  }<br>}[/code]</p>
-<p>[b]七，参考：[/b]<br>[url=<a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.4/indices-templates.html]indices-templates[/url]" target="_blank" rel="noopener">https://www.elastic.co/guide/en/elasticsearch/reference/5.4/indices-templates.html]indices-templates[/url]</a></p>
+<h2 id="七，参考："><a href="#七，参考：" class="headerlink" title="七，参考："></a>七，参考：</h2><p>[url=<a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.4/indices-templates.html]indices-templates[/url]" target="_blank" rel="noopener">https://www.elastic.co/guide/en/elasticsearch/reference/5.4/indices-templates.html]indices-templates[/url]</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/03/06/ElasticSearch%E4%B9%8B%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF/" data-id="ck7fz5ye70000yhs6c8o35kry" class="article-share-link">Share</a>
+      <a data-url="https://jiangcoder.github.io/2020/03/06/ElasticSearch%E4%B9%8B%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF/" data-id="ck7fzcrbr00016is63et42qyj" class="article-share-link">Share</a>
       
       
     </footer>
