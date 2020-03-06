@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>【源码篇】elasticsearch 搜索模块之preference参数 | 永远年轻，永远热泪盈眶</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="###一，preference简述 elasticsearch可以使用preference参数来指定分片查询的优先级，即我们可以通过该参数来控制搜索时的索引数据分片。 如不设置该参数：在所有有效的主分片以及副本间轮询。 具体可看下：OperationRouting.java类 123public ShardIterator activeInitializingShardsRandomIt() &amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【源码篇】elasticsearch 搜索模块之preference参数">
+<meta property="og:url" content="https://jiangcoder.github.io/2020/03/06/%E3%80%90%E6%BA%90%E7%A0%81%E7%AF%87%E3%80%91elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/index.html">
+<meta property="og:site_name" content="永远年轻，永远热泪盈眶">
+<meta property="og:description" content="###一，preference简述 elasticsearch可以使用preference参数来指定分片查询的优先级，即我们可以通过该参数来控制搜索时的索引数据分片。 如不设置该参数：在所有有效的主分片以及副本间轮询。 具体可看下：OperationRouting.java类 123public ShardIterator activeInitializingShardsRandomIt() &amp;#">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-03-06T11:04:25.660Z">
+<meta property="article:modified_time" content="2020-03-06T11:07:34.838Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="永远年轻，永远热泪盈眶" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">永远年轻，永远热泪盈眶</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jiangcoder.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-【源码篇】elasticsearch 搜索模块之preference参数" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/06/%E3%80%90%E6%BA%90%E7%A0%81%E7%AF%87%E3%80%91elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/" class="article-date">
+  <time datetime="2020-03-06T11:04:25.660Z" itemprop="datePublished">2020-03-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【源码篇】elasticsearch 搜索模块之preference参数
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>###一，preference简述</p>
+<p>elasticsearch可以使用preference参数来指定分片查询的优先级，即我们可以通过该参数来控制搜索时的索引数据分片。</p>
+<p>如不设置该参数：在所有有效的主分片以及副本间轮询。</p>
+<p>具体可看下：OperationRouting.java类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ShardIterator <span class="title">activeInitializingShardsRandomIt</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> activeInitializingShardsIt(shuffler.nextSeed());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>//自增，以实现shard间轮询操作</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">nextSeed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> seed.getAndIncrement();</span><br><span class="line"> &#125;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line"><span class="function"><span class="keyword">public</span> ShardIterator <span class="title">activeInitializingShardsIt</span><span class="params">(<span class="keyword">int</span> seed)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (allInitializingShards.isEmpty()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> PlainShardIterator(shardId, shuffler.shuffle(activeShards, seed));</span><br><span class="line">    &#125;</span><br><span class="line">    ArrayList&lt;ShardRouting&gt; ordered = <span class="keyword">new</span> ArrayList&lt;&gt;(activeShards.size() + allInitializingShards.size());</span><br><span class="line">    ordered.addAll(shuffler.shuffle(activeShards, seed));</span><br><span class="line">    ordered.addAll(allInitializingShards);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> PlainShardIterator(shardId, ordered);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<pre><code class="java"><span class="function"><span class="keyword">private</span> ShardIterator <span class="title">preferenceActiveShardIterator</span><span class="params">(IndexShardRoutingTable indexShard, String localNodeId, DiscoveryNodes nodes, @Nullable String preference)</span> </span>{
+        <span class="keyword">if</span> (preference == <span class="keyword">null</span> || preference.isEmpty()) {
+            <span class="keyword">if</span> (awarenessAttributes.length == <span class="number">0</span>) {
+                <span class="keyword">return</span> indexShard.activeInitializingShardsRandomIt();
+            } <span class="keyword">else</span> {
+                <span class="keyword">return</span> indexShard.preferAttributesActiveInitializingShardsIt(awarenessAttributes, nodes);
+            }
+        }
+        <span class="keyword">if</span> (preference.charAt(<span class="number">0</span>) == <span class="string">'_'</span>) {
+            Preference preferenceType = Preference.parse(preference);
+            <span class="keyword">if</span> (preferenceType == Preference.SHARDS) {
+                <span class="comment">// starts with _shards, so execute on specific ones</span>
+                <span class="keyword">int</span> index = preference.indexOf(<span class="string">'|'</span>);
+
+                String shards;
+                <span class="keyword">if</span> (index == -<span class="number">1</span>) {
+                    shards = preference.substring(Preference.SHARDS.type().length() + <span class="number">1</span>);
+                } <span class="keyword">else</span> {
+                    shards = preference.substring(Preference.SHARDS.type().length() + <span class="number">1</span>, index);
+                }
+                String ids = Strings.splitStringByCommaToArray(shards);
+                <span class="keyword">boolean</span> found = <span class="keyword">false</span>;
+                <span class="keyword">for</span> (String id : ids) {
+                    <span class="keyword">if</span> (Integer.parseInt(id) == indexShard.shardId().id()) {
+                        found = <span class="keyword">true</span>;
+                        <span class="keyword">break</span>;
+                    }
+                }
+                <span class="keyword">if</span> (!found) {
+                    <span class="keyword">return</span> <span class="keyword">null</span>;
+                }
+                <span class="comment">// no more preference</span>
+                <span class="keyword">if</span> (index == -<span class="number">1</span> || index == preference.length() - <span class="number">1</span>) {
+                    <span class="keyword">if</span> (awarenessAttributes.length == <span class="number">0</span>) {
+                        <span class="keyword">return</span> indexShard.activeInitializingShardsRandomIt();
+                    } <span class="keyword">else</span> {
+                        <span class="keyword">return</span> indexShard.preferAttributesActiveInitializingShardsIt(awarenessAttributes, nodes);
+                    }
+                } <span class="keyword">else</span> {
+                    <span class="comment">// update the preference and continue</span>
+                    preference = preference.substring(index + <span class="number">1</span>);
+                }
+            }
+            preferenceType = Preference.parse(preference);
+            <span class="keyword">switch</span> (preferenceType) {
+                <span class="keyword">case</span> PREFER_NODES:
+                    <span class="keyword">final</span> Set&lt;String&gt; nodesIds =
+                            Arrays.stream(
+                                    preference.substring(Preference.PREFER_NODES.type().length() + <span class="number">1</span>).split(<span class="string">","</span>)
+                            ).collect(Collectors.toSet());
+                    <span class="keyword">return</span> indexShard.preferNodeActiveInitializingShardsIt(nodesIds);
+                <span class="keyword">case</span> LOCAL:
+                    <span class="keyword">return</span> indexShard.preferNodeActiveInitializingShardsIt(Collections.singleton(localNodeId));
+                <span class="keyword">case</span> PRIMARY:
+                    <span class="keyword">return</span> indexShard.primaryActiveInitializingShardIt();
+                <span class="keyword">case</span> REPLICA:
+                    <span class="keyword">return</span> indexShard.replicaActiveInitializingShardIt();
+                <span class="keyword">case</span> PRIMARY_FIRST:
+                    <span class="keyword">return</span> indexShard.primaryFirstActiveInitializingShardsIt();
+                <span class="keyword">case</span> REPLICA_FIRST:
+                    <span class="keyword">return</span> indexShard.replicaFirstActiveInitializingShardsIt();
+                <span class="keyword">case</span> ONLY_LOCAL:
+                    <span class="keyword">return</span> indexShard.onlyNodeActiveInitializingShardsIt(localNodeId);
+                <span class="keyword">case</span> ONLY_NODES:
+                    String nodeAttributes = preference.substring(Preference.ONLY_NODES.type().length() + <span class="number">1</span>);
+                    <span class="keyword">return</span> indexShard.onlyNodeSelectorActiveInitializingShardsIt(nodeAttributes.split(<span class="string">","</span>), nodes);
+                <span class="keyword">default</span>:
+                    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"unknown preference ["</span> + preferenceType + <span class="string">"]"</span>);
+            }
+        }
+        <span class="comment">// if not, then use it as the index</span>
+        <span class="keyword">if</span> (awarenessAttributes.length == <span class="number">0</span>) {
+            <span class="keyword">return</span> indexShard.activeInitializingShardsIt(Murmur3HashFunction.hash(preference));
+        } <span class="keyword">else</span> {
+            <span class="keyword">return</span> indexShard.preferAttributesActiveInitializingShardsIt(awarenessAttributes, nodes, Murmur3HashFunction.hash(preference));
+        }
+    }</code></pre>
+<p>###二，结果震荡问题（Bouncing Results）</p>
+<p>搜索同一query，结果ES返回的顺序却不尽相同，这就是请求轮询到不同分片，而未设置排序条件，相同相关性评分情况下，是按照所在segment中​lucene id来排序的，相同数据的不同备份之间该id是不能保证一致的，故造成结果震荡问题。<br>如设置该参数，则有一下9种情况</p>
+<p><code>_primary</code>:发送到集群的相关操作请求只会在主分片上执行。<br><code>_primary_first</code>:指查询会先在主分片中查询，如果主分片找不到（挂了），就会在副本中查询。<br><code>_replica</code>:发送到集群的相关操作请求只会在副本上执行。<br><code>_replica_first</code>：指查询会先在副本中查询，如果副本找不到（挂了），就会在主分片中查询。<br><code>_local</code>: 指查询操作会优先在本地节点有的分片中查询，没有的话再在其它节点查询。<br><code>_prefer_nodes:abc,xyz</code>:在提供的节点上优先执行（在这种情况下为’abc’或’xyz’）<br><code>_shards:2,3</code>：限制操作到指定的分片。 （<code>2</code>和“3”）。这个偏好可以与其他偏好组合，但必须首先出现：<code>_shards：2,3 | _primary</code><br><code>_only_nodes:node1,node2</code>:指在指定id的节点里面进行查询，如果该节点只有要查询索引的部分分片，就只在这部分分片中查找，不同节点之间用“，”分隔。</p>
+<p>custom(自定义)：注意自定义的preference参数不能以下划线”_”开头。<br>当preference为自定义时，即该参数不为空，且开头不以“下划线”开头时，特别注意：如果以用户query作为自定义preference时，一定要处理以下划线开头的情况，这种情况下如果不属于以上8种情况，则会抛出异常。</p>
+<p>###三，参考：</p>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-preference.html" target="_blank" rel="noopener">https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-preference.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jiangcoder.github.io/2020/03/06/%E3%80%90%E6%BA%90%E7%A0%81%E7%AF%87%E3%80%91elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/" data-id="ck7g2rs7d0002ars6dnzv9omi" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/03/06/Intellij%20Idea%E7%BC%96%E8%AF%91Elasticsearch%E6%BA%90%E7%A0%81/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Intellij Idea编译Elasticsearch源码</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/03/06/%E3%80%90%E6%BA%90%E7%A0%81%E7%AF%87%E3%80%91elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/">【源码篇】elasticsearch 搜索模块之preference参数</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/06/Intellij%20Idea%E7%BC%96%E8%AF%91Elasticsearch%E6%BA%90%E7%A0%81/">Intellij Idea编译Elasticsearch源码</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/06/ElasticSearch%E4%B9%8B%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF/">ElasticSearch之索引模板</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/06/Ladmbda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">Ladmbda表达式</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/26/jvm-GC-and-GC-Tuning/">jvm-GC-and-GC-Tuning</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="https://jiangcoder.github.io/" target="_blank">姜涛</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
