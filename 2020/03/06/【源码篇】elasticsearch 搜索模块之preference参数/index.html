@@ -7,15 +7,15 @@
   
   <title>【源码篇】elasticsearch 搜索模块之preference参数 | 永远年轻，永远热泪盈眶</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="###一，preference简述 elasticsearch可以使用preference参数来指定分片查询的优先级，即我们可以通过该参数来控制搜索时的索引数据分片。 如不设置该参数：在所有有效的主分片以及副本间轮询。 具体可看下：OperationRouting.java类 123public ShardIterator activeInitializingShardsRandomIt() &amp;#">
+  <meta name="description" content="##一，preference简述 elasticsearch可以使用preference参数来指定分片查询的优先级，即我们可以通过该参数来控制搜索时的索引数据分片。 如不设置该参数：在所有有效的主分片以及副本间轮询。 具体可看下：OperationRouting.java类 123public ShardIterator activeInitializingShardsRandomIt() &amp;#1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【源码篇】elasticsearch 搜索模块之preference参数">
 <meta property="og:url" content="https://jiangcoder.github.io/2020/03/06/%E3%80%90%E6%BA%90%E7%A0%81%E7%AF%87%E3%80%91elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/index.html">
 <meta property="og:site_name" content="永远年轻，永远热泪盈眶">
-<meta property="og:description" content="###一，preference简述 elasticsearch可以使用preference参数来指定分片查询的优先级，即我们可以通过该参数来控制搜索时的索引数据分片。 如不设置该参数：在所有有效的主分片以及副本间轮询。 具体可看下：OperationRouting.java类 123public ShardIterator activeInitializingShardsRandomIt() &amp;#">
+<meta property="og:description" content="##一，preference简述 elasticsearch可以使用preference参数来指定分片查询的优先级，即我们可以通过该参数来控制搜索时的索引数据分片。 如不设置该参数：在所有有效的主分片以及副本间轮询。 具体可看下：OperationRouting.java类 123public ShardIterator activeInitializingShardsRandomIt() &amp;#1">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-03-06T11:04:25.660Z">
-<meta property="article:modified_time" content="2020-03-06T11:07:34.838Z">
+<meta property="article:modified_time" content="2020-03-06T11:10:11.616Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -88,7 +88,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>###一，preference简述</p>
+        <p>##一，preference简述</p>
 <p>elasticsearch可以使用preference参数来指定分片查询的优先级，即我们可以通过该参数来控制搜索时的索引数据分片。</p>
 <p>如不设置该参数：在所有有效的主分片以及副本间轮询。</p>
 <p>具体可看下：OperationRouting.java类</p>
@@ -173,17 +173,17 @@
             <span class="keyword">return</span> indexShard.preferAttributesActiveInitializingShardsIt(awarenessAttributes, nodes, Murmur3HashFunction.hash(preference));
         }
     }</code></pre>
-<p>###二，结果震荡问题（Bouncing Results）</p>
+<p>##二，结果震荡问题（Bouncing Results）</p>
 <p>搜索同一query，结果ES返回的顺序却不尽相同，这就是请求轮询到不同分片，而未设置排序条件，相同相关性评分情况下，是按照所在segment中​lucene id来排序的，相同数据的不同备份之间该id是不能保证一致的，故造成结果震荡问题。<br>如设置该参数，则有一下9种情况</p>
 <p><code>_primary</code>:发送到集群的相关操作请求只会在主分片上执行。<br><code>_primary_first</code>:指查询会先在主分片中查询，如果主分片找不到（挂了），就会在副本中查询。<br><code>_replica</code>:发送到集群的相关操作请求只会在副本上执行。<br><code>_replica_first</code>：指查询会先在副本中查询，如果副本找不到（挂了），就会在主分片中查询。<br><code>_local</code>: 指查询操作会优先在本地节点有的分片中查询，没有的话再在其它节点查询。<br><code>_prefer_nodes:abc,xyz</code>:在提供的节点上优先执行（在这种情况下为’abc’或’xyz’）<br><code>_shards:2,3</code>：限制操作到指定的分片。 （<code>2</code>和“3”）。这个偏好可以与其他偏好组合，但必须首先出现：<code>_shards：2,3 | _primary</code><br><code>_only_nodes:node1,node2</code>:指在指定id的节点里面进行查询，如果该节点只有要查询索引的部分分片，就只在这部分分片中查找，不同节点之间用“，”分隔。</p>
 <p>custom(自定义)：注意自定义的preference参数不能以下划线”_”开头。<br>当preference为自定义时，即该参数不为空，且开头不以“下划线”开头时，特别注意：如果以用户query作为自定义preference时，一定要处理以下划线开头的情况，这种情况下如果不属于以上8种情况，则会抛出异常。</p>
-<p>###三，参考：</p>
+<p>##三，参考：</p>
 <p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-preference.html" target="_blank" rel="noopener">https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-preference.html</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/03/06/%E3%80%90%E6%BA%90%E7%A0%81%E7%AF%87%E3%80%91elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/" data-id="ck7g2rs7d0002ars6dnzv9omi" class="article-share-link">Share</a>
+      <a data-url="https://jiangcoder.github.io/2020/03/06/%E3%80%90%E6%BA%90%E7%A0%81%E7%AF%87%E3%80%91elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/" data-id="ck7g2vqre0003eis60ack9d0j" class="article-share-link">Share</a>
       
       
     </footer>
