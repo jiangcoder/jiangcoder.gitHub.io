@@ -64,6 +64,67 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Ladmbda表达式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/06/Ladmbda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="article-date">
+  <time datetime="2020-03-06T08:54:58.317Z" itemprop="datePublished">2020-03-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/06/Ladmbda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">Ladmbda表达式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一，排序"><a href="#一，排序" class="headerlink" title="一，排序"></a>一，排序</h2><p>对数组从小到大排序</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sortUsingLambda</span><span class="params">(List&lt;Integer&gt; indexs)</span> </span>&#123;</span><br><span class="line">    Collections.sort(indexs, (s1, s2) -&gt; s1.compareTo(s2));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>更简洁的实现方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sortUsingLambda</span><span class="params">(List&lt;Integer&gt; indexs)</span> </span>&#123;</span><br><span class="line">    Collections.sort(indexs, Integer::compareTo);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对数组从小到大排序</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sortUsingLambda</span><span class="params">(List&lt;Integer&gt; indexs)</span> </span>&#123;</span><br><span class="line">    Collections.sort(indexs, (s1, s2) -&gt; s2.compareTo(s1));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从小到大简洁实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sortUsingLambda</span><span class="params">(List&lt;Integer&gt; indexs)</span> </span>&#123;</span><br><span class="line">    Collections.sort(indexs, Comparator.reverseOrder());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="二，list转map"><a href="#二，list转map" class="headerlink" title="二，list转map"></a>二，list转map</h2><p><strong>①：取list中某2个字段作为Map的K,V</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Map&lt;Long, String&gt; <span class="title">getIdNameMap</span><span class="params">(List&lt;Account&gt; accounts)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getId, Account::getUsername));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>②：将id和实体Bean做为K,V</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Map&lt;Long, Account&gt; <span class="title">getIdAccountMap</span><span class="params">(List&lt;Account&gt; accounts)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getId, account -&gt; account));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或者这样写</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Map&lt;Long, Account&gt; <span class="title">getIdAccountMap</span><span class="params">(List&lt;Account&gt; accounts)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getId, Function.identity()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>account -&gt; account是一个返回本身的lambda表达式，后面的使用Function接口中的一个默认方法代替，使整个方法更简洁优雅。<br><strong>③：key存在重复记录时处理</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Map&lt;String, Account&gt; <span class="title">getNameAccountMap</span><span class="params">(List&lt;Account&gt; accounts)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getUsername, Function.identity(), (key1, key2) -&gt; key2));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>④：使用某个具体的Map类来保存，如保存时使用LinkedHashMap</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Map&lt;String, Account&gt; <span class="title">getNameAccountMap</span><span class="params">(List&lt;Account&gt; accounts)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getUsername, Function.identity(), (key1, key2) -&gt; key2, LinkedHashMap::<span class="keyword">new</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>⑤：List<Object>转List&lt;String,Map&lt;String, String&gt;&gt;</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Map&lt;String,List&lt;MCode&gt;&gt; getCodeListMap()&#123;</span><br><span class="line">        <span class="keyword">if</span>(CollectionUtils.isEmpty(codeListMap))&#123;</span><br><span class="line">                List&lt;MCode&gt; codeList = <span class="keyword">this</span>.getCodeList();</span><br><span class="line">                Set&lt;String&gt; keySet = codeList.stream().map(code -&gt; code.getCodeKbn()).collect(Collectors.toSet());</span><br><span class="line">                Iterator&lt;String&gt; it = keySet.iterator();</span><br><span class="line">                <span class="keyword">while</span>(it.hasNext()) &#123;</span><br><span class="line">                        String key = it.next();</span><br><span class="line">                        codeListMap.put(key, codeList.stream().filter(code -&gt; code.getCodeKbn().equals(key)).collect(Collectors.toList()));</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> codeListMap;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>三，Map转List</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"><span class="comment">// Convert all Map keys to a List</span></span><br><span class="line">List&lt;String&gt; result = <span class="keyword">new</span> ArrayList(map.keySet());</span><br><span class="line"><span class="comment">// Convert all Map values to a List</span></span><br><span class="line">List&lt;String&gt; result2 = <span class="keyword">new</span> ArrayList(map.values());</span><br><span class="line"><span class="comment">// Java 8, Convert all Map keys to a List</span></span><br><span class="line">List&lt;String&gt; result3 = map.keySet().stream()</span><br><span class="line">	.collect(Collectors.toList());</span><br><span class="line"><span class="comment">// Java 8, Convert all Map values  to a List</span></span><br><span class="line">List&lt;String&gt; result4 = map.values().stream()</span><br><span class="line">	.collect(Collectors.toList());</span><br><span class="line"><span class="comment">// Java 8, seem a bit long, but you can enjoy the Stream features like filter and etc.</span></span><br><span class="line">List&lt;String&gt; result5 = map.values().stream()</span><br><span class="line">	.filter(x -&gt; !<span class="string">"apple"</span>.equalsIgnoreCase(x))</span><br><span class="line">	.collect(Collectors.toList());</span><br><span class="line"><span class="comment">// Java 8, split a map into 2 List, it works!</span></span><br><span class="line"><span class="comment">// refer example 3 below</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jiangcoder.github.io/2020/03/06/Ladmbda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" data-id="ck7fy3rb500006es63nb0fmno" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-jvm-GC-and-GC-Tuning" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/02/26/jvm-GC-and-GC-Tuning/" class="article-date">
@@ -349,7 +410,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li></ul>
     </div>
   </div>
 
@@ -360,6 +421,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2020/03/06/Ladmbda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">Ladmbda表达式</a>
+          </li>
         
           <li>
             <a href="/2020/02/26/jvm-GC-and-GC-Tuning/">jvm-GC-and-GC-Tuning</a>
