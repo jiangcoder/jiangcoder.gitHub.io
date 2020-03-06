@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Intellij Idea编译Elasticsearch源码 | 永远年轻，永远热泪盈眶</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="###一、软件环境Intellij Idea:2017.1版本Elasticsearch源码版本:5.3.1JDK:1.8.0_111Gradle :建议3.3及以上版本。官网：https:&#x2F;&#x2F;gradle.org&#x2F;###二、下载Elasticsearch源码到github clone源码，https:&#x2F;&#x2F;github.com&#x2F;elastic&#x2F;elasticsearch.git，建议选择稳定版本分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Intellij Idea编译Elasticsearch源码">
+<meta property="og:url" content="https://jiangcoder.github.io/2020/03/06/Intellij%20Idea%E7%BC%96%E8%AF%91Elasticsearch%E6%BA%90%E7%A0%81/index.html">
+<meta property="og:site_name" content="永远年轻，永远热泪盈眶">
+<meta property="og:description" content="###一、软件环境Intellij Idea:2017.1版本Elasticsearch源码版本:5.3.1JDK:1.8.0_111Gradle :建议3.3及以上版本。官网：https:&#x2F;&#x2F;gradle.org&#x2F;###二、下载Elasticsearch源码到github clone源码，https:&#x2F;&#x2F;github.com&#x2F;elastic&#x2F;elasticsearch.git，建议选择稳定版本分">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-03-06T10:56:32.358Z">
+<meta property="article:modified_time" content="2020-03-06T11:00:56.581Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="永远年轻，永远热泪盈眶" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">永远年轻，永远热泪盈眶</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jiangcoder.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Intellij Idea编译Elasticsearch源码" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/06/Intellij%20Idea%E7%BC%96%E8%AF%91Elasticsearch%E6%BA%90%E7%A0%81/" class="article-date">
+  <time datetime="2020-03-06T10:56:32.358Z" itemprop="datePublished">2020-03-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Intellij Idea编译Elasticsearch源码
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>###一、软件环境<br>Intellij Idea:2017.1版本<br>Elasticsearch源码版本:5.3.1<br>JDK:1.8.0_111<br>Gradle :建议3.3及以上版本。官网：<a href="https://gradle.org/" target="_blank" rel="noopener">https://gradle.org/</a><br>###二、下载Elasticsearch源码<br>到github clone源码，<a href="https://github.com/elastic/elasticsearch.git，建议选择稳定版本分支。" target="_blank" rel="noopener">https://github.com/elastic/elasticsearch.git，建议选择稳定版本分支。</a></p>
+<p>###三、导入idea<br>1，###编译执行gradle build.gradle，报错：<br>you must run gradle idea from the root of elasticsearch before importing into intellij<br>解决办法：运行命令：gradle idea。同理如使用eclipse编译器，运行gradle eclipse。该过程会向mvn仓库下载响应的jar包，视网络情况，大概会持续20分钟。</p>
+<p>###2，运行org.elasticsearch.bootstrap.Elasticsearch 方法，报错：<br>“path.home is not configured” when starting ES in transport and client mode“，<br>解决办法：在VM options中加入配置：-Des.path.home=/home/jiangtao/code/elasticsearch/core，即指向相应的core模块的路径。</p>
+<p>###3，报错：org.elasticsearch.bootstrap.BootstrapException: java.nio.file.NoSuchFileException<br>  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Exception in thread <span class="string">"main"</span> org.elasticsearch.bootstrap.BootstrapException: java.nio.file.NoSuchFileException: /home/jiangtao/code/elasticsearch/core/config Likely root cause: java.nio.file.NoSuchFileException: /home/jiangtao/code/elasticsearch/core/config</span><br><span class="line">    at sun.nio.fs.UnixException.translateToIOException(UnixException.java:<span class="number">86</span>)</span><br><span class="line">    at sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:<span class="number">102</span>)</span><br><span class="line">    at sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:<span class="number">107</span>)</span><br><span class="line">    at sun.nio.fs.UnixFileAttributeViews$Basic.readAttributes(UnixFileAttributeViews.java:<span class="number">55</span>)</span><br><span class="line">   at sun.nio.fs.UnixFileSystemProvider.readAttributes(UnixFileSystemProvider.java:<span class="number">144</span>)</span><br><span class="line">   at sun.nio.fs.LinuxFileSystemProvider.readAttributes(LinuxFileSystemProvider.java:<span class="number">99</span>)</span><br><span class="line">   at java.nio.file.Files.readAttributes(Files.java:<span class="number">1737</span>)</span><br><span class="line">   at java.nio.file.FileTreeWalker.getAttributes(FileTreeWalker.java:<span class="number">225</span>)</span><br><span class="line">   at java.nio.file.FileTreeWalker.visit(FileTreeWalker.java:<span class="number">276</span>)</span><br><span class="line">   at java.nio.file.FileTreeWalker.walk(FileTreeWalker.java:<span class="number">322</span>)</span><br><span class="line">   at java.nio.file.Files.walkFileTree(Files.java:<span class="number">2662</span>)</span><br></pre></td></tr></table></figure></p>
+<p>解决办法：将distribution模块src路径下的config整个文件copy到core模块中</p>
+<p>###4，报错： ERROR Could not register mbeans java.security.AccessControlException</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">06</span>-<span class="number">06</span> <span class="number">09</span>:<span class="number">52</span>:<span class="number">08</span>,<span class="number">007</span> main ERROR Could not register mbeans java.security.AccessControlException: <span class="function">access <span class="title">denied</span> <span class="params">(<span class="string">"javax.management.MBeanTrustPermission"</span> <span class="string">"register"</span>)</span></span></span><br><span class="line"><span class="function">             at java.security.AccessControlContext.<span class="title">checkPermission</span><span class="params">(AccessControlContext.java:<span class="number">472</span>)</span></span></span><br><span class="line"><span class="function">            at java.lang.SecurityManager.<span class="title">checkPermission</span><span class="params">(SecurityManager.java:<span class="number">585</span>)</span></span></span><br><span class="line"><span class="function">            at com.sun.jmx.interceptor.DefaultMBeanServerInterceptor.<span class="title">checkMBeanTrustPermission</span><span class="params">(DefaultMBeanServerInterceptor.java:<span class="number">1848</span>)</span></span></span><br><span class="line"><span class="function">            at com.sun.jmx.interceptor.DefaultMBeanServerInterceptor.<span class="title">registerMBean</span><span class="params">(DefaultMBeanServerInterceptor.java:<span class="number">322</span>)</span></span></span><br><span class="line"><span class="function">            at com.sun.jmx.mbeanserver.JmxMBeanServer.<span class="title">registerMBean</span><span class="params">(JmxMBeanServer.java:<span class="number">522</span>)</span></span></span><br><span class="line"><span class="function">             </span></span><br><span class="line"><span class="function">           at org.elasticsearch.bootstrap.Elasticsearch.<span class="title">main</span><span class="params">(Elasticsearch.java:<span class="number">91</span>)</span></span></span><br><span class="line"><span class="function">           at org.elasticsearch.bootstrap.Elasticsearch.<span class="title">main</span><span class="params">(Elasticsearch.java:<span class="number">84</span>)</span></span></span><br></pre></td></tr></table></figure>
+
+<pre><code>解决办法：禁用jmx,在VM options中继续添加配置：  -Dlog4j2.disable.jmx=true。注意：在VM options中多个配置中间用空格分隔。</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">###5，报错： java.lang.IllegalStateException: Unsupported transport.type </span><br><span class="line">错误栈如下：</span><br><span class="line">&#96;&#96;&#96;java</span><br><span class="line">[2017-06-06T10:04:21,327][WARN ][o.e.b.ElasticsearchUncaughtExceptionHandler]  uncaught exception in thread [main]</span><br><span class="line">org.elasticsearch.bootstrap.StartupException: java.lang.IllegalStateException: Unsupported transport.type </span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:127) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.execute(Elasticsearch.java:114) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.cli.EnvironmentAwareCommand.execute(EnvironmentAwareCommand.java:58) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.cli.Command.mainWithoutErrorHandling(Command.java:122) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.cli.Command.main(Command.java:88) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:91) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:84) ~[main&#x2F;:?]</span><br><span class="line">Caused by: java.lang.IllegalStateException: Unsupported transport.type </span><br><span class="line">at org.elasticsearch.common.network.NetworkModule.getTransportSupplier(NetworkModule.java:213) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.node.Node.&lt;init&gt;(Node.java:421) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.node.Node.&lt;init&gt;(Node.java:242) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Bootstrap$6.&lt;init&gt;(Bootstrap.java:242) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Bootstrap.setup(Bootstrap.java:242) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Bootstrap.init(Bootstrap.java:360) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:123) ~[main&#x2F;:?]</span><br><span class="line">... 6 more</span><br></pre></td></tr></table></figure>
+
+<p>这个是由于依赖的transport等jar并没有找到，可以在项目根目录找到models模块，然后将下面目录打包，然后copy到distribution/src/main/models目录下，<br>也可以直接去官网（<a href="https://www.elastic.co/downloads/elasticsearch）下载zip包，解压后直接copy。" target="_blank" rel="noopener">https://www.elastic.co/downloads/elasticsearch）下载zip包，解压后直接copy。</a><br>我直接去官网下载的zip包：从官网下载完毕zip包后，具体解决办法请看：错误 6。</p>
+<p>###6，copy module版本冲突<br>错误栈如下： </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">org.elasticsearch.bootstrap.StartupException: java.lang.IllegalArgumentException: Plugin [lang-expression] is incompatible with Elasticsearch [<span class="number">5.3</span><span class="number">.4</span>]. Was designed <span class="keyword">for</span> version [<span class="number">5.3</span><span class="number">.1</span>]</span><br><span class="line"> at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:<span class="number">127</span>) ~[main/:?]</span><br><span class="line"> at org.elasticsearch.bootstrap.Elasticsearch.execute(Elasticsearch.java:<span class="number">114</span>) ~[main/:?]</span><br><span class="line"> at org.elasticsearch.cli.EnvironmentAwareCommand.execute(EnvironmentAwareCommand.java:<span class="number">58</span>) ~[main/:?]</span><br><span class="line"> at org.elasticsearch.cli.Command.mainWithoutErrorHandling(Command.java:<span class="number">122</span>) ~[main/:?]</span><br><span class="line"> at org.elasticsearch.cli.Command.main(Command.java:<span class="number">88</span>) ~[main/:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:<span class="number">91</span>) ~[main/:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:<span class="number">84</span>) ~[main/:?]</span><br><span class="line">Caused by: java.lang.IllegalArgumentException: Plugin [lang-expression] is incompatible with Elasticsearch [<span class="number">5.3</span><span class="number">.4</span>]. Was designed <span class="keyword">for</span> version [<span class="number">5.3</span><span class="number">.1</span>]</span><br></pre></td></tr></table></figure>
+
+<p>解决办法：修改es当前版本<br>将core模块中的Version.java类由<br>public static final Version CURRENT = V_5_3_4_UNRELEASED;<br>修改为：<br>public static final Version CURRENT = V_5_3_1;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jiangcoder.github.io/2020/03/06/Intellij%20Idea%E7%BC%96%E8%AF%91Elasticsearch%E6%BA%90%E7%A0%81/" data-id="ck7g2juwq000197s660g86vpy" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/03/06/ElasticSearch%E4%B9%8B%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ElasticSearch之索引模板</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/03/06/Intellij%20Idea%E7%BC%96%E8%AF%91Elasticsearch%E6%BA%90%E7%A0%81/">Intellij Idea编译Elasticsearch源码</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/06/ElasticSearch%E4%B9%8B%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF/">ElasticSearch之索引模板</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/06/Ladmbda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">Ladmbda表达式</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/26/jvm-GC-and-GC-Tuning/">jvm-GC-and-GC-Tuning</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="https://jiangcoder.github.io/" target="_blank">姜涛</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
