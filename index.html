@@ -86,7 +86,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>[b]一，模板简述：[/b]template大致分成setting和mappings两部分：<br>索引可使用预定义的模板进行创建,这个模板称作Index templates。模板设置包括settings和mappings，通过模式匹配的方式使得多个索引重用一个模板。 </p>
+        <h2 id="一，模板简述"><a href="#一，模板简述" class="headerlink" title="一，模板简述"></a>一，模板简述</h2><p>template大致分成setting和mappings两部分：<br>索引可使用预定义的模板进行创建,这个模板称作Index templates。模板设置包括settings和mappings，通过模式匹配的方式使得多个索引重用一个模板。 </p>
 <ol>
 <li><p>settings主要作用于index的一些相关配置信息，如分片数、副本数，tranlog同步条件、refresh等。</p>
 </li>
@@ -95,68 +95,58 @@
 <p>  (2) _source：主要指的是SourceField字段，Source可以理解为ES除了将数据保存在索引文件中，另外还有一份源数据。_source字段在我们进行检索时相当重要，如果在{“enabled” : false}情况下默认检索只会返回ID， 你需要通过Fields字段去到索引中去取数据，效率不是很高。但是enabled设置为true时，索引会比较大，这时可以通过Compress进行压缩和inclueds、excludes来在字段级别上进行一些限制，自定义哪些字段允许存储。</p>
 <p>  (3) properties：这是最重要的步骤，主要针对索引结构和字段级别上的一些设置。</p>
 </li>
-<li><p>咱们通常在elasticsearch中 post mapping信息，每重新创建索引便到设置mapping，分片，副本信息。非常繁琐。强烈建议大家通过设置template方式设置索引信息。设置索引名，通过正则匹配的方式匹配到相应的模板。ps:直接修改mapping的优先级&gt;索引template。索引匹配了多个template，当属性等配置出现不一致的，以order的最大值为准，order默认值为0<br>[b]二，创建模板：[/b]<br>例如：<br>[code]{<br>“template”: “pmall*”,<br>“settings”: {<br>  “index.number_of_shards”: 1,<br>  “number_of_replicas”: 4,<br>  “similarity”: {</p>
-<pre><code>&quot;IgnoreTFSimilarity&quot;: {
-  &quot;type&quot;: &quot;IgoreTFSimilarity&quot;
-}</code></pre><p>  }<br>},<br>“mappings”: {<br>  “<em>default</em>“: {</p>
-<pre><code>&quot;_source&quot;: {
-  &quot;enabled&quot;: false
-}</code></pre><p>  },<br>  “commodity”: {</p>
-<pre><code>&quot;properties&quot;: {
-  &quot;sold&quot;: {
-    &quot;type&quot;: &quot;long&quot;
-  },
-  &quot;online_time&quot;: {
-    &quot;type&quot;: &quot;long&quot;
-  },
-  &quot;price&quot;: {
-    &quot;type&quot;: &quot;long&quot;
-  },
-  &quot;publish_time&quot;: {
-    &quot;type&quot;: &quot;long&quot;
-  },
-  &quot;id&quot;: {
-    &quot;type&quot;: &quot;long&quot;
-  },
-  &quot;catecode&quot;: {
-    &quot;type&quot;: &quot;integer&quot;
-  },
-  &quot;title&quot;: {
-    &quot;search_analyzer&quot;: &quot;ikSmart&quot;,
-    &quot;similarity&quot;: &quot;IgnoreTFSimilarity&quot;,
-    &quot;analyzer&quot;: &quot;ik&quot;,
-    &quot;type&quot;: &quot;text&quot;
-  },
-  &quot;content&quot;: {
-    &quot;index&quot;: false,
-    &quot;store&quot;: true,
-    &quot;type&quot;: &quot;keyword&quot;
-  },
-  &quot;status&quot;: {
-    &quot;type&quot;: &quot;integer&quot;
-  }
-}</code></pre><p>  }<br>}<br>}[/code]</p>
+<li><p>咱们通常在elasticsearch中 post mapping信息，每重新创建索引便到设置mapping，分片，副本信息。非常繁琐。强烈建议大家通过设置template方式设置索引信息。设置索引名，通过正则匹配的方式匹配到相应的模板。ps:直接修改mapping的优先级&gt;索引template。索引匹配了多个template，当属性等配置出现不一致的，以order的最大值为准，order默认值为0</p>
+<h2 id="二，创建模板"><a href="#二，创建模板" class="headerlink" title="二，创建模板"></a>二，创建模板</h2><p>例如：</p>
 </li>
 </ol>
-<p>[b]三，删除模板：[/b][code]<br>DELETE /_template/template_1[/code]</p>
-<p>[b]四，查看模板：[/b]<br> [code]GET /_template/template_1[/code]</p>
-<p>也可以通过模糊匹配得到多个模板信息[code]GET /_template/temp* [/code]</p>
-<p>可以批量查看模板[code]GET /_template/template_1,template_2[/code]</p>
-<p>验证模板是否存在：<br> [code]HEAD _template/template_1[/code]</p>
-<p>[b]五：多个模板同时匹配，以order顺序倒排，order越大，优先级越高[/b]<br> [code]</p>
-<p>PUT /_template/template_1<br>{<br>    “template” : “*”,<br>    “order” : 0,<br>    “settings” : {<br>        “number_of_shards” : 1<br>    },<br>    “mappings” : {<br>        “type1” : {<br>            “_source” : { “enabled” : false }<br>        }<br>    }<br>}</p>
-<p>PUT /_template/template_2<br>{<br>    “template” : “te*”,<br>    “order” : 1,<br>    “settings” : {<br>        “number_of_shards” : 1<br>    },<br>    “mappings” : {<br>        “type1” : {<br>            “_source” : { “enabled” : true }<br>        }<br>    }<br>}[/code]</p>
-<p>[b]六，模板版本号：[/b]</p>
-<p>模板可以选择添加版本号，这可以是任何整数值，以便简化外部系统的模板管理。版本字段是完全可选的，它仅用于模板的外部管理。要取消设置版本，只需替换模板即可</p>
-<p>创建模板：[code]PUT /_template/template_1<br>{<br>    “template” : “*”,<br>    “order” : 0,<br>    “settings” : {<br>        “number_of_shards” : 1<br>    },<br>    “version”: 123<br>}[/code]</p>
-<p>查看模板版本号：[code]GET /_template/template_1?filter_path=*.version[/code]</p>
-<p>响应如下：[code]{<br>  “template_1” : {<br>    “version” : 123<br>  }<br>}[/code]</p>
-<p>[b]七，参考：[/b]<br>[url=<a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.4/indices-templates.html]indices-templates[/url]" target="_blank" rel="noopener">https://www.elastic.co/guide/en/elasticsearch/reference/5.4/indices-templates.html]indices-templates[/url]</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"template"</span>: <span class="string">"pmall*"</span>,</span><br><span class="line">  <span class="string">"settings"</span>: &#123;</span><br><span class="line">    <span class="string">"index.number_of_shards"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">"number_of_replicas"</span>: <span class="number">4</span>,</span><br><span class="line">    <span class="string">"similarity"</span>: &#123;</span><br><span class="line">      <span class="string">"IgnoreTFSimilarity"</span>: &#123;</span><br><span class="line">        <span class="string">"type"</span>: <span class="string">"IgoreTFSimilarity"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"mappings"</span>: &#123;</span><br><span class="line">    <span class="string">"_default_"</span>: &#123;</span><br><span class="line">      <span class="string">"_source"</span>: &#123;</span><br><span class="line">        <span class="string">"enabled"</span>: <span class="keyword">false</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"commodity"</span>: &#123;</span><br><span class="line">      <span class="string">"properties"</span>: &#123;</span><br><span class="line">        <span class="string">"sold"</span>: &#123;</span><br><span class="line">          <span class="string">"type"</span>: <span class="string">"long"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">"online_time"</span>: &#123;</span><br><span class="line">          <span class="string">"type"</span>: <span class="string">"long"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">"price"</span>: &#123;</span><br><span class="line">          <span class="string">"type"</span>: <span class="string">"long"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">"publish_time"</span>: &#123;</span><br><span class="line">          <span class="string">"type"</span>: <span class="string">"long"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">"id"</span>: &#123;</span><br><span class="line">          <span class="string">"type"</span>: <span class="string">"long"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">"catecode"</span>: &#123;</span><br><span class="line">          <span class="string">"type"</span>: <span class="string">"integer"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">"title"</span>: &#123;</span><br><span class="line">          <span class="string">"search_analyzer"</span>: <span class="string">"ikSmart"</span>,</span><br><span class="line">          <span class="string">"similarity"</span>: <span class="string">"IgnoreTFSimilarity"</span>,</span><br><span class="line">          <span class="string">"analyzer"</span>: <span class="string">"ik"</span>,</span><br><span class="line">          <span class="string">"type"</span>: <span class="string">"text"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">"content"</span>: &#123;</span><br><span class="line">          <span class="string">"index"</span>: <span class="keyword">false</span>,</span><br><span class="line">          <span class="string">"store"</span>: <span class="keyword">true</span>,</span><br><span class="line">          <span class="string">"type"</span>: <span class="string">"keyword"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">"status"</span>: &#123;</span><br><span class="line">          <span class="string">"type"</span>: <span class="string">"integer"</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="三，删除模板"><a href="#三，删除模板" class="headerlink" title="三，删除模板"></a>三，删除模板</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">DELETE /_template/template_1</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h2 id="四，查看模板："><a href="#四，查看模板：" class="headerlink" title="四，查看模板："></a>四，查看模板：</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /_template/template_1</span><br></pre></td></tr></table></figure>
+
+
+<p>也可以通过模糊匹配得到多个模板信息</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /_template/temp*</span><br></pre></td></tr></table></figure>
+
+
+<p>可以批量查看模板</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /_template/template_1,template_2</span><br></pre></td></tr></table></figure>
+
+
+<p>验证模板是否存在：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HEAD _template/template_1</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="五：多个模板同时匹配，以order顺序倒排，order越大，优先级越高"><a href="#五：多个模板同时匹配，以order顺序倒排，order越大，优先级越高" class="headerlink" title="五：多个模板同时匹配，以order顺序倒排，order越大，优先级越高"></a>五：多个模板同时匹配，以order顺序倒排，order越大，优先级越高</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> </span><br><span class="line">PUT /_template/template_1</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"template"</span> : <span class="string">"*"</span>,</span><br><span class="line">    <span class="string">"order"</span> : <span class="number">0</span>,</span><br><span class="line">    <span class="string">"settings"</span> : &#123;</span><br><span class="line">        <span class="string">"number_of_shards"</span> : <span class="number">1</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"mappings"</span> : &#123;</span><br><span class="line">        <span class="string">"type1"</span> : &#123;</span><br><span class="line">            <span class="string">"_source"</span> : &#123; <span class="string">"enabled"</span> : <span class="keyword">false</span> &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT /_template/template_2</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"template"</span> : <span class="string">"te*"</span>,</span><br><span class="line">    <span class="string">"order"</span> : <span class="number">1</span>,</span><br><span class="line">    <span class="string">"settings"</span> : &#123;</span><br><span class="line">        <span class="string">"number_of_shards"</span> : <span class="number">1</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"mappings"</span> : &#123;</span><br><span class="line">        <span class="string">"type1"</span> : &#123;</span><br><span class="line">            <span class="string">"_source"</span> : &#123; <span class="string">"enabled"</span> : <span class="keyword">true</span> &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="六，模板版本号"><a href="#六，模板版本号" class="headerlink" title="六，模板版本号"></a>六，模板版本号</h2><p>模板可以选择添加版本号，这可以是任何整数值，以便简化外部系统的模板管理。版本字段是完全可选的，它仅用于模板的外部管理。要取消设置版本，只需替换模板即可</p>
+<p>创建模板：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">PUT /_template/template_1</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"template"</span> : <span class="string">"*"</span>,</span><br><span class="line">    <span class="string">"order"</span> : <span class="number">0</span>,</span><br><span class="line">    <span class="string">"settings"</span> : &#123;</span><br><span class="line">        <span class="string">"number_of_shards"</span> : <span class="number">1</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"version"</span>: <span class="number">123</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>查看模板版本号：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /_template/template_1?filter_path=*.version</span><br></pre></td></tr></table></figure>
+
+
+
+<p>响应如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"template_1"</span> : &#123;</span><br><span class="line">    <span class="string">"version"</span> : <span class="number">123</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="七，参考："><a href="#七，参考：" class="headerlink" title="七，参考："></a>七，参考：</h2><p>[url=<a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.4/indices-templates.html]indices-templates[/url]" target="_blank" rel="noopener">https://www.elastic.co/guide/en/elasticsearch/reference/5.4/indices-templates.html]indices-templates[/url]</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/03/06/ElasticSearch%E4%B9%8B%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF/" data-id="ck7fz5ye70000yhs6c8o35kry" class="article-share-link">Share</a>
+      <a data-url="https://jiangcoder.github.io/2020/03/06/ElasticSearch%E4%B9%8B%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF/" data-id="ck7fzux4100007zs6gzovh70j" class="article-share-link">Share</a>
       
       
     </footer>
@@ -217,7 +207,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/03/06/Ladmbda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" data-id="ck7fz5yen0002yhs6g156c6zb" class="article-share-link">Share</a>
+      <a data-url="https://jiangcoder.github.io/2020/03/06/Ladmbda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" data-id="ck7fzux4900017zs69yvzfspu" class="article-share-link">Share</a>
       
       
     </footer>
@@ -484,7 +474,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/02/26/jvm-GC-and-GC-Tuning/" data-id="ck7fz5yel0001yhs64f2ta1x8" class="article-share-link">Share</a>
+      <a data-url="https://jiangcoder.github.io/2020/02/26/jvm-GC-and-GC-Tuning/" data-id="ck7fzux4a00027zs63i9618wf" class="article-share-link">Share</a>
       
       
     </footer>
