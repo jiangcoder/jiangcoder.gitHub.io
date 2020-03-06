@@ -5,17 +5,17 @@
   
 
   
-  <title>一亩三分地</title>
+  <title>永远年轻，永远热泪盈眶</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
-<meta property="og:title" content="一亩三分地">
+<meta property="og:title" content="永远年轻，永远热泪盈眶">
 <meta property="og:url" content="https://jiangcoder.github.io/index.html">
-<meta property="og:site_name" content="一亩三分地">
+<meta property="og:site_name" content="永远年轻，永远热泪盈眶">
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternate" href="/atom.xml" title="一亩三分地" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="永远年轻，永远热泪盈眶" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -36,7 +36,7 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">姜涛的一亩三分地</a>
+        <a href="/" id="logo">永远年轻，永远热泪盈眶</a>
       </h1>
       
     </div>
@@ -63,6 +63,184 @@
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-【源码篇】elasticsearch 搜索模块之preference参数" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/06/%E3%80%90%E6%BA%90%E7%A0%81%E7%AF%87%E3%80%91elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/" class="article-date">
+  <time datetime="2020-03-06T11:04:25.660Z" itemprop="datePublished">2020-03-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/06/%E3%80%90%E6%BA%90%E7%A0%81%E7%AF%87%E3%80%91elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/">【源码篇】elasticsearch 搜索模块之preference参数</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>###一，preference简述</p>
+<p>elasticsearch可以使用preference参数来指定分片查询的优先级，即我们可以通过该参数来控制搜索时的索引数据分片。</p>
+<p>如不设置该参数：在所有有效的主分片以及副本间轮询。</p>
+<p>具体可看下：OperationRouting.java类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ShardIterator <span class="title">activeInitializingShardsRandomIt</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> activeInitializingShardsIt(shuffler.nextSeed());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>//自增，以实现shard间轮询操作</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">nextSeed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> seed.getAndIncrement();</span><br><span class="line"> &#125;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line"><span class="function"><span class="keyword">public</span> ShardIterator <span class="title">activeInitializingShardsIt</span><span class="params">(<span class="keyword">int</span> seed)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (allInitializingShards.isEmpty()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> PlainShardIterator(shardId, shuffler.shuffle(activeShards, seed));</span><br><span class="line">    &#125;</span><br><span class="line">    ArrayList&lt;ShardRouting&gt; ordered = <span class="keyword">new</span> ArrayList&lt;&gt;(activeShards.size() + allInitializingShards.size());</span><br><span class="line">    ordered.addAll(shuffler.shuffle(activeShards, seed));</span><br><span class="line">    ordered.addAll(allInitializingShards);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> PlainShardIterator(shardId, ordered);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<pre><code class="java"><span class="function"><span class="keyword">private</span> ShardIterator <span class="title">preferenceActiveShardIterator</span><span class="params">(IndexShardRoutingTable indexShard, String localNodeId, DiscoveryNodes nodes, @Nullable String preference)</span> </span>{
+        <span class="keyword">if</span> (preference == <span class="keyword">null</span> || preference.isEmpty()) {
+            <span class="keyword">if</span> (awarenessAttributes.length == <span class="number">0</span>) {
+                <span class="keyword">return</span> indexShard.activeInitializingShardsRandomIt();
+            } <span class="keyword">else</span> {
+                <span class="keyword">return</span> indexShard.preferAttributesActiveInitializingShardsIt(awarenessAttributes, nodes);
+            }
+        }
+        <span class="keyword">if</span> (preference.charAt(<span class="number">0</span>) == <span class="string">'_'</span>) {
+            Preference preferenceType = Preference.parse(preference);
+            <span class="keyword">if</span> (preferenceType == Preference.SHARDS) {
+                <span class="comment">// starts with _shards, so execute on specific ones</span>
+                <span class="keyword">int</span> index = preference.indexOf(<span class="string">'|'</span>);
+
+                String shards;
+                <span class="keyword">if</span> (index == -<span class="number">1</span>) {
+                    shards = preference.substring(Preference.SHARDS.type().length() + <span class="number">1</span>);
+                } <span class="keyword">else</span> {
+                    shards = preference.substring(Preference.SHARDS.type().length() + <span class="number">1</span>, index);
+                }
+                String ids = Strings.splitStringByCommaToArray(shards);
+                <span class="keyword">boolean</span> found = <span class="keyword">false</span>;
+                <span class="keyword">for</span> (String id : ids) {
+                    <span class="keyword">if</span> (Integer.parseInt(id) == indexShard.shardId().id()) {
+                        found = <span class="keyword">true</span>;
+                        <span class="keyword">break</span>;
+                    }
+                }
+                <span class="keyword">if</span> (!found) {
+                    <span class="keyword">return</span> <span class="keyword">null</span>;
+                }
+                <span class="comment">// no more preference</span>
+                <span class="keyword">if</span> (index == -<span class="number">1</span> || index == preference.length() - <span class="number">1</span>) {
+                    <span class="keyword">if</span> (awarenessAttributes.length == <span class="number">0</span>) {
+                        <span class="keyword">return</span> indexShard.activeInitializingShardsRandomIt();
+                    } <span class="keyword">else</span> {
+                        <span class="keyword">return</span> indexShard.preferAttributesActiveInitializingShardsIt(awarenessAttributes, nodes);
+                    }
+                } <span class="keyword">else</span> {
+                    <span class="comment">// update the preference and continue</span>
+                    preference = preference.substring(index + <span class="number">1</span>);
+                }
+            }
+            preferenceType = Preference.parse(preference);
+            <span class="keyword">switch</span> (preferenceType) {
+                <span class="keyword">case</span> PREFER_NODES:
+                    <span class="keyword">final</span> Set&lt;String&gt; nodesIds =
+                            Arrays.stream(
+                                    preference.substring(Preference.PREFER_NODES.type().length() + <span class="number">1</span>).split(<span class="string">","</span>)
+                            ).collect(Collectors.toSet());
+                    <span class="keyword">return</span> indexShard.preferNodeActiveInitializingShardsIt(nodesIds);
+                <span class="keyword">case</span> LOCAL:
+                    <span class="keyword">return</span> indexShard.preferNodeActiveInitializingShardsIt(Collections.singleton(localNodeId));
+                <span class="keyword">case</span> PRIMARY:
+                    <span class="keyword">return</span> indexShard.primaryActiveInitializingShardIt();
+                <span class="keyword">case</span> REPLICA:
+                    <span class="keyword">return</span> indexShard.replicaActiveInitializingShardIt();
+                <span class="keyword">case</span> PRIMARY_FIRST:
+                    <span class="keyword">return</span> indexShard.primaryFirstActiveInitializingShardsIt();
+                <span class="keyword">case</span> REPLICA_FIRST:
+                    <span class="keyword">return</span> indexShard.replicaFirstActiveInitializingShardsIt();
+                <span class="keyword">case</span> ONLY_LOCAL:
+                    <span class="keyword">return</span> indexShard.onlyNodeActiveInitializingShardsIt(localNodeId);
+                <span class="keyword">case</span> ONLY_NODES:
+                    String nodeAttributes = preference.substring(Preference.ONLY_NODES.type().length() + <span class="number">1</span>);
+                    <span class="keyword">return</span> indexShard.onlyNodeSelectorActiveInitializingShardsIt(nodeAttributes.split(<span class="string">","</span>), nodes);
+                <span class="keyword">default</span>:
+                    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"unknown preference ["</span> + preferenceType + <span class="string">"]"</span>);
+            }
+        }
+        <span class="comment">// if not, then use it as the index</span>
+        <span class="keyword">if</span> (awarenessAttributes.length == <span class="number">0</span>) {
+            <span class="keyword">return</span> indexShard.activeInitializingShardsIt(Murmur3HashFunction.hash(preference));
+        } <span class="keyword">else</span> {
+            <span class="keyword">return</span> indexShard.preferAttributesActiveInitializingShardsIt(awarenessAttributes, nodes, Murmur3HashFunction.hash(preference));
+        }
+    }</code></pre>
+<p>###二，结果震荡问题（Bouncing Results）</p>
+<p>搜索同一query，结果ES返回的顺序却不尽相同，这就是请求轮询到不同分片，而未设置排序条件，相同相关性评分情况下，是按照所在segment中​lucene id来排序的，相同数据的不同备份之间该id是不能保证一致的，故造成结果震荡问题。<br>如设置该参数，则有一下9种情况</p>
+<p><code>_primary</code>:发送到集群的相关操作请求只会在主分片上执行。<br><code>_primary_first</code>:指查询会先在主分片中查询，如果主分片找不到（挂了），就会在副本中查询。<br><code>_replica</code>:发送到集群的相关操作请求只会在副本上执行。<br><code>_replica_first</code>：指查询会先在副本中查询，如果副本找不到（挂了），就会在主分片中查询。<br><code>_local</code>: 指查询操作会优先在本地节点有的分片中查询，没有的话再在其它节点查询。<br><code>_prefer_nodes:abc,xyz</code>:在提供的节点上优先执行（在这种情况下为’abc’或’xyz’）<br><code>_shards:2,3</code>：限制操作到指定的分片。 （<code>2</code>和“3”）。这个偏好可以与其他偏好组合，但必须首先出现：<code>_shards：2,3 | _primary</code><br><code>_only_nodes:node1,node2</code>:指在指定id的节点里面进行查询，如果该节点只有要查询索引的部分分片，就只在这部分分片中查找，不同节点之间用“，”分隔。</p>
+<p>custom(自定义)：注意自定义的preference参数不能以下划线”_”开头。<br>当preference为自定义时，即该参数不为空，且开头不以“下划线”开头时，特别注意：如果以用户query作为自定义preference时，一定要处理以下划线开头的情况，这种情况下如果不属于以上8种情况，则会抛出异常。</p>
+<p>###三，参考：</p>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-preference.html" target="_blank" rel="noopener">https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-preference.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jiangcoder.github.io/2020/03/06/%E3%80%90%E6%BA%90%E7%A0%81%E7%AF%87%E3%80%91elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/" data-id="ck7g2rs7d0002ars6dnzv9omi" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Intellij Idea编译Elasticsearch源码" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/06/Intellij%20Idea%E7%BC%96%E8%AF%91Elasticsearch%E6%BA%90%E7%A0%81/" class="article-date">
+  <time datetime="2020-03-06T10:56:32.358Z" itemprop="datePublished">2020-03-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/06/Intellij%20Idea%E7%BC%96%E8%AF%91Elasticsearch%E6%BA%90%E7%A0%81/">Intellij Idea编译Elasticsearch源码</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>###一、软件环境<br>Intellij Idea:2017.1版本<br>Elasticsearch源码版本:5.3.1<br>JDK:1.8.0_111<br>Gradle :建议3.3及以上版本。官网：<a href="https://gradle.org/" target="_blank" rel="noopener">https://gradle.org/</a><br>###二、下载Elasticsearch源码<br>到github clone源码，<a href="https://github.com/elastic/elasticsearch.git，建议选择稳定版本分支。" target="_blank" rel="noopener">https://github.com/elastic/elasticsearch.git，建议选择稳定版本分支。</a></p>
+<p>###三、导入idea<br>1，###编译执行gradle build.gradle，报错：<br>you must run gradle idea from the root of elasticsearch before importing into intellij<br>解决办法：运行命令：gradle idea。同理如使用eclipse编译器，运行gradle eclipse。该过程会向mvn仓库下载响应的jar包，视网络情况，大概会持续20分钟。</p>
+<p>###2，运行org.elasticsearch.bootstrap.Elasticsearch 方法，报错：<br>“path.home is not configured” when starting ES in transport and client mode“，<br>解决办法：在VM options中加入配置：-Des.path.home=/home/jiangtao/code/elasticsearch/core，即指向相应的core模块的路径。</p>
+<p>###3，报错：org.elasticsearch.bootstrap.BootstrapException: java.nio.file.NoSuchFileException<br>  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Exception in thread <span class="string">"main"</span> org.elasticsearch.bootstrap.BootstrapException: java.nio.file.NoSuchFileException: /home/jiangtao/code/elasticsearch/core/config Likely root cause: java.nio.file.NoSuchFileException: /home/jiangtao/code/elasticsearch/core/config</span><br><span class="line">    at sun.nio.fs.UnixException.translateToIOException(UnixException.java:<span class="number">86</span>)</span><br><span class="line">    at sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:<span class="number">102</span>)</span><br><span class="line">    at sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:<span class="number">107</span>)</span><br><span class="line">    at sun.nio.fs.UnixFileAttributeViews$Basic.readAttributes(UnixFileAttributeViews.java:<span class="number">55</span>)</span><br><span class="line">   at sun.nio.fs.UnixFileSystemProvider.readAttributes(UnixFileSystemProvider.java:<span class="number">144</span>)</span><br><span class="line">   at sun.nio.fs.LinuxFileSystemProvider.readAttributes(LinuxFileSystemProvider.java:<span class="number">99</span>)</span><br><span class="line">   at java.nio.file.Files.readAttributes(Files.java:<span class="number">1737</span>)</span><br><span class="line">   at java.nio.file.FileTreeWalker.getAttributes(FileTreeWalker.java:<span class="number">225</span>)</span><br><span class="line">   at java.nio.file.FileTreeWalker.visit(FileTreeWalker.java:<span class="number">276</span>)</span><br><span class="line">   at java.nio.file.FileTreeWalker.walk(FileTreeWalker.java:<span class="number">322</span>)</span><br><span class="line">   at java.nio.file.Files.walkFileTree(Files.java:<span class="number">2662</span>)</span><br></pre></td></tr></table></figure></p>
+<p>解决办法：将distribution模块src路径下的config整个文件copy到core模块中</p>
+<p>###4，报错： ERROR Could not register mbeans java.security.AccessControlException</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">06</span>-<span class="number">06</span> <span class="number">09</span>:<span class="number">52</span>:<span class="number">08</span>,<span class="number">007</span> main ERROR Could not register mbeans java.security.AccessControlException: <span class="function">access <span class="title">denied</span> <span class="params">(<span class="string">"javax.management.MBeanTrustPermission"</span> <span class="string">"register"</span>)</span></span></span><br><span class="line"><span class="function">             at java.security.AccessControlContext.<span class="title">checkPermission</span><span class="params">(AccessControlContext.java:<span class="number">472</span>)</span></span></span><br><span class="line"><span class="function">            at java.lang.SecurityManager.<span class="title">checkPermission</span><span class="params">(SecurityManager.java:<span class="number">585</span>)</span></span></span><br><span class="line"><span class="function">            at com.sun.jmx.interceptor.DefaultMBeanServerInterceptor.<span class="title">checkMBeanTrustPermission</span><span class="params">(DefaultMBeanServerInterceptor.java:<span class="number">1848</span>)</span></span></span><br><span class="line"><span class="function">            at com.sun.jmx.interceptor.DefaultMBeanServerInterceptor.<span class="title">registerMBean</span><span class="params">(DefaultMBeanServerInterceptor.java:<span class="number">322</span>)</span></span></span><br><span class="line"><span class="function">            at com.sun.jmx.mbeanserver.JmxMBeanServer.<span class="title">registerMBean</span><span class="params">(JmxMBeanServer.java:<span class="number">522</span>)</span></span></span><br><span class="line"><span class="function">             </span></span><br><span class="line"><span class="function">           at org.elasticsearch.bootstrap.Elasticsearch.<span class="title">main</span><span class="params">(Elasticsearch.java:<span class="number">91</span>)</span></span></span><br><span class="line"><span class="function">           at org.elasticsearch.bootstrap.Elasticsearch.<span class="title">main</span><span class="params">(Elasticsearch.java:<span class="number">84</span>)</span></span></span><br></pre></td></tr></table></figure>
+
+<pre><code>解决办法：禁用jmx,在VM options中继续添加配置：  -Dlog4j2.disable.jmx=true。注意：在VM options中多个配置中间用空格分隔。</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">###5，报错： java.lang.IllegalStateException: Unsupported transport.type </span><br><span class="line">错误栈如下：</span><br><span class="line">&#96;&#96;&#96;java</span><br><span class="line">[2017-06-06T10:04:21,327][WARN ][o.e.b.ElasticsearchUncaughtExceptionHandler]  uncaught exception in thread [main]</span><br><span class="line">org.elasticsearch.bootstrap.StartupException: java.lang.IllegalStateException: Unsupported transport.type </span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:127) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.execute(Elasticsearch.java:114) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.cli.EnvironmentAwareCommand.execute(EnvironmentAwareCommand.java:58) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.cli.Command.mainWithoutErrorHandling(Command.java:122) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.cli.Command.main(Command.java:88) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:91) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:84) ~[main&#x2F;:?]</span><br><span class="line">Caused by: java.lang.IllegalStateException: Unsupported transport.type </span><br><span class="line">at org.elasticsearch.common.network.NetworkModule.getTransportSupplier(NetworkModule.java:213) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.node.Node.&lt;init&gt;(Node.java:421) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.node.Node.&lt;init&gt;(Node.java:242) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Bootstrap$6.&lt;init&gt;(Bootstrap.java:242) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Bootstrap.setup(Bootstrap.java:242) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Bootstrap.init(Bootstrap.java:360) ~[main&#x2F;:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:123) ~[main&#x2F;:?]</span><br><span class="line">... 6 more</span><br></pre></td></tr></table></figure>
+
+<p>这个是由于依赖的transport等jar并没有找到，可以在项目根目录找到models模块，然后将下面目录打包，然后copy到distribution/src/main/models目录下，<br>也可以直接去官网（<a href="https://www.elastic.co/downloads/elasticsearch）下载zip包，解压后直接copy。" target="_blank" rel="noopener">https://www.elastic.co/downloads/elasticsearch）下载zip包，解压后直接copy。</a><br>我直接去官网下载的zip包：从官网下载完毕zip包后，具体解决办法请看：错误 6。</p>
+<p>###6，copy module版本冲突<br>错误栈如下： </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">org.elasticsearch.bootstrap.StartupException: java.lang.IllegalArgumentException: Plugin [lang-expression] is incompatible with Elasticsearch [<span class="number">5.3</span><span class="number">.4</span>]. Was designed <span class="keyword">for</span> version [<span class="number">5.3</span><span class="number">.1</span>]</span><br><span class="line"> at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:<span class="number">127</span>) ~[main/:?]</span><br><span class="line"> at org.elasticsearch.bootstrap.Elasticsearch.execute(Elasticsearch.java:<span class="number">114</span>) ~[main/:?]</span><br><span class="line"> at org.elasticsearch.cli.EnvironmentAwareCommand.execute(EnvironmentAwareCommand.java:<span class="number">58</span>) ~[main/:?]</span><br><span class="line"> at org.elasticsearch.cli.Command.mainWithoutErrorHandling(Command.java:<span class="number">122</span>) ~[main/:?]</span><br><span class="line"> at org.elasticsearch.cli.Command.main(Command.java:<span class="number">88</span>) ~[main/:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:<span class="number">91</span>) ~[main/:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:<span class="number">84</span>) ~[main/:?]</span><br><span class="line">Caused by: java.lang.IllegalArgumentException: Plugin [lang-expression] is incompatible with Elasticsearch [<span class="number">5.3</span><span class="number">.4</span>]. Was designed <span class="keyword">for</span> version [<span class="number">5.3</span><span class="number">.1</span>]</span><br></pre></td></tr></table></figure>
+
+<p>解决办法：修改es当前版本<br>将core模块中的Version.java类由<br>public static final Version CURRENT = V_5_3_4_UNRELEASED;<br>修改为：<br>public static final Version CURRENT = V_5_3_1;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jiangcoder.github.io/2020/03/06/Intellij%20Idea%E7%BC%96%E8%AF%91Elasticsearch%E6%BA%90%E7%A0%81/" data-id="ck7g2rs730000ars60jig5u49" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-ElasticSearch之索引模板" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -146,7 +324,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/03/06/ElasticSearch%E4%B9%8B%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF/" data-id="ck7g0qh5b0001its64jx5hiy3" class="article-share-link">Share</a>
+      <a data-url="https://jiangcoder.github.io/2020/03/06/ElasticSearch%E4%B9%8B%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF/" data-id="ck7g2rs7b0001ars6gmnu05c9" class="article-share-link">Share</a>
       
       
     </footer>
@@ -207,7 +385,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/03/06/Ladmbda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" data-id="ck7g0qh4r0000its65ssz8ubb" class="article-share-link">Share</a>
+      <a data-url="https://jiangcoder.github.io/2020/03/06/Ladmbda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" data-id="ck7g2rs7e0003ars6gs0bd4ho" class="article-share-link">Share</a>
       
       
     </footer>
@@ -474,7 +652,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/02/26/jvm-GC-and-GC-Tuning/" data-id="ck7g0qh5c0002its69zh5afe0" class="article-share-link">Share</a>
+      <a data-url="https://jiangcoder.github.io/2020/02/26/jvm-GC-and-GC-Tuning/" data-id="ck7g2rs7f0004ars65b9gertv" class="article-share-link">Share</a>
       
       
     </footer>
@@ -513,6 +691,14 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2020/03/06/%E3%80%90%E6%BA%90%E7%A0%81%E7%AF%87%E3%80%91elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/">【源码篇】elasticsearch 搜索模块之preference参数</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/06/Intellij%20Idea%E7%BC%96%E8%AF%91Elasticsearch%E6%BA%90%E7%A0%81/">Intellij Idea编译Elasticsearch源码</a>
+          </li>
         
           <li>
             <a href="/2020/03/06/ElasticSearch%E4%B9%8B%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF/">ElasticSearch之索引模板</a>
