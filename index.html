@@ -64,6 +64,50 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Git如何回退版本" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/20/Git%E5%A6%82%E4%BD%95%E5%9B%9E%E9%80%80%E7%89%88%E6%9C%AC/" class="article-date">
+  <time datetime="2020-03-20T12:47:07.461Z" itemprop="datePublished">2020-03-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/20/Git%E5%A6%82%E4%BD%95%E5%9B%9E%E9%80%80%E7%89%88%E6%9C%AC/">Git如何回退版本</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li><p>首先使用git log查看最近几次提交的版本号，如版本号”0250cd”;</p>
+</li>
+<li><p>在命令行输入 git reset –hard 0250cd，成功后会提示”head is now at 0250cd”；</p>
+</li>
+<li><p>git push -f -u origin you_branch,you_branch需要回退的分支名</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jiangcoder.github.io/2020/03/20/Git%E5%A6%82%E4%BD%95%E5%9B%9E%E9%80%80%E7%89%88%E6%9C%AC/" data-id="ck806icu60001h1s6cvsb15x7" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Elasticsearch 搜索模块之preference参数" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/03/06/Elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/" class="article-date">
@@ -91,7 +135,8 @@
 <p>如不设置该参数：在所有有效的主分片以及副本间轮询。</p>
 <p>具体可看下：OperationRouting.java类</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ShardIterator <span class="title">activeInitializingShardsRandomIt</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> activeInitializingShardsIt(shuffler.nextSeed());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>//自增，以实现shard间轮询操作</p>
+
+<p>自增，以实现shard间轮询操作</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">nextSeed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> seed.getAndIncrement();</span><br><span class="line"> &#125;</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line"><span class="function"><span class="keyword">public</span> ShardIterator <span class="title">activeInitializingShardsIt</span><span class="params">(<span class="keyword">int</span> seed)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (allInitializingShards.isEmpty()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> PlainShardIterator(shardId, shuffler.shuffle(activeShards, seed));</span><br><span class="line">    &#125;</span><br><span class="line">    ArrayList&lt;ShardRouting&gt; ordered = <span class="keyword">new</span> ArrayList&lt;&gt;(activeShards.size() + allInitializingShards.size());</span><br><span class="line">    ordered.addAll(shuffler.shuffle(activeShards, seed));</span><br><span class="line">    ordered.addAll(allInitializingShards);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> PlainShardIterator(shardId, ordered);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <pre><code class="java"><span class="function"><span class="keyword">private</span> ShardIterator <span class="title">preferenceActiveShardIterator</span><span class="params">(IndexShardRoutingTable indexShard, String localNodeId, DiscoveryNodes nodes, @Nullable String preference)</span> </span>{
@@ -171,17 +216,17 @@
             <span class="keyword">return</span> indexShard.preferAttributesActiveInitializingShardsIt(awarenessAttributes, nodes, Murmur3HashFunction.hash(preference));
         }
     }</code></pre>
-<p>##二，结果震荡问题（Bouncing Results）</p>
+<p>二，结果震荡问题（Bouncing Results）</p>
 <p>搜索同一query，结果ES返回的顺序却不尽相同，这就是请求轮询到不同分片，而未设置排序条件，相同相关性评分情况下，是按照所在segment中​lucene id来排序的，相同数据的不同备份之间该id是不能保证一致的，故造成结果震荡问题。<br>如设置该参数，则有一下9种情况</p>
 <p><code>_primary</code>:发送到集群的相关操作请求只会在主分片上执行。<br><code>_primary_first</code>:指查询会先在主分片中查询，如果主分片找不到（挂了），就会在副本中查询。<br><code>_replica</code>:发送到集群的相关操作请求只会在副本上执行。<br><code>_replica_first</code>：指查询会先在副本中查询，如果副本找不到（挂了），就会在主分片中查询。<br><code>_local</code>: 指查询操作会优先在本地节点有的分片中查询，没有的话再在其它节点查询。<br><code>_prefer_nodes:abc,xyz</code>:在提供的节点上优先执行（在这种情况下为’abc’或’xyz’）<br><code>_shards:2,3</code>：限制操作到指定的分片。 （<code>2</code>和“3”）。这个偏好可以与其他偏好组合，但必须首先出现：<code>_shards：2,3 | _primary</code><br><code>_only_nodes:node1,node2</code>:指在指定id的节点里面进行查询，如果该节点只有要查询索引的部分分片，就只在这部分分片中查找，不同节点之间用“，”分隔。</p>
 <p>custom(自定义)：注意自定义的preference参数不能以下划线”_”开头。<br>当preference为自定义时，即该参数不为空，且开头不以“下划线”开头时，特别注意：如果以用户query作为自定义preference时，一定要处理以下划线开头的情况，这种情况下如果不属于以上8种情况，则会抛出异常。</p>
-<p>##三，参考：</p>
+<p>三，参考：</p>
 <p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-preference.html" target="_blank" rel="noopener">https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-preference.html</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/03/06/Elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/" data-id="ck7g2xfnf0000gps6gn199x7l" class="article-share-link">Share</a>
+      <a data-url="https://jiangcoder.github.io/2020/03/06/Elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/" data-id="ck806icu90003h1s63e5h66lq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -232,7 +277,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/03/06/Elasticsearch%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91by%20Intellij%20Idea/" data-id="ck7g2xfnm0002gps66bwec7w8" class="article-share-link">Share</a>
+      <a data-url="https://jiangcoder.github.io/2020/03/06/Elasticsearch%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91by%20Intellij%20Idea/" data-id="ck806icu80002h1s6dpuob2tf" class="article-share-link">Share</a>
       
       
     </footer>
@@ -324,7 +369,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/03/06/ElasticSearch%E4%B9%8B%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF/" data-id="ck7g2xfnl0001gps61dsr0sup" class="article-share-link">Share</a>
+      <a data-url="https://jiangcoder.github.io/2020/03/06/ElasticSearch%E4%B9%8B%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF/" data-id="ck806ictw0000h1s68psl9fl8" class="article-share-link">Share</a>
       
       
     </footer>
@@ -385,7 +430,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/03/06/Ladmbda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" data-id="ck7g2xfno0003gps6b6j07xgl" class="article-share-link">Share</a>
+      <a data-url="https://jiangcoder.github.io/2020/03/06/Ladmbda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" data-id="ck806icu90004h1s6e6x7ah0s" class="article-share-link">Share</a>
       
       
     </footer>
@@ -652,7 +697,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/02/26/jvm-GC-and-GC-Tuning/" data-id="ck7g2xfnq0004gps69ylv22o1" class="article-share-link">Share</a>
+      <a data-url="https://jiangcoder.github.io/2020/02/26/jvm-GC-and-GC-Tuning/" data-id="ck806icua0005h1s64xxy987j" class="article-share-link">Share</a>
       
       
     </footer>
@@ -693,6 +738,10 @@
       <ul>
         
           <li>
+            <a href="/2020/03/20/Git%E5%A6%82%E4%BD%95%E5%9B%9E%E9%80%80%E7%89%88%E6%9C%AC/">Git如何回退版本</a>
+          </li>
+        
+          <li>
             <a href="/2020/03/06/Elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/">Elasticsearch 搜索模块之preference参数</a>
           </li>
         
@@ -706,10 +755,6 @@
         
           <li>
             <a href="/2020/03/06/Ladmbda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">Ladmbda表达式</a>
-          </li>
-        
-          <li>
-            <a href="/2020/02/26/jvm-GC-and-GC-Tuning/">jvm-GC-and-GC-Tuning</a>
           </li>
         
       </ul>
