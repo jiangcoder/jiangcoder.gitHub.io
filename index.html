@@ -64,6 +64,79 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Elasticsearch负载高问题排查" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/20/Elasticsearch%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" class="article-date">
+  <time datetime="2020-03-20T13:35:30.731Z" itemprop="datePublished">2020-03-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/20/Elasticsearch%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">Elasticsearch负载高问题排查</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li><p>我们Elasticsearch集群近几日负载飙高，排查思路记录如下；</p>
+</li>
+<li><p>查看日志信息，确定是否存在异常情况</p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $&#123;ES_HOME&#125;/logs</span><br><span class="line">tail -<span class="number">100f</span> ES.log</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>频繁Full GC往往会引起负载飙高，故查看ES集群GC 情况，</li>
+</ol>
+<p>使用命令：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jstat -gcutil &lt;pid&gt; &lt;period&gt; &lt;times&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200320205733385.png" alt="在这里插入图片描述"><br>近一个多月，服务共Full GC700余次，平均每次Full GC耗时90ms，符合预期，排除Full GC问题导致负载飙高；<br>4. 找到ES中占用CPU的线程ID</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">top -Hp PID</span><br></pre></td></tr></table></figure>
+<p>如找到ES进程中2291线程较费CPU<br><img src="https://img-blog.csdnimg.cn/20200320210618219.png" alt="在这里插入图片描述"></p>
+<ol start="5">
+<li>将得到的线程id，转化为16进制</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">printf %x <span class="number">2291</span></span><br><span class="line">输出结果：<span class="number">8f</span>3</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>使用jstack分析线程状态<br>jstack命令主要用于调试java程序运行过程中的线程堆栈信息</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jstack PID  &gt;&gt; pid.txt</span><br></pre></td></tr></table></figure>
+<p>8.查看pid.txt文件，分析线程对应的堆栈信息<br>由步骤6得到 16进制线程“8f3”</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim pid.txt</span><br><span class="line"><span class="comment">//查找线程“8f3”对应信息</span></span><br></pre></td></tr></table></figure>
+<p>内容如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">"elasticsearch[data-es12][write][T#3]" #94 daemon prio=5 os_prio=0 tid=0x00007f3254017800 nid=0x8f3 waiting for monitor entry [0x00007f2d37a7a000]</span><br><span class="line">   java.lang.Thread.State: BLOCKED (on object monitor)</span><br><span class="line">        at org.elasticsearch.index.translog.TranslogWriter.syncUpTo(TranslogWriter.java:<span class="number">342</span>)</span><br><span class="line">        - waiting to lock &lt;<span class="number">0x000000055ff5f220</span>&gt; (a java.lang.Object)</span><br><span class="line">        at org.elasticsearch.index.translog.Translog.ensureSynced(Translog.java:<span class="number">797</span>)</span><br><span class="line">        at org.elasticsearch.index.translog.Translog.ensureSynced(Translog.java:<span class="number">818</span>)</span><br><span class="line">        at org.elasticsearch.index.engine.InternalEngine.ensureTranslogSynced(InternalEngine.java:<span class="number">489</span>)</span><br><span class="line">        at org.elasticsearch.index.shard.IndexShard$<span class="number">5</span>.write(IndexShard.java:<span class="number">2782</span>)</span><br><span class="line">        at org.elasticsearch.common.util.concurrent.AsyncIOProcessor.processList(AsyncIOProcessor.java:<span class="number">107</span>)</span><br><span class="line">        at org.elasticsearch.common.util.concurrent.AsyncIOProcessor.drainAndProcess(AsyncIOProcessor.java:<span class="number">99</span>)</span><br><span class="line">        at org.elasticsearch.common.util.concurrent.AsyncIOProcessor.put(AsyncIOProcessor.java:<span class="number">82</span>)</span><br><span class="line">        at org.elasticsearch.index.shard.IndexShard.sync(IndexShard.java:<span class="number">2804</span>)</span><br><span class="line">        at org.elasticsearch.action.support.replication.TransportWriteAction$AsyncAfterWriteAction.run(TransportWriteAction.java:<span class="number">355</span>)</span><br><span class="line">        at org.elasticsearch.action.support.replication.TransportWriteAction$WritePrimaryResult.&lt;init&gt;(TransportWriteAction.java:<span class="number">151</span>)</span><br><span class="line">        at</span><br></pre></td></tr></table></figure>
+
+<p>该线程正处于堵塞状态。</p>
+<p>9，原因分析<br>从ES索引数据创建机制说起<br>写请求首先先写到内存一份数据，然后写translog，默认每1秒进行refresh，将索引写入到文件系统；<br>该ES集群是ELK日志查询服务，特点读多写少，我们TB级数据，上千个索引，refresh_interval参数1s，在日志服务中显然不太合适，是时候调整下该参数配置了。</p>
+<p>10，参数调整</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="comment">//ip:port/logstash*/_settings PUT</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"settings"</span>: &#123;</span><br><span class="line">    <span class="string">"refresh_interval"</span>: <span class="string">"5m"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/20200320212733184.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2FjbTM2NQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>11，问题解决</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jiangcoder.github.io/2020/03/20/Elasticsearch%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" data-id="ck80887o00001qts6dp0s3ae4" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Git如何回退版本" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/03/20/Git%E5%A6%82%E4%BD%95%E5%9B%9E%E9%80%80%E7%89%88%E6%9C%AC/" class="article-date">
@@ -98,7 +171,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/03/20/Git%E5%A6%82%E4%BD%95%E5%9B%9E%E9%80%80%E7%89%88%E6%9C%AC/" data-id="ck806icu60001h1s6cvsb15x7" class="article-share-link">Share</a>
+      <a data-url="https://jiangcoder.github.io/2020/03/20/Git%E5%A6%82%E4%BD%95%E5%9B%9E%E9%80%80%E7%89%88%E6%9C%AC/" data-id="ck80887o30004qts6huuk9d2n" class="article-share-link">Share</a>
       
       
     </footer>
@@ -226,7 +299,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/03/06/Elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/" data-id="ck806icu90003h1s63e5h66lq" class="article-share-link">Share</a>
+      <a data-url="https://jiangcoder.github.io/2020/03/06/Elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/" data-id="ck80887ns0000qts60wqo77yd" class="article-share-link">Share</a>
       
       
     </footer>
@@ -277,7 +350,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/03/06/Elasticsearch%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91by%20Intellij%20Idea/" data-id="ck806icu80002h1s6dpuob2tf" class="article-share-link">Share</a>
+      <a data-url="https://jiangcoder.github.io/2020/03/06/Elasticsearch%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91by%20Intellij%20Idea/" data-id="ck80887o10002qts67z7uf72e" class="article-share-link">Share</a>
       
       
     </footer>
@@ -369,7 +442,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/03/06/ElasticSearch%E4%B9%8B%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF/" data-id="ck806ictw0000h1s68psl9fl8" class="article-share-link">Share</a>
+      <a data-url="https://jiangcoder.github.io/2020/03/06/ElasticSearch%E4%B9%8B%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF/" data-id="ck80887o20003qts6cva30w3o" class="article-share-link">Share</a>
       
       
     </footer>
@@ -430,7 +503,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/03/06/Ladmbda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" data-id="ck806icu90004h1s6e6x7ah0s" class="article-share-link">Share</a>
+      <a data-url="https://jiangcoder.github.io/2020/03/06/Ladmbda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" data-id="ck80887o40005qts6e6ioedng" class="article-share-link">Share</a>
       
       
     </footer>
@@ -697,7 +770,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiangcoder.github.io/2020/02/26/jvm-GC-and-GC-Tuning/" data-id="ck806icua0005h1s64xxy987j" class="article-share-link">Share</a>
+      <a data-url="https://jiangcoder.github.io/2020/02/26/jvm-GC-and-GC-Tuning/" data-id="ck80887o50006qts677tydi3w" class="article-share-link">Share</a>
       
       
     </footer>
@@ -738,6 +811,10 @@
       <ul>
         
           <li>
+            <a href="/2020/03/20/Elasticsearch%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">Elasticsearch负载高问题排查</a>
+          </li>
+        
+          <li>
             <a href="/2020/03/20/Git%E5%A6%82%E4%BD%95%E5%9B%9E%E9%80%80%E7%89%88%E6%9C%AC/">Git如何回退版本</a>
           </li>
         
@@ -751,10 +828,6 @@
         
           <li>
             <a href="/2020/03/06/ElasticSearch%E4%B9%8B%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF/">ElasticSearch之索引模板</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/06/Ladmbda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">Ladmbda表达式</a>
           </li>
         
       </ul>
