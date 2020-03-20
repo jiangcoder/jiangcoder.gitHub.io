@@ -10,7 +10,8 @@ public ShardIterator activeInitializingShardsRandomIt() {
     return activeInitializingShardsIt(shuffler.nextSeed());
 }  
 ```
-//自增，以实现shard间轮询操作
+
+自增，以实现shard间轮询操作
 ```java
 public int nextSeed() {
     return seed.getAndIncrement();
@@ -108,8 +109,8 @@ private ShardIterator preferenceActiveShardIterator(IndexShardRoutingTable index
         }
     }
 ``` 
- 
-##二，结果震荡问题（Bouncing Results）
+
+二，结果震荡问题（Bouncing Results）
  
 搜索同一query，结果ES返回的顺序却不尽相同，这就是请求轮询到不同分片，而未设置排序条件，相同相关性评分情况下，是按照所在segment中​lucene id来排序的，相同数据的不同备份之间该id是不能保证一致的，故造成结果震荡问题。
 如设置该参数，则有一下9种情况
@@ -127,6 +128,7 @@ custom(自定义)：注意自定义的preference参数不能以下划线"_"开�
 当preference为自定义时，即该参数不为空，且开头不以“下划线”开头时，特别注意：如果以用户query作为自定义preference时，一定要处理以下划线开头的情况，这种情况下如果不属于以上8种情况，则会抛出异常。
 
 
-##三，参考：
+
+三，参考：
 
 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-preference.html
