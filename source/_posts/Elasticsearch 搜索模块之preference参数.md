@@ -18,12 +18,13 @@ public ShardIterator activeInitializingShardsRandomIt() {
 }  
 ```
 
+
 自增，以实现shard间轮询操作
 ```java
 public int nextSeed() {
     return seed.getAndIncrement();
- }
-``` 
+ }  
+```
 
 ```java
 public ShardIterator activeInitializingShardsIt(int seed) {
@@ -51,7 +52,6 @@ private ShardIterator preferenceActiveShardIterator(IndexShardRoutingTable index
             if (preferenceType == Preference.SHARDS) {
                 // starts with _shards, so execute on specific ones
                 int index = preference.indexOf('|');
-
                 String shards;
                 if (index == -1) {
                     shards = preference.substring(Preference.SHARDS.type().length() + 1);
@@ -115,10 +115,15 @@ private ShardIterator preferenceActiveShardIterator(IndexShardRoutingTable index
             return indexShard.preferAttributesActiveInitializingShardsIt(awarenessAttributes, nodes, Murmur3HashFunction.hash(preference));
         }
     }
-``` 
+```
 
-二，结果震荡问题（Bouncing Results）
- 
+
+
+
+
+
+##二，结果震荡问题（Bouncing Results）
+
 搜索同一query，结果ES返回的顺序却不尽相同，这就是请求轮询到不同分片，而未设置排序条件，相同相关性评分情况下，是按照所在segment中​lucene id来排序的，相同数据的不同备份之间该id是不能保证一致的，故造成结果震荡问题。
 如设置该参数，则有一下9种情况
 
