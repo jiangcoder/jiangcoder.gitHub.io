@@ -246,7 +246,7 @@
 <p><code>_primary</code>:发送到集群的相关操作请求只会在主分片上执行。<br><code>_primary_first</code>:指查询会先在主分片中查询，如果主分片找不到（挂了），就会在副本中查询。<br><code>_replica</code>:发送到集群的相关操作请求只会在副本上执行。<br><code>_replica_first</code>：指查询会先在副本中查询，如果副本找不到（挂了），就会在主分片中查询。<br><code>_local</code>: 指查询操作会优先在本地节点有的分片中查询，没有的话再在其它节点查询。<br><code>_prefer_nodes:abc,xyz</code>:在提供的节点上优先执行（在这种情况下为’abc’或’xyz’）<br><code>_shards:2,3</code>：限制操作到指定的分片。 （<code>2</code>和“3”）。这个偏好可以与其他偏好组合，但必须首先出现：<code>_shards：2,3 | _primary</code><br><code>_only_nodes:node1,node2</code>:指在指定id的节点里面进行查询，如果该节点只有要查询索引的部分分片，就只在这部分分片中查找，不同节点之间用“，”分隔。</p>
 <p>custom(自定义)：注意自定义的preference参数不能以下划线”_”开头。<br>当preference为自定义时，即该参数不为空，且开头不以“下划线”开头时，特别注意：如果以用户query作为自定义preference时，一定要处理以下划线开头的情况，这种情况下如果不属于以上8种情况，则会抛出异常。</p>
 <p>三，参考：</p>
-<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-preference.html" target="_blank" rel="noopener">https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-preference.html</a></p>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-preference.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-preference.html</a></p>
 
         </div>
         
@@ -401,7 +401,7 @@
         <div class="level is-mobile">
             
             <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
-                title="Github" href="https://github.com/ppoffice">
+                title="Github" href="https://github.com/jiangcoder">
                 
                 <i class="fab fa-github"></i>
                 
