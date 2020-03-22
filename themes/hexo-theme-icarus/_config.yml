@@ -11,8 +11,7 @@ rss:
 # Path or URL to the website's logo to be shown on the left of the navigation bar or footer
 #logo: /images/maotouying.svg
 logo:
-    text: i蝸居年華_谢谢谢
-    img: /images/maotouying.svg
+    img: https://avatars2.githubusercontent.com/u/8393744?s=400&u=6ff7deb174a4e34b1b1b6291aaccbdc23eb40b14&v=4
 # Open Graph metadata
 # https://hexo.io/docs/helpers.html#open-graph
 open_graph:
@@ -34,7 +33,7 @@ navbar:
         归档: /archives
         分类: /categories
         标签: /tags
-        关于: /about
+    #        关于: /about
     # Navigation bar links to be shown on the right
 #     links:
 #         Download on GitHub:
@@ -52,7 +51,7 @@ footer:
             url: 'https://creativecommons.org/licenses/by/4.0/'
         Download on GitHub:
             icon: fab fa-github
-            url: 'https://github.com/thank037'
+            url: 'https://github.com/jiangcoder'
 # Article display settings
 article:
     # Code highlight theme
@@ -76,8 +75,8 @@ search:
 comment:
     # Name of the comment plugin
     type: valine
-    app_id: yVPV2fAKC1B90Xnh2JjuPEAb-gzGzoHsz        # (required) LeanCloud application id
-    app_key: 1i9DgF7j75Uq6OuM23etjjE9       # (required) LeanCloud application key
+    app_id: c396kVomOARgi7Y8rXWn4IC4-gzGzoHsz        # (required) LeanCloud application id
+    app_key: kPum1sRhcKHKGqovrBI5hh8w       # (required) LeanCloud application key
     notify: false           # (optional) receive email notification
     verify: false           # (optional) show verification code
     placeholder: Just go go, 支持Markdown~   # (optional) comment box placeholder text	
@@ -86,17 +85,6 @@ comment:
 
 # Donation entries
 # http://ppoffice.github.io/hexo-theme-icarus/categories/Donation/
-donate:
-    -
-#        # Donation entry name
-        type: alipay
-        # Qrcode image URL
-        qrcode: '/images/no2.jpg'
-    -
-        # Donation entry name
-        type: wechat
-        # Qrcode image URL
-        qrcode: '/images/no.gif'
 #     -
 #         # Donation entry name
 #         type: paypal
@@ -138,33 +126,24 @@ widgets:
         # Where should the widget be placed, left or right
         position: left
         # Author name to be shown in the profile widget
-        author: i蝸居年華_谢谢谢
+        author: 姜涛
         # Title of the author to be shown in the profile widget
         author_title: Just for fun
         # Author's current location to be shown in the profile widget
-        location:  Beijing, China
+        location:  北京市海淀区
         # Path or URL to the avatar to be shown in the profile widget
-        avatar: /images/avatar.png
+        avatar: https://avatars2.githubusercontent.com/u/8393744?s=400&u=6ff7deb174a4e34b1b1b6291aaccbdc23eb40b14&v=4
         # Email address for the Gravatar to be shown in the profile widget
         gravatar:
         # Whether to show avatar image rounded or square
         avatar_rounded: false
         # Path or URL for the follow button
-        follow_link: 'https://github.com/thank037'
+        follow_link: 'https://github.com/jiangcoder'
         # Links to be shown on the bottom of the profile widget
         social_links:
             Github:
                 icon: fab fa-github
-                url: 'https://github.com/thank037'
-            Facebook:
-                icon: fab fa-facebook
-                url: 'http://facebook.com'
-            Twitter:
-                icon: fab fa-twitter
-                url: 'http://twitter.com'
-            Dribbble:
-                icon: fab fa-dribbble
-                url: 'http://dribbble.com'
+                url: 'https://github.com/jiangcoder'
             RSS:
                 icon: fas fa-rss
                 url: /
@@ -182,9 +161,6 @@ widgets:
         # Links to be shown in the links widget
         links:
             朱双印个人日志: 'http://www.zsythink.net'
-            小鱼周凌宇: 'http://zhoulingyu.com'
-            陈敏: 'https://www.chenmin.info'
-            斑马のCODE_HOME: 'http://xunyajie.com/'
     -
         # Widget name
         type: category
@@ -234,7 +210,7 @@ plugins:
     # http://ppoffice.github.io/hexo-theme-icarus/Plugins/General/site-analytics-plugin/#Baidu-Analytics
     baidu-analytics:
         # Baidu Analytics tracking id
-        tracking_id: b59777544dd5d59ce94e191bac62427c
+        tracking_id: 7c6f6b686c79ef47c3578297d99b3305
     # Hotjar user feedback plugin
     # http://ppoffice.github.io/hexo-theme-icarus/Plugins/General/site-analytics-plugin/#Hotjar
     hotjar:

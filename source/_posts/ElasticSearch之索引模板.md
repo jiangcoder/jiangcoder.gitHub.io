@@ -1,3 +1,10 @@
+title: ElasticSearch之索引模板
+toc: true
+categories: elasticsearch
+tags:
+  - elasticsearch
+thumbnail: /logo/elasticsearch.jpg
+---
 ## 一，模板简述
 template大致分成setting和mappings两部分：
 索引可使用预定义的模板进行创建,这个模板称作Index templates。模板设置包括settings和mappings，通过模式匹配的方式使得多个索引重用一个模板。 

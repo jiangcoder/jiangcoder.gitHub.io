@@ -1,3 +1,10 @@
+title: Elasticsearch源码编译by Intellij Idea
+toc: true
+categories: elasticsearch
+tags:
+  - elasticsearch
+thumbnail: /logo/elasticsearch.jpg
+---
 ##一、软件环境
 Intellij Idea:2017.1版本
 Elasticsearch源码版本:5.3.1

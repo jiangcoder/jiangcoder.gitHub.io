@@ -1,3 +1,10 @@
+title: Git如何回退版本
+toc: true
+categories: java
+tags:
+  - java
+thumbnail: /logo/java.jpg
+---
 <div id="article_content" class="article_content clearfix">
             <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/ck_htmledit_views-833878f763.css">
                                         <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/ck_htmledit_views-833878f763.css">

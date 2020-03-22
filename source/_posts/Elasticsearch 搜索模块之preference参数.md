@@ -1,3 +1,10 @@
+title: Elasticsearch 搜索模块之preference参数
+toc: true
+categories: elasticsearch
+tags:
+  - elasticsearch
+thumbnail: /logo/elasticsearch.jpg
+---
 ##一，preference简述
 
 elasticsearch可以使用preference参数来指定分片查询的优先级，即我们可以通过该参数来控制搜索时的索引数据分片。

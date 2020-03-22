@@ -1,4 +1,11 @@
-﻿1. 我们Elasticsearch集群近几日负载飙高，排查思路记录如下；
+﻿title: Elasticsearch负载高问题排查
+toc: true
+categories: elasticsearch
+tags:
+  - elasticsearch
+thumbnail: /logo/elasticsearch.jpg
+---
+1. 我们Elasticsearch集群近几日负载飙高，排查思路记录如下；
 
 2. 查看日志信息，确定是否存在异常情况
 

@@ -1,4 +1,8 @@
-﻿title: Ladmbda表达式
+﻿title: lambda表达式
+toc: true
+categories: java
+tags:
+  - java
 thumbnail: /logo/java.jpg
 ---
 ## 一，排序
