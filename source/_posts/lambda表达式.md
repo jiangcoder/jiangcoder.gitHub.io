@@ -1,4 +1,7 @@
-﻿## 一，排序
+﻿title: Ladmbda表达式
+thumbnail: /logo/java.jpg
+---
+## 一，排序
 
 对数组从小到大排序
 

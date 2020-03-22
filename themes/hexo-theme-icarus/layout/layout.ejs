@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html <%- has_config('language') ? ' lang="' + get_config('language').substring(0, 2) + '"' : '' %>>
+<head>
+    <%- partial('common/head') %>
+</head>
+<!--<body class="is-<%= column_count() %>-column">-->
+<body class="is-3-column">
+    <%- partial('common/navbar', { page }) %>
+    <% function main_column_class() {
+        switch (column_count()) {
+            case 1:
+                return 'is-12';
+            case 2:
+                // return 'is-8-tablet is-8-desktop is-8-widescreen';
+                return 'is-8-tablet is-8-desktop is-9-widescreen';
+            case 3:
+                return 'is-8-tablet is-8-desktop is-6-widescreen'
+        }
+        return '';
+    } %>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column <%= main_column_class() %> has-order-2 column-main"><%- body %></div>
+                <%- partial('common/widget', { position: 'left' }) %>
+                <%- partial('common/widget', { position: 'right' }) %>
+            </div>
+        </div>
+    </section>
+    <%- partial('common/footer') %>
+    <%- partial('common/scripts') %>
+
+    <% if (has_config('search.type')) { %>
+    <%- partial('search/' + get_config('search.type')) %>
+    <% } %>
+
+    <!--背景线条-->
+    <!--<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-1" count="99" src="dist/canvas-nest.js"></script>-->
+    <!--<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-1" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>-->
+</body>
+</html>
