@@ -2,22 +2,22 @@
 <html  lang="zh">
 <head>
     <meta charset="utf-8">
-<title>lambda表达式 - 永远年轻，永远热泪盈眶</title>
+<title>Java之Buffer - 永远年轻，永远热泪盈眶</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 
 
     
-    <meta name="description" content="一，排序对数组从小到大排序 123public void sortUsingLambda(List indexs) {    Collections.sort(indexs, (s1, s2) -&gt; s1.compareTo(s2));} 更简洁的实现方式 123public void sortUsingLambda(List indexs) {    Collections.sort(index">
+    <meta name="description" content="一，Buffer概念Buffer 类是 java.nio 的构造基础。一个 Buffer 对象是固定数量的数据的容器，其作用是一个存储器，或者分段运输区.每个非布尔原始数据类型都有一个缓冲区类.子类有 1234567ByteBufferCharBufferIntBufferLongBufferDoubleBufferFloatBufferShortBuffer 二，缓存区的四个属性1234priv">
 <meta property="og:type" content="article">
-<meta property="og:title" content="lambda表达式">
-<meta property="og:url" content="https://jiangcoder.github.io/2020/03/06/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/index.html">
+<meta property="og:title" content="Java之Buffer">
+<meta property="og:url" content="https://jiangcoder.github.io/2020/03/27/Java%E4%B9%8BBuffer/index.html">
 <meta property="og:site_name" content="永远年轻，永远热泪盈眶">
-<meta property="og:description" content="一，排序对数组从小到大排序 123public void sortUsingLambda(List indexs) {    Collections.sort(indexs, (s1, s2) -&gt; s1.compareTo(s2));} 更简洁的实现方式 123public void sortUsingLambda(List indexs) {    Collections.sort(index">
+<meta property="og:description" content="一，Buffer概念Buffer 类是 java.nio 的构造基础。一个 Buffer 对象是固定数量的数据的容器，其作用是一个存储器，或者分段运输区.每个非布尔原始数据类型都有一个缓冲区类.子类有 1234567ByteBufferCharBufferIntBufferLongBufferDoubleBufferFloatBufferShortBuffer 二，缓存区的四个属性1234priv">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://jiangcoder.github.io/logo/java.jpg">
-<meta property="article:published_time" content="2020-03-06T08:54:58.317Z">
-<meta property="article:modified_time" content="2020-03-22T07:40:21.675Z">
+<meta property="article:published_time" content="2020-03-27T05:54:09.968Z">
+<meta property="article:modified_time" content="2020-03-27T13:52:35.769Z">
 <meta property="article:author" content="姜涛">
 <meta property="article:tag" content="java">
 <meta name="twitter:card" content="summary">
@@ -113,7 +113,7 @@ var _hmt = _hmt || [];
 
                 <!--update by thank: 修改logo方式-->
                 <!--<img src="/images/maotouying.svg" alt="蜗居年华" height="28">-->
-                <img src="https://avatars2.githubusercontent.com/u/8393744?s=400&u=6ff7deb174a4e34b1b1b6291aaccbdc23eb40b14&v=4" alt="lambda表达式" height="28">
+                <img src="https://avatars2.githubusercontent.com/u/8393744?s=400&u=6ff7deb174a4e34b1b1b6291aaccbdc23eb40b14&v=4" alt="Java之Buffer" height="28">
                 <span style="font-size: 16px; display: inline-block; vertical-align: top; font-weight: 600;"></span>
                 <!--
             % if (has_config('logo.text') && get_config('logo.text')) { 
@@ -182,11 +182,11 @@ var _hmt = _hmt || [];
 
                 <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
                 
-                <span style="color: #7a7a7a !important;">写于2020-03-06 16:54:58&nbsp;&nbsp;&nbsp;</span>
+                <span style="color: #7a7a7a !important;">写于2020-03-27 13:54:09&nbsp;&nbsp;&nbsp;</span>
                 
 
-                <!--<span style="color: #7a7a7a !important;">2020-03-06 16:54:58&nbsp;&nbsp;&nbsp;</span>-->
-                <!--<time class="level-item has-text-grey" datetime="2020-03-06T08:54:58.317Z">2020-03-06</time>-->
+                <!--<span style="color: #7a7a7a !important;">2020-03-27 13:54:09&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-03-27T05:54:09.968Z">2020-03-27</time>-->
                 <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
 
                 
@@ -198,7 +198,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey">
                     
                     
-                    3 分钟 读完 (大约 455 个字)
+                    4 分钟 读完 (大约 596 个字)
                 </span>
                 
 
@@ -213,7 +213,7 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                lambda表达式
+                Java之Buffer
             
         </h1>
 
@@ -221,32 +221,11 @@ var _hmt = _hmt || [];
 
             <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
             
-                <html><head></head><body><h2 id="一，排序"><a href="#一，排序" class="headerlink" title="一，排序"></a>一，排序</h2><p>对数组从小到大排序</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sortUsingLambda</span><span class="hljs-params">(List<Integer> indexs)</span> </span>{</span><br><span class="line">    Collections.sort(indexs, (s1, s2) -> s1.compareTo(s2));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>更简洁的实现方式</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sortUsingLambda</span><span class="hljs-params">(List<Integer> indexs)</span> </span>{</span><br><span class="line">    Collections.sort(indexs, Integer::compareTo);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>对数组从小到大排序</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sortUsingLambda</span><span class="hljs-params">(List<Integer> indexs)</span> </span>{</span><br><span class="line">    Collections.sort(indexs, (s1, s2) -> s2.compareTo(s1));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>从小到大简洁实现</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sortUsingLambda</span><span class="hljs-params">(List<Integer> indexs)</span> </span>{</span><br><span class="line">    Collections.sort(indexs, Comparator.reverseOrder());</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<h2 id="二，list转map"><a href="#二，list转map" class="headerlink" title="二，list转map"></a>二，list转map</h2><p><strong>①：取list中某2个字段作为Map的K,V</strong></p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> Map<Long, String> <span class="hljs-title">getIdNameMap</span><span class="hljs-params">(List<Account> accounts)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getId, Account::getUsername));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p><strong>②：将id和实体Bean做为K,V</strong></p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> Map<Long, Account> <span class="hljs-title">getIdAccountMap</span><span class="hljs-params">(List<Account> accounts)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getId, account -> account));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>或者这样写</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> Map<Long, Account> <span class="hljs-title">getIdAccountMap</span><span class="hljs-params">(List<Account> accounts)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getId, Function.identity()));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>account -> account是一个返回本身的lambda表达式，后面的使用Function接口中的一个默认方法代替，使整个方法更简洁优雅。<br><strong>③：key存在重复记录时处理</strong></p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> Map<String, Account> <span class="hljs-title">getNameAccountMap</span><span class="hljs-params">(List<Account> accounts)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getUsername, Function.identity(), (key1, key2) -> key2));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p><strong>④：使用某个具体的Map类来保存，如保存时使用LinkedHashMap</strong></p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> Map<String, Account> <span class="hljs-title">getNameAccountMap</span><span class="hljs-params">(List<Account> accounts)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getUsername, Function.identity(), (key1, key2) -> key2, LinkedHashMap::<span class="hljs-keyword">new</span>));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p><strong>⑤：List<object>转List<String,Map<String, String>><p></p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> Map<String,List<MCode>> getCodeListMap(){</span><br><span class="line">        <span class="hljs-keyword">if</span>(CollectionUtils.isEmpty(codeListMap)){</span><br><span class="line">                List<MCode> codeList = <span class="hljs-keyword">this</span>.getCodeList();</span><br><span class="line">                Set<String> keySet = codeList.stream().map(code -> code.getCodeKbn()).collect(Collectors.toSet());</span><br><span class="line">                Iterator<String> it = keySet.iterator();</span><br><span class="line">                <span class="hljs-keyword">while</span>(it.hasNext()) {</span><br><span class="line">                        String key = it.next();</span><br><span class="line">                        codeListMap.put(key, codeList.stream().filter(code -> code.getCodeKbn().equals(key)).collect(Collectors.toList()));</span><br><span class="line">                }</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">return</span> codeListMap;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>三，Map转List</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Map<String, String> map = <span class="hljs-keyword">new</span> HashMap<>();</span><br><span class="line"><span class="hljs-comment">// Convert all Map keys to a List</span></span><br><span class="line">List<String> result = <span class="hljs-keyword">new</span> ArrayList(map.keySet());</span><br><span class="line"><span class="hljs-comment">// Convert all Map values to a List</span></span><br><span class="line">List<String> result2 = <span class="hljs-keyword">new</span> ArrayList(map.values());</span><br><span class="line"><span class="hljs-comment">// Java 8, Convert all Map keys to a List</span></span><br><span class="line">List<String> result3 = map.keySet().stream()</span><br><span class="line">	.collect(Collectors.toList());</span><br><span class="line"><span class="hljs-comment">// Java 8, Convert all Map values  to a List</span></span><br><span class="line">List<String> result4 = map.values().stream()</span><br><span class="line">	.collect(Collectors.toList());</span><br><span class="line"><span class="hljs-comment">// Java 8, seem a bit long, but you can enjoy the Stream features like filter and etc.</span></span><br><span class="line">List<String> result5 = map.values().stream()</span><br><span class="line">	.filter(x -> !<span class="hljs-string">"apple"</span>.equalsIgnoreCase(x))</span><br><span class="line">	.collect(Collectors.toList());</span><br><span class="line"><span class="hljs-comment">// Java 8, split a map into 2 List, it works!</span></span><br><span class="line"><span class="hljs-comment">// refer example 3 below</span></span><br></pre></td></tr></tbody></table></figure>
-
-</object></strong></p></body></html>
+                <html><head></head><body><h2 id="一，Buffer概念"><a href="#一，Buffer概念" class="headerlink" title="一，Buffer概念"></a>一，Buffer概念</h2><p>Buffer 类是 java.nio 的构造基础。<br>一个 Buffer 对象是固定数量的数据的容器，其作用是一个存储器，或者分段运输区.<br>每个非布尔原始数据类型都有一个缓冲区类.<br>子类有</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ByteBuffer</span><br><span class="line">CharBuffer</span><br><span class="line">IntBuffer</span><br><span class="line">LongBuffer</span><br><span class="line">DoubleBuffer</span><br><span class="line">FloatBuffer</span><br><span class="line">ShortBuffer</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="二，缓存区的四个属性"><a href="#二，缓存区的四个属性" class="headerlink" title="二，缓存区的四个属性"></a>二，缓存区的四个属性</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> mark = -<span class="hljs-number">1</span>;<span class="hljs-comment">//一个备忘位置。标记在设定前是未定义的(undefined)。使用场景是，假设缓冲区中有 10 个元素，position 目前的位置为 2(也就是如果get的话是第三个元素)，现在只想发送 6 - 10 之间的缓冲数据，此时我们可以 buffer.mark(buffer.position())，即把当前的 position 记入 mark 中，然后 buffer.postion(6)，此时发送给 channel 的数据就是 6 - 10 的数据。发送完后，我们可以调用 buffer.reset() 使得 position = mark，因此这里的 mark 只是用于临时记录一下位置用的</span></span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> position = <span class="hljs-number">0</span>;<span class="hljs-comment">//下一个要被读或写的元素的索引。位置会自动由相应的 get() 和 put() 函数更新。 这里需要注意的是positon的位置是从0开始的</span></span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> limit;<span class="hljs-comment">//缓冲区的第一个不能被读或写的元素。缓冲创建时，limit 的值等于 capacity 的值。假设 capacity = 1024，我们在程序中设置了 limit = 512，说明，Buffer 的容量为 1024，但是从 512 之后既不能读也不能写，因此可以理解成，Buffer 的实际可用大小为 512</span></span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> capacity;<span class="hljs-comment">//缓冲区能够容纳的数据元素的最大数量。这一容量在缓冲区创建时被设定，并且永远不能被改变。</span></span><br></pre></td></tr></tbody></table></figure>
+<h2 id="三，flip"><a href="#三，flip" class="headerlink" title="三，flip"></a>三，flip</h2><p>flip() :写模式转到读模式<br>clear()或者compact():重新从Buffer中读取数据<br>such as :</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> java.nio.ByteBuffer;</span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CreateBuffer</span> </span>{</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span>  <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String args[])</span> </span>{</span><br><span class="line">        ByteBuffer buffer = ByteBuffer.allocate(<span class="hljs-number">1024</span>);</span><br><span class="line"></span><br><span class="line">        buffer.put((<span class="hljs-keyword">byte</span>) <span class="hljs-string">'a'</span>);</span><br><span class="line">        buffer.put((<span class="hljs-keyword">byte</span>) <span class="hljs-string">'b'</span>);</span><br><span class="line">        buffer.put((<span class="hljs-keyword">byte</span>) <span class="hljs-string">'c'</span>);</span><br><span class="line"></span><br><span class="line">        <span class="hljs-comment">//调用flip之后，读写指针指到缓存头部，并且设置了最多只能读出之前写入的数据长度(而不是整个缓存的容量大小)</span></span><br><span class="line">        buffer.flip();</span><br><span class="line">        System.out.println((<span class="hljs-keyword">char</span>) buffer.get());<span class="hljs-comment">//a</span></span><br><span class="line">        System.out.println((<span class="hljs-keyword">char</span>) buffer.get());<span class="hljs-comment">//b</span></span><br><span class="line">        System.out.println((<span class="hljs-keyword">char</span>) buffer.get());<span class="hljs-comment">//c</span></span><br><span class="line">        <span class="hljs-comment">//重新从Buffer中读取数据</span></span><br><span class="line">        buffer.compact();</span><br><span class="line">        System.out.println((<span class="hljs-keyword">char</span>) buffer.get());<span class="hljs-comment">//a</span></span><br><span class="line">        System.out.println((<span class="hljs-keyword">char</span>) buffer.get());<span class="hljs-comment">//b</span></span><br><span class="line">        System.out.println((<span class="hljs-keyword">char</span>) buffer.get());<span class="hljs-comment">//c        </span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></body></html>
             
 
             <!--%- index && post.excerpt ? post.excerpt : post.content %-->
@@ -254,10 +233,10 @@ var _hmt = _hmt || [];
 
         
             <ul class="post-copyright">
-                <li><strong>本文标题：</strong><a href="https://jiangcoder.github.io/2020/03/06/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">lambda表达式</a></li>
+                <li><strong>本文标题：</strong><a href="https://jiangcoder.github.io/2020/03/27/Java%E4%B9%8BBuffer/">Java之Buffer</a></li>
                 <li><strong>本文作者：</strong><a href="https://jiangcoder.github.io">姜涛</a></li>
-                <li><strong>本文链接：</strong><a href="https://jiangcoder.github.io/2020/03/06/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">https://jiangcoder.github.io/2020/03/06/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/</a></li>
-                <li><strong>发布时间：</strong>2020-03-06</li>
+                <li><strong>本文链接：</strong><a href="https://jiangcoder.github.io/2020/03/27/Java%E4%B9%8BBuffer/">https://jiangcoder.github.io/2020/03/27/Java%E4%B9%8BBuffer/</a></li>
+                <li><strong>发布时间：</strong>2020-03-27</li>
                 <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
                 </li>
             </ul>
@@ -293,17 +272,10 @@ var _hmt = _hmt || [];
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/03/06/ElasticSearch%E4%B9%8B%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">ElasticSearch之索引模板</span>
-            </a>
-        </div>
-        
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2020/02/26/jvm-GC-and-GC-Tuning/">
-                <span class="level-item">Git如何回退版本</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/03/22/%E3%80%8A%E5%8F%AF%E5%A4%8D%E5%88%B6%E7%9A%84%E9%A2%86%E5%AF%BC%E5%8A%9B%E3%80%8B%E8%AF%BB%E5%90%8E%E6%9C%89%E6%84%9F/">
+                <span class="level-item">《可复制的领导力》读后有感</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -457,13 +429,17 @@ var _hmt = _hmt || [];
                 文章目录
             </h3>
             <ul class="menu-list"><li>
-        <a class="is-flex" href="#一，排序">
+        <a class="is-flex" href="#一，Buffer概念">
         <span class="has-mr-6">1</span>
-        <span>一，排序</span>
+        <span>一，Buffer概念</span>
         </a></li><li>
-        <a class="is-flex" href="#二，list转map">
+        <a class="is-flex" href="#二，缓存区的四个属性">
         <span class="has-mr-6">2</span>
-        <span>二，list转map</span>
+        <span>二，缓存区的四个属性</span>
+        </a></li><li>
+        <a class="is-flex" href="#三，flip">
+        <span class="has-mr-6">3</span>
+        <span>三，flip</span>
         </a></li></ul>
         </div>
     </div>
@@ -487,7 +463,7 @@ var _hmt = _hmt || [];
             <div class="level-start has-text-centered-mobile">
                 <!-- <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/%5Bobject%20Object%5D" alt="lambda表达式" height="28">
+                    <img src="/%5Bobject%20Object%5D" alt="Java之Buffer" height="28">
                 
                 </a> -->
                 <p class="is-size-7">

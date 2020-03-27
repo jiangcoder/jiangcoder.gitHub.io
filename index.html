@@ -168,6 +168,90 @@ var _hmt = _hmt || [];
         <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
     
     <div class="card-image">
+        <a href="/2020/03/27/Java%E4%B9%8BBuffer/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/java.jpg" alt="Java之Buffer">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-03-27T05:54:09.968Z">2020-03-27</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-03-27 13:54:09&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-03-27T05:54:09.968Z">2020-03-27</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/java/">java</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    4 分钟 读完 (大约 596 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/03/27/Java%E4%B9%8BBuffer/">Java之Buffer</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><h2 id="一，Buffer概念"><a href="#一，Buffer概念" class="headerlink" title="一，Buffer概念"></a>一，Buffer概念</h2><p>Buffer 类是 java.nio 的构造基础。<br>一个 Buffer 对象是固定数量的数据的容器，其作用是一个存储器，或者分段运输区.<br>每个非布尔原始数据类型都有一个缓冲区类.<br>子类有</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ByteBuffer</span><br><span class="line">CharBuffer</span><br><span class="line">IntBuffer</span><br><span class="line">LongBuffer</span><br><span class="line">DoubleBuffer</span><br><span class="line">FloatBuffer</span><br><span class="line">ShortBuffer</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="二，缓存区的四个属性"><a href="#二，缓存区的四个属性" class="headerlink" title="二，缓存区的四个属性"></a>二，缓存区的四个属性</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> mark = -<span class="hljs-number">1</span>;<span class="hljs-comment">//一个备忘位置。标记在设定前是未定义的(undefined)。使用场景是，假设缓冲区中有 10 个元素，position 目前的位置为 2(也就是如果get的话是第三个元素)，现在只想发送 6 - 10 之间的缓冲数据，此时我们可以 buffer.mark(buffer.position())，即把当前的 position 记入 mark 中，然后 buffer.postion(6)，此时发送给 channel 的数据就是 6 - 10 的数据。发送完后，我们可以调用 buffer.reset() 使得 position = mark，因此这里的 mark 只是用于临时记录一下位置用的</span></span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> position = <span class="hljs-number">0</span>;<span class="hljs-comment">//下一个要被读或写的元素的索引。位置会自动由相应的 get() 和 put() 函数更新。 这里需要注意的是positon的位置是从0开始的</span></span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> limit;<span class="hljs-comment">//缓冲区的第一个不能被读或写的元素。缓冲创建时，limit 的值等于 capacity 的值。假设 capacity = 1024，我们在程序中设置了 limit = 512，说明，Buffer 的容量为 1024，但是从 512 之后既不能读也不能写，因此可以理解成，Buffer 的实际可用大小为 512</span></span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> capacity;<span class="hljs-comment">//缓冲区能够容纳的数据元素的最大数量。这一容量在缓冲区创建时被设定，并且永远不能被改变。</span></span><br></pre></td></tr></tbody></table></figure>
+<h2 id="三，flip"><a href="#三，flip" class="headerlink" title="三，flip"></a>三，flip</h2><p>flip() :写模式转到读模式<br>clear()或者compact():重新从Buffer中读取数据<br>such as :</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> java.nio.ByteBuffer;</span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CreateBuffer</span> </span>{</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span>  <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String args[])</span> </span>{</span><br><span class="line">        ByteBuffer buffer = ByteBuffer.allocate(<span class="hljs-number">1024</span>);</span><br><span class="line"></span><br><span class="line">        buffer.put((<span class="hljs-keyword">byte</span>) <span class="hljs-string">'a'</span>);</span><br><span class="line">        buffer.put((<span class="hljs-keyword">byte</span>) <span class="hljs-string">'b'</span>);</span><br><span class="line">        buffer.put((<span class="hljs-keyword">byte</span>) <span class="hljs-string">'c'</span>);</span><br><span class="line"></span><br><span class="line">        <span class="hljs-comment">//调用flip之后，读写指针指到缓存头部，并且设置了最多只能读出之前写入的数据长度(而不是整个缓存的容量大小)</span></span><br><span class="line">        buffer.flip();</span><br><span class="line">        System.out.println((<span class="hljs-keyword">char</span>) buffer.get());<span class="hljs-comment">//a</span></span><br><span class="line">        System.out.println((<span class="hljs-keyword">char</span>) buffer.get());<span class="hljs-comment">//b</span></span><br><span class="line">        System.out.println((<span class="hljs-keyword">char</span>) buffer.get());<span class="hljs-comment">//c</span></span><br><span class="line">        <span class="hljs-comment">//重新从Buffer中读取数据</span></span><br><span class="line">        buffer.compact();</span><br><span class="line">        System.out.println((<span class="hljs-keyword">char</span>) buffer.get());<span class="hljs-comment">//a</span></span><br><span class="line">        System.out.println((<span class="hljs-keyword">char</span>) buffer.get());<span class="hljs-comment">//b</span></span><br><span class="line">        System.out.println((<span class="hljs-keyword">char</span>) buffer.get());<span class="hljs-comment">//c        </span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
         <a href="/2020/03/22/%E3%80%8A%E5%8F%AF%E5%A4%8D%E5%88%B6%E7%9A%84%E9%A2%86%E5%AF%BC%E5%8A%9B%E3%80%8B%E8%AF%BB%E5%90%8E%E6%9C%89%E6%84%9F/" class="image is-7by1">
             <img class="thumbnail" src="/logo/ciqi.jpeg" alt="《可复制的领导力》读后有感">
         </a>
@@ -1248,7 +1332,7 @@ var _hmt = _hmt || [];
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        8
+                        9
                     </p>
                 </div>
             </div>
@@ -1379,7 +1463,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">java</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">2</span>
+                <span class="level-item tag">3</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/%E4%BA%BA%E6%96%87/">
@@ -1418,6 +1502,25 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2020/03/27/Java%E4%B9%8BBuffer/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/logo/java.jpg" alt="Java之Buffer">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-27T05:54:09.968Z">2020-03-27</time></div>
+                    <a href="/2020/03/27/Java%E4%B9%8BBuffer/" class="has-link-black-ter is-size-6">Java之Buffer</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/java/">java</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/03/22/%E3%80%8A%E5%8F%AF%E5%A4%8D%E5%88%B6%E7%9A%84%E9%A2%86%E5%AF%BC%E5%8A%9B%E3%80%8B%E8%AF%BB%E5%90%8E%E6%9C%89%E6%84%9F/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/logo/ciqi.jpeg" alt="《可复制的领导力》读后有感">
@@ -1485,25 +1588,6 @@ var _hmt = _hmt || [];
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-06T11:04:25.660Z">2020-03-06</time></div>
                     <a href="/2020/03/06/Elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/" class="has-link-black-ter is-size-6">Elasticsearch 搜索模块之preference参数</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/03/06/Elasticsearch%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91by%20Intellij%20Idea/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="Elasticsearch源码编译by Intellij Idea">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-06T10:56:32.358Z">2020-03-06</time></div>
-                    <a href="/2020/03/06/Elasticsearch%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91by%20Intellij%20Idea/" class="has-link-black-ter is-size-6">Elasticsearch源码编译by Intellij Idea</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
                     </p>
@@ -1540,7 +1624,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/java/">
                         <span class="tag">java</span>
-                        <span class="tag is-grey">2</span>
+                        <span class="tag is-grey">3</span>
                     </a>
                 </div>
                 
@@ -1573,6 +1657,25 @@ var _hmt = _hmt || [];
         <h3 class="menu-label">
             最新文章
         </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/03/27/Java%E4%B9%8BBuffer/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/logo/java.jpg" alt="Java之Buffer">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-27T05:54:09.968Z">2020-03-27</time></div>
+                    <a href="/2020/03/27/Java%E4%B9%8BBuffer/" class="has-link-black-ter is-size-6">Java之Buffer</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/java/">java</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -1650,25 +1753,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2020/03/06/Elasticsearch%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91by%20Intellij%20Idea/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="Elasticsearch源码编译by Intellij Idea">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-06T10:56:32.358Z">2020-03-06</time></div>
-                    <a href="/2020/03/06/Elasticsearch%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91by%20Intellij%20Idea/" class="has-link-black-ter is-size-6">Elasticsearch源码编译by Intellij Idea</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -1698,7 +1782,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/java/">
                         <span class="tag">java</span>
-                        <span class="tag is-grey">2</span>
+                        <span class="tag is-grey">3</span>
                     </a>
                 </div>
                 
