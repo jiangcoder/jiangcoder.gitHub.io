@@ -3,7 +3,7 @@ toc: true
 categories: linux
 tags:
   - linux
-thumbnail: /logo/qiye.jpg
+thumbnail: /logo/qiye.jpeg
 ---
 #什么是内核态、用户态？
 内核态：cpu可以访问内存的所有数据，包括外围设备，例如硬盘，网卡，cpu也可以将自己从一个程序切换到另一个程序。
