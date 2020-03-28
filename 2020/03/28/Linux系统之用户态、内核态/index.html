@@ -2,26 +2,26 @@
 <html  lang="zh">
 <head>
     <meta charset="utf-8">
-<title>Elasticsearch定制化插件开发 - 永远年轻，永远热泪盈眶</title>
+<title>Linux系统之用户态、内核态 - 永远年轻，永远热泪盈眶</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 
 
     
-    <meta name="description" content="一，一般的插件开发方式：    按照官网教程，每次都得打包、替换、重启，这是一个很不方便的过程，固然可以通过testCase来做debug，但是所见即所得的编码习惯，直接上手debug，才是最高效的方式。   介绍插件开发的博客何其多，个人私以为都没有get到G点，其实深入研究下elasticsearch源码，fix 这个问题并不难，下面希望通过这篇文章帮助到大家。二，elasticsearch插">
+    <meta name="description" content="#什么是内核态、用户态？内核态：cpu可以访问内存的所有数据，包括外围设备，例如硬盘，网卡，cpu也可以将自己从一个程序切换到另一个程序。用户态：只能受限的访问内存，且不允许访问外围设备，占用cpu的能力被剥夺，cpu资源可以被其他程序获取。 #为什么要有用户态和内核态？由于需要限制不同的程序之间的访问能力, 防止他们获取别的程序的内存数据, 或者获取外围设备的数据, 并发送到网络,CPU划分出两">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Elasticsearch定制化插件开发">
-<meta property="og:url" content="https://jiangcoder.github.io/2020/03/27/Elasticsearch%E5%AE%9A%E5%88%B6%E5%8C%96%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/index.html">
+<meta property="og:title" content="Linux系统之用户态、内核态">
+<meta property="og:url" content="https://jiangcoder.github.io/2020/03/28/Linux%E7%B3%BB%E7%BB%9F%E4%B9%8B%E7%94%A8%E6%88%B7%E6%80%81%E3%80%81%E5%86%85%E6%A0%B8%E6%80%81/index.html">
 <meta property="og:site_name" content="永远年轻，永远热泪盈眶">
-<meta property="og:description" content="一，一般的插件开发方式：    按照官网教程，每次都得打包、替换、重启，这是一个很不方便的过程，固然可以通过testCase来做debug，但是所见即所得的编码习惯，直接上手debug，才是最高效的方式。   介绍插件开发的博客何其多，个人私以为都没有get到G点，其实深入研究下elasticsearch源码，fix 这个问题并不难，下面希望通过这篇文章帮助到大家。二，elasticsearch插">
+<meta property="og:description" content="#什么是内核态、用户态？内核态：cpu可以访问内存的所有数据，包括外围设备，例如硬盘，网卡，cpu也可以将自己从一个程序切换到另一个程序。用户态：只能受限的访问内存，且不允许访问外围设备，占用cpu的能力被剥夺，cpu资源可以被其他程序获取。 #为什么要有用户态和内核态？由于需要限制不同的程序之间的访问能力, 防止他们获取别的程序的内存数据, 或者获取外围设备的数据, 并发送到网络,CPU划分出两">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://jiangcoder.github.io/logo/elasticsearch.jpg">
-<meta property="article:published_time" content="2020-03-27T14:00:39.449Z">
-<meta property="article:modified_time" content="2020-03-27T14:19:58.962Z">
+<meta property="og:image" content="https://jiangcoder.github.io/logo/qiye.jpg">
+<meta property="article:published_time" content="2020-03-28T09:14:32.266Z">
+<meta property="article:modified_time" content="2020-03-28T09:17:11.555Z">
 <meta property="article:author" content="姜涛">
-<meta property="article:tag" content="elasticsearch">
+<meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://jiangcoder.github.io/logo/elasticsearch.jpg">
+<meta name="twitter:image" content="https://jiangcoder.github.io/logo/qiye.jpg">
 
 
 
@@ -113,7 +113,7 @@ var _hmt = _hmt || [];
 
                 <!--update by thank: 修改logo方式-->
                 <!--<img src="/images/maotouying.svg" alt="蜗居年华" height="28">-->
-                <img src="https://avatars2.githubusercontent.com/u/8393744?s=400&u=6ff7deb174a4e34b1b1b6291aaccbdc23eb40b14&v=4" alt="Elasticsearch定制化插件开发" height="28">
+                <img src="https://avatars2.githubusercontent.com/u/8393744?s=400&u=6ff7deb174a4e34b1b1b6291aaccbdc23eb40b14&v=4" alt="Linux系统之用户态、内核态" height="28">
                 <span style="font-size: 16px; display: inline-block; vertical-align: top; font-weight: 600;"></span>
                 <!--
             % if (has_config('logo.text') && get_config('logo.text')) { 
@@ -182,23 +182,23 @@ var _hmt = _hmt || [];
 
                 <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
                 
-                <span style="color: #7a7a7a !important;">写于2020-03-27 22:00:39&nbsp;&nbsp;&nbsp;</span>
+                <span style="color: #7a7a7a !important;">写于2020-03-28 17:14:32&nbsp;&nbsp;&nbsp;</span>
                 
 
-                <!--<span style="color: #7a7a7a !important;">2020-03-27 22:00:39&nbsp;&nbsp;&nbsp;</span>-->
-                <!--<time class="level-item has-text-grey" datetime="2020-03-27T14:00:39.449Z">2020-03-27</time>-->
+                <!--<span style="color: #7a7a7a !important;">2020-03-28 17:14:32&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-03-28T09:14:32.266Z">2020-03-28</time>-->
                 <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
 
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
+                <a class="has-link-grey -link" href="/categories/linux/">linux</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    5 分钟 读完 (大约 796 个字)
+                    8 分钟 读完 (大约 1216 个字)
                 </span>
                 
 
@@ -213,7 +213,7 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                Elasticsearch定制化插件开发
+                Linux系统之用户态、内核态
             
         </h1>
 
@@ -221,22 +221,11 @@ var _hmt = _hmt || [];
 
             <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
             
-                <html><head></head><body><p>一，一般的插件开发方式：<br>    按照官网教程，每次都得打包、替换、重启，这是一个很不方便的过程，固然可以通过testCase来做debug，但是所见即所得的编码习惯，直接上手debug，才是最高效的方式。<br>   介绍插件开发的博客何其多，个人私以为都没有get到G点，其实深入研究下elasticsearch源码，fix 这个问题并不难，下面希望通过这篇文章帮助到大家。<br>二，elasticsearch插件的加载机制<br>①：Node节点启动过程，Elasticsearch.java会调用Bootstrap.java中的init函数。</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">(...)</span>  </span>{</span><br><span class="line">        ...</span><br><span class="line">        INSTANCE = <span class="hljs-keyword">new</span> Bootstrap();</span><br><span class="line">        INSTANCE.setup(<span class="hljs-keyword">true</span>, environment);</span><br><span class="line">        ...</span><br><span class="line">        INSTANCE.start();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>②：Node节点通过setup方法进行实例化。</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setup</span><span class="hljs-params">(<span class="hljs-keyword">boolean</span> addShutdownHook, Environment environment)</span> <span class="hljs-keyword">throws</span> BootstrapException </span>{</span><br><span class="line">         </span><br><span class="line">    node = <span class="hljs-keyword">new</span> Node(environment) {</span><br><span class="line"> </span><br><span class="line">     ...</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>③：Node.java类中会包含各类的service服务，其中包括PluginsService服务。在实例化PluginsService服务时会传参</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">environment.pluginsFile(),classpathPlugins等参数。而pluginsFile()即是elasticsearch所指定的plugin目录，elasticsearch会扫描该路径下所有的插件，并加载进来。</span><br><span class="line">   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Node</span><span class="hljs-params">(Environment environment)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">this</span>(environment, Collections.emptyList());</span><br><span class="line">}</span><br><span class="line"> </span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-title">Node</span><span class="hljs-params">(<span class="hljs-keyword">final</span> Environment environment, Collection<Class<? extends Plugin>> classpathPlugins)</span> </span>{</span><br><span class="line">    ...</span><br><span class="line">    <span class="hljs-keyword">this</span>.pluginsService = <span class="hljs-keyword">new</span> PluginsService(tmpSettings, environment.modulesFile(), environment.pluginsFile(), classpathPlugins);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>④：classpathPlugins参数介绍：</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Node</span><span class="hljs-params">(Environment environment)</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">this</span>(environment, Collections.emptyList());</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
-<p>在elasticsearch源码中，这个参数Collection<Class<? extends Plugin>> classpathPlugins一直都是空集合。<br>没有任何地方注入修改该参数。elasticsearch不但会扫描插件所在路径中的插件，同样也会加载classpathPlugins中所指定的插件，只不过问题是elasticsearch没有给我们提供相应的参数！！！！<br>三，如何更优雅的开发开发插件<br>    接上一段小节④，我们只要利用classpathPlugins该参数，就可以在elasticsearch源码环境中进行debug了！！！<br>    我的实现思路如下，通过继承Node.java，并重写Node类的构造方法，然后在bootstrap中直接实例化该子类，便可以通过elasticsearch直接bug 插件源码了。<br>   下面贴出我的实现代码，供大家参考：</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> org.elasticsearch.Version;</span><br><span class="line"><span class="hljs-keyword">import</span> org.elasticsearch.env.Environment;</span><br><span class="line"><span class="hljs-keyword">import</span> org.elasticsearch.node.Node;</span><br><span class="line"><span class="hljs-keyword">import</span> org.elasticsearch.plugins.Plugin;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">import</span> java.util.Collection;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">EmbeddedNode</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Node</span> </span>{</span><br><span class="line"></span><br><span class="line">  <span class="hljs-keyword">private</span> Version version;</span><br><span class="line">  <span class="hljs-keyword">private</span> Collection<Class<? extends Plugin>> plugins;</span><br><span class="line"></span><br><span class="line">  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">EmbeddedNode</span><span class="hljs-params">(Environment environment, Version version, Collection<Class<? extends Plugin>> classpathPlugins)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">super</span>(environment,  classpathPlugins);</span><br><span class="line">    <span class="hljs-keyword">this</span>.version = version;</span><br><span class="line">    <span class="hljs-keyword">this</span>.plugins = classpathPlugins;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="hljs-keyword">public</span> Collection<Class<? extends Plugin>> getPlugins() {</span><br><span class="line">    <span class="hljs-keyword">return</span> plugins;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="hljs-function"><span class="hljs-keyword">public</span> Version <span class="hljs-title">getVersion</span><span class="hljs-params">()</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> version;</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setup</span><span class="hljs-params">(<span class="hljs-keyword">boolean</span> addShutdownHook, Environment environment)</span> <span class="hljs-keyword">throws</span> BootstrapException </span>{</span><br><span class="line">      .....</span><br><span class="line">       <span class="hljs-comment">//注释Node初始化源码</span></span><br><span class="line">       <span class="hljs-comment">/* node = new Node(environment) {</span></span><br><span class="line"><span class="hljs-comment">            @Override</span></span><br><span class="line"><span class="hljs-comment">            protected void validateNodeBeforeAcceptingRequests(</span></span><br><span class="line"><span class="hljs-comment">                final Settings settings,</span></span><br><span class="line"><span class="hljs-comment">                final BoundTransportAddress boundTransportAddress, List<BootstrapCheck> checks) throws NodeValidationException {</span></span><br><span class="line"><span class="hljs-comment">                BootstrapChecks.check(settings, boundTransportAddress, checks);</span></span><br><span class="line"><span class="hljs-comment">            }</span></span><br><span class="line"><span class="hljs-comment">        };*/</span></span><br><span class="line"></span><br><span class="line">        Collection plugins = <span class="hljs-keyword">new</span> ArrayList<>();</span><br><span class="line">        Collections.addAll(plugins,   AnalysisIkPlugin<span class="hljs-class">.<span class="hljs-keyword">class</span>, <span class="hljs-title">HelloPlugin</span>.<span class="hljs-title">class</span>, <span class="hljs-title">AnalysisMMsegPlugin</span>.<span class="hljs-title">class</span>)</span>;<span class="hljs-comment">//, ,AnalysisMMsegPlugin.class</span></span><br><span class="line">        node = <span class="hljs-keyword">new</span> EmbeddedNode(environment, Version.CURRENT, plugins) {</span><br><span class="line">            <span class="hljs-meta">@Override</span></span><br><span class="line">            <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">validateNodeBeforeAcceptingRequests</span><span class="hljs-params">(<span class="hljs-keyword">final</span> Settings settings, <span class="hljs-keyword">final</span> BoundTransportAddress boundTransportAddress, List<BootstrapCheck> checks)</span> <span class="hljs-keyword">throws</span> NodeValidationException </span>{</span><br><span class="line">                BootstrapChecks.check(settings, boundTransportAddress, checks);</span><br><span class="line">            }</span><br><span class="line">        };</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
-
-<p>四，部署插件相关的注意事项：<br>     有关插件开发的详细配置，es插件的种类，在此不再赘述，具体可参考官方文档，更权威，更直接。<br>下面贴个图，本人在elasticsearch中同时整合了多个插件，以供学习研究时用，直接debug，个人感觉十分不错。</p>
-<p><img alt src="/logo/plugin.jpg"></p>
+                <html><head></head><body><p>#什么是内核态、用户态？<br>内核态：cpu可以访问内存的所有数据，包括外围设备，例如硬盘，网卡，cpu也可以将自己从一个程序切换到另一个程序。<br>用户态：只能受限的访问内存，且不允许访问外围设备，占用cpu的能力被剥夺，cpu资源可以被其他程序获取。</p>
+<p>#为什么要有用户态和内核态？<br>由于需要限制不同的程序之间的访问能力, 防止他们获取别的程序的内存数据, 或者获取外围设备的数据, 并发送到网络,<br>CPU划分出两个权限等级 – 用户态和内核态。</p>
+<p>#用户态与内核态的切换</p>
+<p>所有用户程序都是运行在用户态的, 但是有时候程序确实需要做一些内核态的事情, 例如从硬盘读取数据, 或者从键盘获取输入等. 而唯一可以做这些事情的就是操作系统, 所以此时程序就需要先操作系统请求以程序的名义来执行这些操作.<br>这时需要一个这样的机制: 用户态程序切换到内核态, 但是不能控制在内核态中执行的指令<br>这种机制叫系统调用, 在CPU中的实现称之为陷阱指令(Trap Instruction)<br>他们的工作流程如下:<br>用户态程序将一些数据值放在寄存器中, 或者使用参数创建一个堆栈(stack frame), 以此表明需要操作系统提供的服务.<br>用户态程序执行陷阱指令<br>CPU切换到内核态, 并跳到位于内存指定位置的指令, 这些指令是操作系统的一部分, 他们具有内存保护, 不可被用户态程序访问<br>这些指令称之为陷阱(trap)或者系统调用处理器(system call handler). 他们会读取程序放入内存的数据参数, 并执行程序请求的服务<br>系统调用完成后, 操作系统会重置CPU为用户态并返回系统调用的结果<br>当一个任务（进程）执行系统调用而陷入内核代码中执行时，我们就称进程处于内核运行态（或简称为内核态）。此时处理器处于特权级最高的（0级）内核代码中执行。当进程处于内核态时，执行的内核代码会使用当前进程的内核栈。每个进程都有自己的内核栈。当进程在执行用户自己的代码时，则称其处于用户运行态（用户态）。即此时处理器在特权级最低的（3级）用户代码中运行。当正在执行用户程序而突然被中断程序中断时，此时用户程序也可以象征性地称为处于进程的内核态。因为中断处理程序将使用当前进程的内核栈。这与处于内核态的进程的状态有些类似。 </p>
+<p>内核态与用户态是操作系统的两种运行级别,跟intel cpu没有必然的联系, intel cpu提供Ring0-Ring3三种级别的运行模式，Ring0级别最高，Ring3最低。Linux使用了Ring3级别运行用户态，Ring0作为 内核态，没有使用Ring1和Ring2。Ring3状态不能访问Ring0的地址空间，包括代码和数据。Linux进程的4GB地址空间，3G-4G部 分大家是共享的，是内核态的地址空间，这里存放在整个内核的代码和所有的内核模块，以及内核所维护的数据。用户运行一个程序，该程序所创建的进程开始是运 行在用户态的，如果要执行文件操作，网络数据发送等操作，必须通过write，send等系统调用，这些系统调用会调用内核中的代码来完成操作，这时，必 须切换到Ring0，然后进入3GB-4GB中的内核地址空间去执行这些代码完成操作，完成后，切换回Ring3，回到用户态。这样，用户态的程序就不能 随意操作内核地址空间，具有一定的安全保护作用。<br>至于说保护模式，是说通过内存页表操作等机制，保证进程间的地址空间不会互相冲突，一个进程的操作不会修改另一个进程的地址空间中的数据。</p>
 </body></html>
             
 
@@ -245,10 +234,10 @@ var _hmt = _hmt || [];
 
         
             <ul class="post-copyright">
-                <li><strong>本文标题：</strong><a href="https://jiangcoder.github.io/2020/03/27/Elasticsearch%E5%AE%9A%E5%88%B6%E5%8C%96%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/">Elasticsearch定制化插件开发</a></li>
+                <li><strong>本文标题：</strong><a href="https://jiangcoder.github.io/2020/03/28/Linux%E7%B3%BB%E7%BB%9F%E4%B9%8B%E7%94%A8%E6%88%B7%E6%80%81%E3%80%81%E5%86%85%E6%A0%B8%E6%80%81/">Linux系统之用户态、内核态</a></li>
                 <li><strong>本文作者：</strong><a href="https://jiangcoder.github.io">姜涛</a></li>
-                <li><strong>本文链接：</strong><a href="https://jiangcoder.github.io/2020/03/27/Elasticsearch%E5%AE%9A%E5%88%B6%E5%8C%96%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/">https://jiangcoder.github.io/2020/03/27/Elasticsearch%E5%AE%9A%E5%88%B6%E5%8C%96%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/</a></li>
-                <li><strong>发布时间：</strong>2020-03-27</li>
+                <li><strong>本文链接：</strong><a href="https://jiangcoder.github.io/2020/03/28/Linux%E7%B3%BB%E7%BB%9F%E4%B9%8B%E7%94%A8%E6%88%B7%E6%80%81%E3%80%81%E5%86%85%E6%A0%B8%E6%80%81/">https://jiangcoder.github.io/2020/03/28/Linux%E7%B3%BB%E7%BB%9F%E4%B9%8B%E7%94%A8%E6%88%B7%E6%80%81%E3%80%81%E5%86%85%E6%A0%B8%E6%80%81/</a></li>
+                <li><strong>发布时间：</strong>2020-03-28</li>
                 <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
                 </li>
             </ul>
@@ -260,7 +249,7 @@ var _hmt = _hmt || [];
             <div class="level-start">
                 <div class="level-item">
                     <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a>
+                    <a class="has-link-grey -link" href="/tags/linux/" rel="tag">linux</a>
                 </div>
             </div>
         </div>
@@ -284,17 +273,10 @@ var _hmt = _hmt || [];
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/03/28/Linux%E7%B3%BB%E7%BB%9F%E4%B9%8B%E7%94%A8%E6%88%B7%E6%80%81%E3%80%81%E5%86%85%E6%A0%B8%E6%80%81/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">Linux系统之用户态、内核态</span>
-            </a>
-        </div>
-        
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2020/03/27/Java%E4%B9%8BBuffer/">
-                <span class="level-item">Java之Buffer</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/03/27/Elasticsearch%E5%AE%9A%E5%88%B6%E5%8C%96%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/">
+                <span class="level-item">Elasticsearch定制化插件开发</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -470,7 +452,7 @@ var _hmt = _hmt || [];
             <div class="level-start has-text-centered-mobile">
                 <!-- <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/%5Bobject%20Object%5D" alt="Elasticsearch定制化插件开发" height="28">
+                    <img src="/%5Bobject%20Object%5D" alt="Linux系统之用户态、内核态" height="28">
                 
                 </a> -->
                 <p class="is-size-7">
