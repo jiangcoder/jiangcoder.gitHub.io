@@ -1,4 +1,11 @@
-﻿## 一，查看所有的topic
+﻿title: Kafka节点平滑迁移
+toc: true
+categories: kafka
+tags:
+  - java
+thumbnail: /logo/kafka.jpg
+---
+## 一，查看所有的topic
 
 ```java
 bin/kafka-topics.sh --zookeeper ip:port --list
