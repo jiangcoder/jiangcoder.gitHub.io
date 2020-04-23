@@ -178,6 +178,102 @@ var _hmt = _hmt || [];
         <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
     
     <div class="card-image">
+        <a href="/2020/04/23/Kafka%E8%8A%82%E7%82%B9%E5%B9%B3%E6%BB%91%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/kafka.jpg" alt="Kafka节点平滑迁移">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-04-23T12:31:28.532Z">2020-04-23</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-04-23 20:31:28&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-04-23T12:31:28.532Z">2020-04-23</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/kafka/">kafka</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    3 分钟 读完 (大约 426 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/04/23/Kafka%E8%8A%82%E7%82%B9%E5%B9%B3%E6%BB%91%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/">Kafka节点平滑迁移</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><h2 id="一，查看所有的topic"><a href="#一，查看所有的topic" class="headerlink" title="一，查看所有的topic"></a>一，查看所有的topic</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --zookeeper ip:port --list</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="二，将topic组装为JSON格式"><a href="#二，将topic组装为JSON格式" class="headerlink" title="二，将topic组装为JSON格式"></a>二，将topic组装为JSON格式</h2><p>kafka后台脚本只支持如下JSON格式节点迁移</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">  <span class="hljs-string">"topics"</span>: [</span><br><span class="line">    {</span><br><span class="line">      <span class="hljs-string">"topic"</span>: <span class="hljs-string">"plat_order_core_dubbo_access_topic"</span></span><br><span class="line">    }  ],</span><br><span class="line">  <span class="hljs-string">"version"</span>: <span class="hljs-number">1</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>生成该格式代码，可参考使用如下Java代码</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> com.alibaba.fastjson.JSONObject;</span><br><span class="line"><span class="hljs-keyword">import</span> com.google.common.collect.Lists;</span><br><span class="line"><span class="hljs-keyword">import</span> org.apache.commons.lang3.StringUtils;</span><br><span class="line"> </span><br><span class="line"><span class="hljs-keyword">import</span> java.io.BufferedReader;</span><br><span class="line"><span class="hljs-keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="hljs-keyword">import</span> java.io.InputStreamReader;</span><br><span class="line"><span class="hljs-keyword">import</span> java.nio.charset.StandardCharsets;</span><br><span class="line"><span class="hljs-keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="hljs-keyword">import</span> java.util.List;</span><br><span class="line"> </span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Topic2JsonUtil</span> </span>{</span><br><span class="line"> </span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{</span><br><span class="line">        List<String> topicList = readFileAsListFromJarPath(<span class="hljs-string">"topic.txt"</span>);</span><br><span class="line">        List<JSONObject> topicJsonList = Lists.newArrayList();</span><br><span class="line">        topicList.forEach(topic -> {</span><br><span class="line">            JSONObject topicJson = <span class="hljs-keyword">new</span> JSONObject();</span><br><span class="line">            topicJson.put(<span class="hljs-string">"topic"</span>, topic);</span><br><span class="line">            topicJsonList.add(topicJson);</span><br><span class="line">        });</span><br><span class="line">        JSONObject resultJson = <span class="hljs-keyword">new</span> JSONObject();</span><br><span class="line">        resultJson.put(<span class="hljs-string">"topics"</span>, topicJsonList);</span><br><span class="line">        System.out.println(resultJson);</span><br><span class="line">    }</span><br><span class="line"> </span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> List<String> <span class="hljs-title">readFileAsListFromJarPath</span><span class="hljs-params">(String fileName)</span> </span>{</span><br><span class="line">        List<String> result = <span class="hljs-keyword">new</span> ArrayList<>();</span><br><span class="line">        <span class="hljs-keyword">try</span> {</span><br><span class="line">            InputStream inputStream = Topic2JsonUtil<span class="hljs-class">.<span class="hljs-keyword">class</span>.<span class="hljs-title">getClassLoader</span>().<span class="hljs-title">getResourceAsStream</span>(<span class="hljs-title">fileName</span>)</span>;</span><br><span class="line">            BufferedReader reader = <span class="hljs-keyword">new</span> BufferedReader(<span class="hljs-keyword">new</span> InputStreamReader(inputStream, StandardCharsets.UTF_8));</span><br><span class="line">            String line;</span><br><span class="line">            <span class="hljs-keyword">while</span> ((line = reader.readLine()) != <span class="hljs-keyword">null</span>) {</span><br><span class="line">                <span class="hljs-keyword">if</span> (StringUtils.isNotBlank(line)) {</span><br><span class="line">                    result.add(line);</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">            reader.close();</span><br><span class="line">        } <span class="hljs-keyword">catch</span> (Exception e) {</span><br><span class="line">            LogUtil.ROOT.error(<span class="hljs-string">""</span>, e);</span><br><span class="line">        }</span><br><span class="line">        StringBuilder builder = <span class="hljs-keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="hljs-keyword">if</span> (result.size() != <span class="hljs-number">0</span>) {</span><br><span class="line">            result.forEach(builder::append);</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">return</span> result;</span><br><span class="line">    }</span><br><span class="line"> </span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="三，生成迁移计划"><a href="#三，生成迁移计划" class="headerlink" title="三，生成迁移计划"></a>三，生成迁移计划</h2><p>使用如下命令生成迁移计划<br>如下示例代表将topic所有的节点数据重新路由到4、5、6节点上，并将迁移计划输出到plan-move.json文件中</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/kafka-reassign-partitions.sh --zookeeper ip:port --topics-to-move-json-file  topics-to-move.json  --broker-list  <span class="hljs-string">"4,5,6"</span>  --generate  > plan-move.json</span><br></pre></td></tr></tbody></table></figure>
+<p>生成的计划格式化后如下：</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Current partition replica assignment</span><br><span class="line">{</span><br><span class="line">	<span class="hljs-string">"version"</span>: <span class="hljs-number">1</span>,</span><br><span class="line">	<span class="hljs-string">"partitions"</span>: [{</span><br><span class="line">		<span class="hljs-string">"topic"</span>: <span class="hljs-string">"erp_java_topic"</span>,</span><br><span class="line">		<span class="hljs-string">"partition"</span>: <span class="hljs-number">9</span>,</span><br><span class="line">		<span class="hljs-string">"replicas"</span>: [<span class="hljs-number">12</span>, <span class="hljs-number">11</span>, <span class="hljs-number">13</span>, <span class="hljs-number">1</span>],</span><br><span class="line">		<span class="hljs-string">"log_dirs"</span>: [<span class="hljs-string">"any"</span>, <span class="hljs-string">"any"</span>, <span class="hljs-string">"any"</span>, <span class="hljs-string">"any"</span>]</span><br><span class="line">	}]</span><br><span class="line">}</span><br><span class="line">Proposed partition reassignment configuration</span><br><span class="line">{</span><br><span class="line">	<span class="hljs-string">"version"</span>: <span class="hljs-number">1</span>,</span><br><span class="line">	<span class="hljs-string">"partitions"</span>: [{</span><br><span class="line">		<span class="hljs-string">"topic"</span>: <span class="hljs-string">"erp_java_topic"</span>,</span><br><span class="line">		<span class="hljs-string">"partition"</span>: <span class="hljs-number">9</span>,</span><br><span class="line">		<span class="hljs-string">"replicas"</span>: [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>],</span><br><span class="line">		<span class="hljs-string">"log_dirs"</span>: [<span class="hljs-string">"any"</span>, <span class="hljs-string">"any"</span>, <span class="hljs-string">"any"</span>, <span class="hljs-string">"any"</span>]</span><br><span class="line">	}]</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>保留迁移计划JSON，即下面的JSON内容；</p>
+<h2 id="四，执行迁移计划"><a href="#四，执行迁移计划" class="headerlink" title="四，执行迁移计划"></a>四，执行迁移计划</h2><p>执行迁移计划</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/kafka-reassign-partitions.sh --zookeeper ip:port --reassignment-json-file plan-move.json --execute</span><br></pre></td></tr></tbody></table></figure>
+<p>查看迁移进度</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/kafka-reassign-partitions.sh --zookeeper ip:port --reassignment-json-file plan-move.json --verify</span><br></pre></td></tr></tbody></table></figure>
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
         <a href="/2020/03/27/Java%E4%B9%8BBuffer/" class="image is-7by1">
             <img class="thumbnail" src="/logo/java.jpg" alt="Java之Buffer">
         </a>
@@ -727,7 +823,7 @@ var _hmt = _hmt || [];
                         分类
                     </p>
                     <p class="title has-text-weight-normal">
-                        5
+                        6
                     </p>
                 </div>
             </div>
@@ -851,6 +947,14 @@ var _hmt = _hmt || [];
                 <span class="level-item tag">3</span>
             </span>
         </a></li><li>
+        <a class="level is-marginless" href="/categories/kafka/">
+            <span class="level-start">
+                <span class="level-item">kafka</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
         <a class="level is-marginless" href="/categories/linux/">
             <span class="level-start">
                 <span class="level-item">linux</span>
@@ -897,16 +1001,16 @@ var _hmt = _hmt || [];
             
             <a href="/2020/04/23/Kafka%E8%8A%82%E7%82%B9%E5%B9%B3%E6%BB%91%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Kafka节点平滑迁移步骤">
+                    <img class="thumbnail" src="/logo/kafka.jpg" alt="Kafka节点平滑迁移">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-23T12:31:28.532Z">2020-04-23</time></div>
-                    <a href="/2020/04/23/Kafka%E8%8A%82%E7%82%B9%E5%B9%B3%E6%BB%91%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/" class="has-link-black-ter is-size-6">Kafka节点平滑迁移步骤</a>
+                    <a href="/2020/04/23/Kafka%E8%8A%82%E7%82%B9%E5%B9%B3%E6%BB%91%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/" class="has-link-black-ter is-size-6">Kafka节点平滑迁移</a>
                     <p class="is-size-7 is-uppercase">
-                        
+                        <a class="has-link-grey -link" href="/categories/kafka/">kafka</a>
                     </p>
                 </div>
             </div>
@@ -1017,7 +1121,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/java/">
                         <span class="tag">java</span>
-                        <span class="tag is-grey">3</span>
+                        <span class="tag is-grey">4</span>
                     </a>
                 </div>
                 
@@ -1062,16 +1166,16 @@ var _hmt = _hmt || [];
             
             <a href="/2020/04/23/Kafka%E8%8A%82%E7%82%B9%E5%B9%B3%E6%BB%91%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Kafka节点平滑迁移步骤">
+                    <img class="thumbnail" src="/logo/kafka.jpg" alt="Kafka节点平滑迁移">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-23T12:31:28.532Z">2020-04-23</time></div>
-                    <a href="/2020/04/23/Kafka%E8%8A%82%E7%82%B9%E5%B9%B3%E6%BB%91%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/" class="has-link-black-ter is-size-6">Kafka节点平滑迁移步骤</a>
+                    <a href="/2020/04/23/Kafka%E8%8A%82%E7%82%B9%E5%B9%B3%E6%BB%91%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/" class="has-link-black-ter is-size-6">Kafka节点平滑迁移</a>
                     <p class="is-size-7 is-uppercase">
-                        
+                        <a class="has-link-grey -link" href="/categories/kafka/">kafka</a>
                     </p>
                 </div>
             </div>
@@ -1182,7 +1286,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/java/">
                         <span class="tag">java</span>
-                        <span class="tag is-grey">3</span>
+                        <span class="tag is-grey">4</span>
                     </a>
                 </div>
                 
