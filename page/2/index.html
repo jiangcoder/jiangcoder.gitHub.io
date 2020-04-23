@@ -168,6 +168,111 @@ var _hmt = _hmt || [];
         <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
     
     <div class="card-image">
+        <a href="/2020/03/06/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/java.jpg" alt="lambda表达式">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-03-06T08:54:58.317Z">2020-03-06</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-03-06 16:54:58&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-03-06T08:54:58.317Z">2020-03-06</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/java/">java</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    3 分钟 读完 (大约 455 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/03/06/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">lambda表达式</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><h2 id="一，排序"><a href="#一，排序" class="headerlink" title="一，排序"></a>一，排序</h2><p>对数组从小到大排序</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sortUsingLambda</span><span class="hljs-params">(List<Integer> indexs)</span> </span>{</span><br><span class="line">    Collections.sort(indexs, (s1, s2) -> s1.compareTo(s2));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>更简洁的实现方式</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sortUsingLambda</span><span class="hljs-params">(List<Integer> indexs)</span> </span>{</span><br><span class="line">    Collections.sort(indexs, Integer::compareTo);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>对数组从小到大排序</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sortUsingLambda</span><span class="hljs-params">(List<Integer> indexs)</span> </span>{</span><br><span class="line">    Collections.sort(indexs, (s1, s2) -> s2.compareTo(s1));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>从小到大简洁实现</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sortUsingLambda</span><span class="hljs-params">(List<Integer> indexs)</span> </span>{</span><br><span class="line">    Collections.sort(indexs, Comparator.reverseOrder());</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="二，list转map"><a href="#二，list转map" class="headerlink" title="二，list转map"></a>二，list转map</h2><p><strong>①：取list中某2个字段作为Map的K,V</strong></p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> Map<Long, String> <span class="hljs-title">getIdNameMap</span><span class="hljs-params">(List<Account> accounts)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getId, Account::getUsername));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p><strong>②：将id和实体Bean做为K,V</strong></p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> Map<Long, Account> <span class="hljs-title">getIdAccountMap</span><span class="hljs-params">(List<Account> accounts)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getId, account -> account));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>或者这样写</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> Map<Long, Account> <span class="hljs-title">getIdAccountMap</span><span class="hljs-params">(List<Account> accounts)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getId, Function.identity()));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>account -> account是一个返回本身的lambda表达式，后面的使用Function接口中的一个默认方法代替，使整个方法更简洁优雅。<br><strong>③：key存在重复记录时处理</strong></p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> Map<String, Account> <span class="hljs-title">getNameAccountMap</span><span class="hljs-params">(List<Account> accounts)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getUsername, Function.identity(), (key1, key2) -> key2));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p><strong>④：使用某个具体的Map类来保存，如保存时使用LinkedHashMap</strong></p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> Map<String, Account> <span class="hljs-title">getNameAccountMap</span><span class="hljs-params">(List<Account> accounts)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getUsername, Function.identity(), (key1, key2) -> key2, LinkedHashMap::<span class="hljs-keyword">new</span>));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p><strong>⑤：List<object>转List<String,Map<String, String>><p></p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> Map<String,List<MCode>> getCodeListMap(){</span><br><span class="line">        <span class="hljs-keyword">if</span>(CollectionUtils.isEmpty(codeListMap)){</span><br><span class="line">                List<MCode> codeList = <span class="hljs-keyword">this</span>.getCodeList();</span><br><span class="line">                Set<String> keySet = codeList.stream().map(code -> code.getCodeKbn()).collect(Collectors.toSet());</span><br><span class="line">                Iterator<String> it = keySet.iterator();</span><br><span class="line">                <span class="hljs-keyword">while</span>(it.hasNext()) {</span><br><span class="line">                        String key = it.next();</span><br><span class="line">                        codeListMap.put(key, codeList.stream().filter(code -> code.getCodeKbn().equals(key)).collect(Collectors.toList()));</span><br><span class="line">                }</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">return</span> codeListMap;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>三，Map转List</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Map<String, String> map = <span class="hljs-keyword">new</span> HashMap<>();</span><br><span class="line"><span class="hljs-comment">// Convert all Map keys to a List</span></span><br><span class="line">List<String> result = <span class="hljs-keyword">new</span> ArrayList(map.keySet());</span><br><span class="line"><span class="hljs-comment">// Convert all Map values to a List</span></span><br><span class="line">List<String> result2 = <span class="hljs-keyword">new</span> ArrayList(map.values());</span><br><span class="line"><span class="hljs-comment">// Java 8, Convert all Map keys to a List</span></span><br><span class="line">List<String> result3 = map.keySet().stream()</span><br><span class="line">	.collect(Collectors.toList());</span><br><span class="line"><span class="hljs-comment">// Java 8, Convert all Map values  to a List</span></span><br><span class="line">List<String> result4 = map.values().stream()</span><br><span class="line">	.collect(Collectors.toList());</span><br><span class="line"><span class="hljs-comment">// Java 8, seem a bit long, but you can enjoy the Stream features like filter and etc.</span></span><br><span class="line">List<String> result5 = map.values().stream()</span><br><span class="line">	.filter(x -> !<span class="hljs-string">"apple"</span>.equalsIgnoreCase(x))</span><br><span class="line">	.collect(Collectors.toList());</span><br><span class="line"><span class="hljs-comment">// Java 8, split a map into 2 List, it works!</span></span><br><span class="line"><span class="hljs-comment">// refer example 3 below</span></span><br></pre></td></tr></tbody></table></figure>
+
+</object></strong></p></body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
         <a href="/2020/02/26/jvm-GC-and-GC-Tuning/" class="image is-7by1">
             <img class="thumbnail" src="/logo/java.jpg" alt="Git如何回退版本">
         </a>
@@ -537,7 +642,7 @@ var _hmt = _hmt || [];
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        11
+                        12
                     </p>
                 </div>
             </div>
@@ -715,6 +820,25 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2020/04/23/Kafka%E8%8A%82%E7%82%B9%E5%B9%B3%E6%BB%91%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Kafka节点平滑迁移步骤">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-23T12:31:28.532Z">2020-04-23</time></div>
+                    <a href="/2020/04/23/Kafka%E8%8A%82%E7%82%B9%E5%B9%B3%E6%BB%91%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/" class="has-link-black-ter is-size-6">Kafka节点平滑迁移步骤</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/03/28/Linux%E7%B3%BB%E7%BB%9F%E4%B9%8B%E7%94%A8%E6%88%B7%E6%80%81%E3%80%81%E5%86%85%E6%A0%B8%E6%80%81/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/logo/qiye.jpeg" alt="Linux系统之用户态、内核态">
@@ -784,25 +908,6 @@ var _hmt = _hmt || [];
                     <a href="/2020/03/22/%E3%80%8A%E5%8F%AF%E5%A4%8D%E5%88%B6%E7%9A%84%E9%A2%86%E5%AF%BC%E5%8A%9B%E3%80%8B%E8%AF%BB%E5%90%8E%E6%9C%89%E6%84%9F/" class="has-link-black-ter is-size-6">《可复制的领导力》读后有感</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/%E4%BA%BA%E6%96%87/">人文</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/03/20/Elasticsearch%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="Elasticsearch负载高问题排查">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-20T13:35:30.731Z">2020-03-20</time></div>
-                    <a href="/2020/03/20/Elasticsearch%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" class="has-link-black-ter is-size-6">Elasticsearch负载高问题排查</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
                     </p>
                 </div>
             </div>
@@ -880,6 +985,25 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2020/04/23/Kafka%E8%8A%82%E7%82%B9%E5%B9%B3%E6%BB%91%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Kafka节点平滑迁移步骤">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-23T12:31:28.532Z">2020-04-23</time></div>
+                    <a href="/2020/04/23/Kafka%E8%8A%82%E7%82%B9%E5%B9%B3%E6%BB%91%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/" class="has-link-black-ter is-size-6">Kafka节点平滑迁移步骤</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/03/28/Linux%E7%B3%BB%E7%BB%9F%E4%B9%8B%E7%94%A8%E6%88%B7%E6%80%81%E3%80%81%E5%86%85%E6%A0%B8%E6%80%81/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/logo/qiye.jpeg" alt="Linux系统之用户态、内核态">
@@ -949,25 +1073,6 @@ var _hmt = _hmt || [];
                     <a href="/2020/03/22/%E3%80%8A%E5%8F%AF%E5%A4%8D%E5%88%B6%E7%9A%84%E9%A2%86%E5%AF%BC%E5%8A%9B%E3%80%8B%E8%AF%BB%E5%90%8E%E6%9C%89%E6%84%9F/" class="has-link-black-ter is-size-6">《可复制的领导力》读后有感</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/%E4%BA%BA%E6%96%87/">人文</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/03/20/Elasticsearch%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="Elasticsearch负载高问题排查">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-20T13:35:30.731Z">2020-03-20</time></div>
-                    <a href="/2020/03/20/Elasticsearch%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" class="has-link-black-ter is-size-6">Elasticsearch负载高问题排查</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
                     </p>
                 </div>
             </div>

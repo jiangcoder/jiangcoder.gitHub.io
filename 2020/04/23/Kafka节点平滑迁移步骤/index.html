@@ -2,26 +2,23 @@
 <html  lang="zh">
 <head>
     <meta charset="utf-8">
-<title>lambda表达式 - 永远年轻，永远热泪盈眶</title>
+<title>Kafka节点平滑迁移步骤 - 永远年轻，永远热泪盈眶</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 
 
     
-    <meta name="description" content="一，排序对数组从小到大排序 123public void sortUsingLambda(List indexs) {    Collections.sort(indexs, (s1, s2) -&gt; s1.compareTo(s2));} 更简洁的实现方式 123public void sortUsingLambda(List indexs) {    Collections.sort(index">
+    <meta name="description" content="一，查看所有的topic1bin&#x2F;kafka-topics.sh --zookeeper ip:port --list  二，将topic组装为JSON格式kafka后台脚本只支持如下JSON格式节点迁移 1234567{  &quot;topics&quot;: [    {      &quot;topic&quot;: &quot;plat_order_core_dubbo_access_topic&quot;    }  ],  &quot;version&quot;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="lambda表达式">
-<meta property="og:url" content="https://jiangcoder.github.io/2020/03/06/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/index.html">
+<meta property="og:title" content="Kafka节点平滑迁移步骤">
+<meta property="og:url" content="https://jiangcoder.github.io/2020/04/23/Kafka%E8%8A%82%E7%82%B9%E5%B9%B3%E6%BB%91%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/index.html">
 <meta property="og:site_name" content="永远年轻，永远热泪盈眶">
-<meta property="og:description" content="一，排序对数组从小到大排序 123public void sortUsingLambda(List indexs) {    Collections.sort(indexs, (s1, s2) -&gt; s1.compareTo(s2));} 更简洁的实现方式 123public void sortUsingLambda(List indexs) {    Collections.sort(index">
+<meta property="og:description" content="一，查看所有的topic1bin&#x2F;kafka-topics.sh --zookeeper ip:port --list  二，将topic组装为JSON格式kafka后台脚本只支持如下JSON格式节点迁移 1234567{  &quot;topics&quot;: [    {      &quot;topic&quot;: &quot;plat_order_core_dubbo_access_topic&quot;    }  ],  &quot;version&quot;">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://jiangcoder.github.io/logo/java.jpg">
-<meta property="article:published_time" content="2020-03-06T08:54:58.317Z">
-<meta property="article:modified_time" content="2020-03-22T07:40:21.675Z">
+<meta property="article:published_time" content="2020-04-23T12:31:28.532Z">
+<meta property="article:modified_time" content="2020-04-23T12:31:28.532Z">
 <meta property="article:author" content="姜涛">
-<meta property="article:tag" content="java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://jiangcoder.github.io/logo/java.jpg">
 
 
 
@@ -113,7 +110,7 @@ var _hmt = _hmt || [];
 
                 <!--update by thank: 修改logo方式-->
                 <!--<img src="/images/maotouying.svg" alt="蜗居年华" height="28">-->
-                <img src="https://avatars2.githubusercontent.com/u/8393744?s=400&u=6ff7deb174a4e34b1b1b6291aaccbdc23eb40b14&v=4" alt="lambda表达式" height="28">
+                <img src="https://avatars2.githubusercontent.com/u/8393744?s=400&u=6ff7deb174a4e34b1b1b6291aaccbdc23eb40b14&v=4" alt="Kafka节点平滑迁移步骤" height="28">
                 <span style="font-size: 16px; display: inline-block; vertical-align: top; font-weight: 600;"></span>
                 <!--
             % if (has_config('logo.text') && get_config('logo.text')) { 
@@ -182,23 +179,19 @@ var _hmt = _hmt || [];
 
                 <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
                 
-                <span style="color: #7a7a7a !important;">写于2020-03-06 16:54:58&nbsp;&nbsp;&nbsp;</span>
+                <span style="color: #7a7a7a !important;">写于2020-04-23 20:31:28&nbsp;&nbsp;&nbsp;</span>
                 
 
-                <!--<span style="color: #7a7a7a !important;">2020-03-06 16:54:58&nbsp;&nbsp;&nbsp;</span>-->
-                <!--<time class="level-item has-text-grey" datetime="2020-03-06T08:54:58.317Z">2020-03-06</time>-->
+                <!--<span style="color: #7a7a7a !important;">2020-04-23 20:31:28&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-04-23T12:31:28.532Z">2020-04-23</time>-->
                 <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
 
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/java/">java</a>
-                </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    3 分钟 读完 (大约 455 个字)
+                    3 分钟 读完 (大约 426 个字)
                 </span>
                 
 
@@ -213,7 +206,7 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                lambda表达式
+                Kafka节点平滑迁移步骤
             
         </h1>
 
@@ -221,32 +214,23 @@ var _hmt = _hmt || [];
 
             <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
             
-                <html><head></head><body><h2 id="一，排序"><a href="#一，排序" class="headerlink" title="一，排序"></a>一，排序</h2><p>对数组从小到大排序</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sortUsingLambda</span><span class="hljs-params">(List<Integer> indexs)</span> </span>{</span><br><span class="line">    Collections.sort(indexs, (s1, s2) -> s1.compareTo(s2));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>更简洁的实现方式</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sortUsingLambda</span><span class="hljs-params">(List<Integer> indexs)</span> </span>{</span><br><span class="line">    Collections.sort(indexs, Integer::compareTo);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>对数组从小到大排序</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sortUsingLambda</span><span class="hljs-params">(List<Integer> indexs)</span> </span>{</span><br><span class="line">    Collections.sort(indexs, (s1, s2) -> s2.compareTo(s1));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>从小到大简洁实现</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sortUsingLambda</span><span class="hljs-params">(List<Integer> indexs)</span> </span>{</span><br><span class="line">    Collections.sort(indexs, Comparator.reverseOrder());</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+                <html><head></head><body><h2 id="一，查看所有的topic"><a href="#一，查看所有的topic" class="headerlink" title="一，查看所有的topic"></a>一，查看所有的topic</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --zookeeper ip:port --list</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="二，list转map"><a href="#二，list转map" class="headerlink" title="二，list转map"></a>二，list转map</h2><p><strong>①：取list中某2个字段作为Map的K,V</strong></p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> Map<Long, String> <span class="hljs-title">getIdNameMap</span><span class="hljs-params">(List<Account> accounts)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getId, Account::getUsername));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p><strong>②：将id和实体Bean做为K,V</strong></p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> Map<Long, Account> <span class="hljs-title">getIdAccountMap</span><span class="hljs-params">(List<Account> accounts)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getId, account -> account));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>或者这样写</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> Map<Long, Account> <span class="hljs-title">getIdAccountMap</span><span class="hljs-params">(List<Account> accounts)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getId, Function.identity()));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>account -> account是一个返回本身的lambda表达式，后面的使用Function接口中的一个默认方法代替，使整个方法更简洁优雅。<br><strong>③：key存在重复记录时处理</strong></p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> Map<String, Account> <span class="hljs-title">getNameAccountMap</span><span class="hljs-params">(List<Account> accounts)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getUsername, Function.identity(), (key1, key2) -> key2));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p><strong>④：使用某个具体的Map类来保存，如保存时使用LinkedHashMap</strong></p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> Map<String, Account> <span class="hljs-title">getNameAccountMap</span><span class="hljs-params">(List<Account> accounts)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> accounts.stream().collect(Collectors.toMap(Account::getUsername, Function.identity(), (key1, key2) -> key2, LinkedHashMap::<span class="hljs-keyword">new</span>));</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p><strong>⑤：List<object>转List<String,Map<String, String>><p></p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> Map<String,List<MCode>> getCodeListMap(){</span><br><span class="line">        <span class="hljs-keyword">if</span>(CollectionUtils.isEmpty(codeListMap)){</span><br><span class="line">                List<MCode> codeList = <span class="hljs-keyword">this</span>.getCodeList();</span><br><span class="line">                Set<String> keySet = codeList.stream().map(code -> code.getCodeKbn()).collect(Collectors.toSet());</span><br><span class="line">                Iterator<String> it = keySet.iterator();</span><br><span class="line">                <span class="hljs-keyword">while</span>(it.hasNext()) {</span><br><span class="line">                        String key = it.next();</span><br><span class="line">                        codeListMap.put(key, codeList.stream().filter(code -> code.getCodeKbn().equals(key)).collect(Collectors.toList()));</span><br><span class="line">                }</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">return</span> codeListMap;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="二，将topic组装为JSON格式"><a href="#二，将topic组装为JSON格式" class="headerlink" title="二，将topic组装为JSON格式"></a>二，将topic组装为JSON格式</h2><p>kafka后台脚本只支持如下JSON格式节点迁移</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">  <span class="hljs-string">"topics"</span>: [</span><br><span class="line">    {</span><br><span class="line">      <span class="hljs-string">"topic"</span>: <span class="hljs-string">"plat_order_core_dubbo_access_topic"</span></span><br><span class="line">    }  ],</span><br><span class="line">  <span class="hljs-string">"version"</span>: <span class="hljs-number">1</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>生成该格式代码，可参考使用如下Java代码</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> com.alibaba.fastjson.JSONObject;</span><br><span class="line"><span class="hljs-keyword">import</span> com.google.common.collect.Lists;</span><br><span class="line"><span class="hljs-keyword">import</span> org.apache.commons.lang3.StringUtils;</span><br><span class="line"> </span><br><span class="line"><span class="hljs-keyword">import</span> java.io.BufferedReader;</span><br><span class="line"><span class="hljs-keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="hljs-keyword">import</span> java.io.InputStreamReader;</span><br><span class="line"><span class="hljs-keyword">import</span> java.nio.charset.StandardCharsets;</span><br><span class="line"><span class="hljs-keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="hljs-keyword">import</span> java.util.List;</span><br><span class="line"> </span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Topic2JsonUtil</span> </span>{</span><br><span class="line"> </span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{</span><br><span class="line">        List<String> topicList = readFileAsListFromJarPath(<span class="hljs-string">"topic.txt"</span>);</span><br><span class="line">        List<JSONObject> topicJsonList = Lists.newArrayList();</span><br><span class="line">        topicList.forEach(topic -> {</span><br><span class="line">            JSONObject topicJson = <span class="hljs-keyword">new</span> JSONObject();</span><br><span class="line">            topicJson.put(<span class="hljs-string">"topic"</span>, topic);</span><br><span class="line">            topicJsonList.add(topicJson);</span><br><span class="line">        });</span><br><span class="line">        JSONObject resultJson = <span class="hljs-keyword">new</span> JSONObject();</span><br><span class="line">        resultJson.put(<span class="hljs-string">"topics"</span>, topicJsonList);</span><br><span class="line">        System.out.println(resultJson);</span><br><span class="line">    }</span><br><span class="line"> </span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> List<String> <span class="hljs-title">readFileAsListFromJarPath</span><span class="hljs-params">(String fileName)</span> </span>{</span><br><span class="line">        List<String> result = <span class="hljs-keyword">new</span> ArrayList<>();</span><br><span class="line">        <span class="hljs-keyword">try</span> {</span><br><span class="line">            InputStream inputStream = Topic2JsonUtil<span class="hljs-class">.<span class="hljs-keyword">class</span>.<span class="hljs-title">getClassLoader</span>().<span class="hljs-title">getResourceAsStream</span>(<span class="hljs-title">fileName</span>)</span>;</span><br><span class="line">            BufferedReader reader = <span class="hljs-keyword">new</span> BufferedReader(<span class="hljs-keyword">new</span> InputStreamReader(inputStream, StandardCharsets.UTF_8));</span><br><span class="line">            String line;</span><br><span class="line">            <span class="hljs-keyword">while</span> ((line = reader.readLine()) != <span class="hljs-keyword">null</span>) {</span><br><span class="line">                <span class="hljs-keyword">if</span> (StringUtils.isNotBlank(line)) {</span><br><span class="line">                    result.add(line);</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">            reader.close();</span><br><span class="line">        } <span class="hljs-keyword">catch</span> (Exception e) {</span><br><span class="line">            LogUtil.ROOT.error(<span class="hljs-string">""</span>, e);</span><br><span class="line">        }</span><br><span class="line">        StringBuilder builder = <span class="hljs-keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="hljs-keyword">if</span> (result.size() != <span class="hljs-number">0</span>) {</span><br><span class="line">            result.forEach(builder::append);</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">return</span> result;</span><br><span class="line">    }</span><br><span class="line"> </span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>三，Map转List</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Map<String, String> map = <span class="hljs-keyword">new</span> HashMap<>();</span><br><span class="line"><span class="hljs-comment">// Convert all Map keys to a List</span></span><br><span class="line">List<String> result = <span class="hljs-keyword">new</span> ArrayList(map.keySet());</span><br><span class="line"><span class="hljs-comment">// Convert all Map values to a List</span></span><br><span class="line">List<String> result2 = <span class="hljs-keyword">new</span> ArrayList(map.values());</span><br><span class="line"><span class="hljs-comment">// Java 8, Convert all Map keys to a List</span></span><br><span class="line">List<String> result3 = map.keySet().stream()</span><br><span class="line">	.collect(Collectors.toList());</span><br><span class="line"><span class="hljs-comment">// Java 8, Convert all Map values  to a List</span></span><br><span class="line">List<String> result4 = map.values().stream()</span><br><span class="line">	.collect(Collectors.toList());</span><br><span class="line"><span class="hljs-comment">// Java 8, seem a bit long, but you can enjoy the Stream features like filter and etc.</span></span><br><span class="line">List<String> result5 = map.values().stream()</span><br><span class="line">	.filter(x -> !<span class="hljs-string">"apple"</span>.equalsIgnoreCase(x))</span><br><span class="line">	.collect(Collectors.toList());</span><br><span class="line"><span class="hljs-comment">// Java 8, split a map into 2 List, it works!</span></span><br><span class="line"><span class="hljs-comment">// refer example 3 below</span></span><br></pre></td></tr></tbody></table></figure>
-
-</object></strong></p></body></html>
+<h2 id="三，生成迁移计划"><a href="#三，生成迁移计划" class="headerlink" title="三，生成迁移计划"></a>三，生成迁移计划</h2><p>使用如下命令生成迁移计划<br>如下示例代表将topic所有的节点数据重新路由到4、5、6节点上，并将迁移计划输出到plan-move.json文件中</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/kafka-reassign-partitions.sh --zookeeper ip:port --topics-to-move-json-file  topics-to-move.json  --broker-list  <span class="hljs-string">"4,5,6"</span>  --generate  > plan-move.json</span><br></pre></td></tr></tbody></table></figure>
+<p>生成的计划格式化后如下：</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Current partition replica assignment</span><br><span class="line">{</span><br><span class="line">	<span class="hljs-string">"version"</span>: <span class="hljs-number">1</span>,</span><br><span class="line">	<span class="hljs-string">"partitions"</span>: [{</span><br><span class="line">		<span class="hljs-string">"topic"</span>: <span class="hljs-string">"erp_java_topic"</span>,</span><br><span class="line">		<span class="hljs-string">"partition"</span>: <span class="hljs-number">9</span>,</span><br><span class="line">		<span class="hljs-string">"replicas"</span>: [<span class="hljs-number">12</span>, <span class="hljs-number">11</span>, <span class="hljs-number">13</span>, <span class="hljs-number">1</span>],</span><br><span class="line">		<span class="hljs-string">"log_dirs"</span>: [<span class="hljs-string">"any"</span>, <span class="hljs-string">"any"</span>, <span class="hljs-string">"any"</span>, <span class="hljs-string">"any"</span>]</span><br><span class="line">	}]</span><br><span class="line">}</span><br><span class="line">Proposed partition reassignment configuration</span><br><span class="line">{</span><br><span class="line">	<span class="hljs-string">"version"</span>: <span class="hljs-number">1</span>,</span><br><span class="line">	<span class="hljs-string">"partitions"</span>: [{</span><br><span class="line">		<span class="hljs-string">"topic"</span>: <span class="hljs-string">"erp_java_topic"</span>,</span><br><span class="line">		<span class="hljs-string">"partition"</span>: <span class="hljs-number">9</span>,</span><br><span class="line">		<span class="hljs-string">"replicas"</span>: [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>],</span><br><span class="line">		<span class="hljs-string">"log_dirs"</span>: [<span class="hljs-string">"any"</span>, <span class="hljs-string">"any"</span>, <span class="hljs-string">"any"</span>, <span class="hljs-string">"any"</span>]</span><br><span class="line">	}]</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>保留迁移计划JSON，即下面的JSON内容；</p>
+<h2 id="四，执行迁移计划"><a href="#四，执行迁移计划" class="headerlink" title="四，执行迁移计划"></a>四，执行迁移计划</h2><p>执行迁移计划</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/kafka-reassign-partitions.sh --zookeeper ip:port --reassignment-json-file plan-move.json --execute</span><br></pre></td></tr></tbody></table></figure>
+<p>查看迁移进度</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/kafka-reassign-partitions.sh --zookeeper ip:port --reassignment-json-file plan-move.json --verify</span><br></pre></td></tr></tbody></table></figure>
+</body></html>
             
 
             <!--%- index && post.excerpt ? post.excerpt : post.content %-->
@@ -254,25 +238,16 @@ var _hmt = _hmt || [];
 
         
             <ul class="post-copyright">
-                <li><strong>本文标题：</strong><a href="https://jiangcoder.github.io/2020/03/06/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">lambda表达式</a></li>
+                <li><strong>本文标题：</strong><a href="https://jiangcoder.github.io/2020/04/23/Kafka%E8%8A%82%E7%82%B9%E5%B9%B3%E6%BB%91%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/">Kafka节点平滑迁移步骤</a></li>
                 <li><strong>本文作者：</strong><a href="https://jiangcoder.github.io">姜涛</a></li>
-                <li><strong>本文链接：</strong><a href="https://jiangcoder.github.io/2020/03/06/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">https://jiangcoder.github.io/2020/03/06/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/</a></li>
-                <li><strong>发布时间：</strong>2020-03-06</li>
+                <li><strong>本文链接：</strong><a href="https://jiangcoder.github.io/2020/04/23/Kafka%E8%8A%82%E7%82%B9%E5%B9%B3%E6%BB%91%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/">https://jiangcoder.github.io/2020/04/23/Kafka%E8%8A%82%E7%82%B9%E5%B9%B3%E6%BB%91%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/</a></li>
+                <li><strong>发布时间：</strong>2020-04-23</li>
                 <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
                 </li>
             </ul>
         
 
 
-        
-        <div class="level is-size-7 is-uppercase">
-            <div class="level-start">
-                <div class="level-item">
-                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/java/" rel="tag">java</a>
-                </div>
-            </div>
-        </div>
         
         
 
@@ -293,17 +268,10 @@ var _hmt = _hmt || [];
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/03/06/ElasticSearch%E4%B9%8B%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">ElasticSearch之索引模板</span>
-            </a>
-        </div>
-        
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2020/02/26/jvm-GC-and-GC-Tuning/">
-                <span class="level-item">Git如何回退版本</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/03/28/Linux%E7%B3%BB%E7%BB%9F%E4%B9%8B%E7%94%A8%E6%88%B7%E6%80%81%E3%80%81%E5%86%85%E6%A0%B8%E6%80%81/">
+                <span class="level-item">Linux系统之用户态、内核态</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -457,13 +425,21 @@ var _hmt = _hmt || [];
                 文章目录
             </h3>
             <ul class="menu-list"><li>
-        <a class="is-flex" href="#一，排序">
+        <a class="is-flex" href="#一，查看所有的topic">
         <span class="has-mr-6">1</span>
-        <span>一，排序</span>
+        <span>一，查看所有的topic</span>
         </a></li><li>
-        <a class="is-flex" href="#二，list转map">
+        <a class="is-flex" href="#二，将topic组装为JSON格式">
         <span class="has-mr-6">2</span>
-        <span>二，list转map</span>
+        <span>二，将topic组装为JSON格式</span>
+        </a></li><li>
+        <a class="is-flex" href="#三，生成迁移计划">
+        <span class="has-mr-6">3</span>
+        <span>三，生成迁移计划</span>
+        </a></li><li>
+        <a class="is-flex" href="#四，执行迁移计划">
+        <span class="has-mr-6">4</span>
+        <span>四，执行迁移计划</span>
         </a></li></ul>
         </div>
     </div>
@@ -487,7 +463,7 @@ var _hmt = _hmt || [];
             <div class="level-start has-text-centered-mobile">
                 <!-- <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/%5Bobject%20Object%5D" alt="lambda表达式" height="28">
+                    <img src="/%5Bobject%20Object%5D" alt="Kafka节点平滑迁移步骤" height="28">
                 
                 </a> -->
                 <p class="is-size-7">
