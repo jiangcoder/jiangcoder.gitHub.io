@@ -179,6 +179,122 @@ var _hmt = _hmt || [];
         <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
     
     <div class="card-image">
+        <a href="/2020/05/11/Elasticsearch%E4%B9%8BDoc%20Values/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="Elasticsearch 之Doc Values">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-05-11T13:10:14.655Z">2020-05-11</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-05-11 21:10:14&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-05-11T13:10:14.655Z">2020-05-11</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    11 分钟 读完 (大约 1703 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/05/11/Elasticsearch%E4%B9%8BDoc%20Values/">Elasticsearch 之Doc Values</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><h2 id="一，Elasticsearch之keyword和text"><a href="#一，Elasticsearch之keyword和text" class="headerlink" title="一，Elasticsearch之keyword和text"></a>一，Elasticsearch之keyword和text</h2><p>Elasticsearch 5.0.0 版本之后 将string拆分成两个新的类型: text和keyword.</p>
+<p>Keyword类型:</p>
+<p>用于存储邮箱号码、手机号码、主机名、状态码、邮政编码、标签、年龄、性别等数据。<br>用于筛选数据(例如: select * from x where status=’open’)、排序、聚合(统计)。<br>直接将完整的文本保存到倒排索引中。<br>Text类型:</p>
+<p>用于存储全文搜索数据, 例如: 邮箱内容、地址、代码块、博客文章内容等。<br>默认结合standard analyzer(标准解析器)对文本进行分词、倒排索引。<br>默认结合标准分析器进行词命中、词频相关度打分。</p>
+<h2 id="二，Elasticsearch之Doc-Values"><a href="#二，Elasticsearch之Doc-Values" class="headerlink" title="二，Elasticsearch之Doc Values"></a>二，Elasticsearch之Doc Values</h2><p>正排索引：是以文档的ID为关键字，表中记录文档中每个字段的值信息，主要场景是通过查询id来把整条文档拿出来；</p>
+<p>Doc Values数据结构如下：</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Doc      Terms</span><br><span class="line">-----------------------------------------------------------------</span><br><span class="line">Doc_1 | brown, dog, fox, jumped, lazy, over, quick, the</span><br><span class="line">Doc_2 | brown, dogs, foxes, in, lazy, leap, over, quick, summer</span><br><span class="line">Doc_3 | dog, dogs, fox, jumped, over, quick, the</span><br><span class="line">-----------------------------------------------------------------</span><br></pre></td></tr></tbody></table></figure>
+
+<p>倒排索引：以字或词为关键字进行索引，表中关键字所对应的记录项记录了出现这个字或词的所有文档；</p>
+<p>倒排索引数据结构如下：</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Term      Doc_1   Doc_2   Doc_3</span><br><span class="line">------------------------------------</span><br><span class="line">brown   |   X   |   X   |</span><br><span class="line">dog     |   X   |       |   X</span><br><span class="line">dogs    |       |   X   |   X</span><br><span class="line">fox     |   X   |       |   X</span><br><span class="line">foxes   |       |   X   |</span><br><span class="line">in      |       |   X   |</span><br><span class="line">jumped  |   X   |       |   X</span><br><span class="line">lazy    |   X   |   X   |</span><br><span class="line">leap    |       |   X   |</span><br><span class="line">over    |   X   |   X   |   X</span><br><span class="line">quick   |   X   |   X   |   X</span><br><span class="line">summer  |       |   X   |</span><br><span class="line">the     |   X   |       |   X</span><br><span class="line">------------------------------------</span><br></pre></td></tr></tbody></table></figure>
+
+<p>正排索引广泛应用在聚合、排序、访问字段值的脚本，父子关系处理（参见 父-子关系文档 ）等方面；</p>
+<h2 id="三，Doc-Values-启用"><a href="#三，Doc-Values-启用" class="headerlink" title="三，Doc Values 启用"></a>三，Doc Values 启用</h2><p>Doc Values 是在索引时与 倒排索引 同时生成。也就是说 Doc Values 和 倒排索引 一样，基于 Segement 生成并且是不可变的。同时 Doc Values 和 倒排索引 一样序列化到磁盘，这样对性能和扩展性有很大帮助。</p>
+<p>Doc Values 通过序列化把数据结构持久化到磁盘，我们可以充分利用操作系统的内存，而不是 JVM 的 Heap 。 当 working set 远小于系统的可用内存，系统会自动将 Doc Values 驻留在内存中，使得其读写十分快速；不过，当其远大于可用内存时，系统会根据需要从磁盘读取 Doc Values，然后选择性放到分页缓存中。很显然，这样性能会比在内存中差很多，但是它的大小就不再局限于服务器的内存了。如果是使用 JVM 的 Heap 来实现那么只能是因为 OutOfMemory 导致程序崩溃了。  </p>
+<p>因为 Doc Values 不是由 JVM 来管理，所以 Elasticsearch 实例可以配置一个很小的 JVM Heap，这样给系统留出来更多的内存。同时更小的 Heap 可以让 JVM 更加快速和高效的回收。</p>
+<p>之前，我们会建议分配机器内存的 50% 来给 JVM Heap。但是对于 Doc Values，这样可能不是最合适的方案了。 以 64gb 内存的机器为例，可能给 Heap 分配 4-16gb 的内存更合适，而不是 32gb。</p>
+<p>有关更详细的讨论，查看 堆内存:大小和交换.</p>
+<p>Doc Values 默认对所有字段启用，除了 analyzed strings。也就是说所有的数字、地理坐标、日期、IP 和不分析（ not_analyzed ）字符类型都会默认开启。</p>
+<h2 id="四，Doc-Values-实现细节"><a href="#四，Doc-Values-实现细节" class="headerlink" title="四，Doc Values 实现细节"></a>四，Doc Values 实现细节</h2><p>从广义来说，Doc Values 本质上是一个序列化的 列式存储 。 正如我们上一节所讨论的，列式存储 适用于聚合、排序、脚本等操作。</p>
+<p>而且，这种存储方式也非常便于压缩，特别是数字类型。这样可以减少磁盘空间并且提高访问速度。现代 CPU 的处理速度要比磁盘快几个数量级（尽管即将到来的 NVMe 驱动器正在迅速缩小差距）。所以我们必须减少直接存磁盘读取数据的大小，尽管需要额外消耗 CPU 运算用来进行解压。</p>
+<p>要了解它如何压缩数据的，来看一组数字类型的 Doc Values：</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Doc      Terms</span><br><span class="line">-----------------------------------------------------------------</span><br><span class="line">Doc_1 | <span class="hljs-number">100</span></span><br><span class="line">Doc_2 | <span class="hljs-number">1000</span></span><br><span class="line">Doc_3 | <span class="hljs-number">1500</span></span><br><span class="line">Doc_4 | <span class="hljs-number">1200</span></span><br><span class="line">Doc_5 | <span class="hljs-number">300</span></span><br><span class="line">Doc_6 | <span class="hljs-number">1900</span></span><br><span class="line">Doc_7 | <span class="hljs-number">4200</span></span><br><span class="line">-----------------------------------------------------------------</span><br></pre></td></tr></tbody></table></figure>
+
+<p>按列布局意味着我们有一个连续的数据块： [100,1000,1500,1200,300,1900,4200] 。因为我们已经知道他们都是数字（而不是像文档或行中看到的异构集合），所以我们可以使用统一的偏移来将他们紧紧排列。</p>
+<p>而且，针对这样的数字有很多种压缩技巧。你会注意到这里每个数字都是 100 的倍数，Doc Values 会检测一个段里面的所有数值，并使用一个 最大公约数 ，方便做进一步的数据压缩。</p>
+<p>如果我们保存 100 作为此段的除数，我们可以对每个数字都除以 100，然后得到： [1,10,15,12,3,19,42] 。现在这些数字变小了，只需要很少的位就可以存储下，也减少了磁盘存放的大小。</p>
+<p>Doc Values 在压缩过程中使用如下技巧。它会按依次检测以下压缩模式:</p>
+<p>如果所有的数值各不相同（或缺失），设置一个标记并记录这些值<br>如果这些值小于 256，将使用一个简单的编码表<br>如果这些值大于 256，检测是否存在一个最大公约数<br>如果没有存在最大公约数，从最小的数值开始，统一计算偏移量进行编码<br>你会发现这些压缩模式不是传统的通用的压缩方式，比如 DEFLATE 或是 LZ4。 因为列式存储的结构是严格且良好定义的，我们可以通过使用专门的模式来达到比通用压缩算法（如 LZ4 ）更高的压缩效果。</p>
+<h2 id="五，Doc-Values-使用注意的问题"><a href="#五，Doc-Values-使用注意的问题" class="headerlink" title="五，Doc Values 使用注意的问题"></a>五，Doc Values 使用注意的问题</h2><p>除数字外，keyword类型默认也开启了Doc Values ，此时必须注意size必须<= 32766，如果超出，则回提示如下错误</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.IllegalArgumentException: DocValuesField <span class="hljs-string">"xxx"</span> is too large, must be <= <span class="hljs-number">32766</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>象形文字字符(中文、韩文、日文): 10922 个字符(算法是: 32766 / 3).<br>Literal字符(印度语、俄文): 16383 个字符(算法是: 32766 / 2).<br>ASCII字符(a-zA-Z0-9以及~!@#$等特殊字符): 32766个字符(算法是: 32766).</p>
+<p>通过关闭Doc Values特性，可以解决该问题</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="hljs-string">"content"</span>: {</span><br><span class="line">  <span class="hljs-string">"type"</span>: <span class="hljs-string">"keyword"</span>,</span><br><span class="line">  <span class="hljs-string">"index"</span>: <span class="hljs-string">"no"</span>,</span><br><span class="line">  <span class="hljs-string">"store"</span>: <span class="hljs-string">"true"</span>,</span><br><span class="line">  <span class="hljs-string">"doc_values"</span>: <span class="hljs-string">"false"</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
         <a href="/2020/03/27/Elasticsearch%E5%AE%9A%E5%88%B6%E5%8C%96%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/" class="image is-7by1">
             <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="Elasticsearch定制化插件开发">
         </a>
@@ -767,7 +883,7 @@ var _hmt = _hmt || [];
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        12
+                        13
                     </p>
                 </div>
             </div>
@@ -882,7 +998,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">elasticsearch</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">5</span>
+                <span class="level-item tag">6</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/git/">
@@ -953,6 +1069,25 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2020/05/11/Elasticsearch%E4%B9%8BDoc%20Values/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="Elasticsearch 之Doc Values">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-11T13:10:14.655Z">2020-05-11</time></div>
+                    <a href="/2020/05/11/Elasticsearch%E4%B9%8BDoc%20Values/" class="has-link-black-ter is-size-6">Elasticsearch 之Doc Values</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/04/23/Kafka%E8%8A%82%E7%82%B9%E5%B9%B3%E6%BB%91%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/logo/kafka.jpg" alt="Kafka节点平滑迁移">
@@ -1027,25 +1162,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2020/03/22/%E3%80%8A%E5%8F%AF%E5%A4%8D%E5%88%B6%E7%9A%84%E9%A2%86%E5%AF%BC%E5%8A%9B%E3%80%8B%E8%AF%BB%E5%90%8E%E6%9C%89%E6%84%9F/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/ciqi.jpeg" alt="《可复制的领导力》读后有感">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-22T11:49:02.614Z">2020-03-22</time></div>
-                    <a href="/2020/03/22/%E3%80%8A%E5%8F%AF%E5%A4%8D%E5%88%B6%E7%9A%84%E9%A2%86%E5%AF%BC%E5%8A%9B%E3%80%8B%E8%AF%BB%E5%90%8E%E6%9C%89%E6%84%9F/" class="has-link-black-ter is-size-6">《可复制的领导力》读后有感</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/%E4%BA%BA%E6%96%87/">人文</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -1061,7 +1177,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/elasticsearch/">
                         <span class="tag">elasticsearch</span>
-                        <span class="tag is-grey">5</span>
+                        <span class="tag is-grey">6</span>
                     </a>
                 </div>
                 
@@ -1118,6 +1234,25 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2020/05/11/Elasticsearch%E4%B9%8BDoc%20Values/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="Elasticsearch 之Doc Values">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-11T13:10:14.655Z">2020-05-11</time></div>
+                    <a href="/2020/05/11/Elasticsearch%E4%B9%8BDoc%20Values/" class="has-link-black-ter is-size-6">Elasticsearch 之Doc Values</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/04/23/Kafka%E8%8A%82%E7%82%B9%E5%B9%B3%E6%BB%91%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/logo/kafka.jpg" alt="Kafka节点平滑迁移">
@@ -1192,25 +1327,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2020/03/22/%E3%80%8A%E5%8F%AF%E5%A4%8D%E5%88%B6%E7%9A%84%E9%A2%86%E5%AF%BC%E5%8A%9B%E3%80%8B%E8%AF%BB%E5%90%8E%E6%9C%89%E6%84%9F/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/ciqi.jpeg" alt="《可复制的领导力》读后有感">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-22T11:49:02.614Z">2020-03-22</time></div>
-                    <a href="/2020/03/22/%E3%80%8A%E5%8F%AF%E5%A4%8D%E5%88%B6%E7%9A%84%E9%A2%86%E5%AF%BC%E5%8A%9B%E3%80%8B%E8%AF%BB%E5%90%8E%E6%9C%89%E6%84%9F/" class="has-link-black-ter is-size-6">《可复制的领导力》读后有感</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/%E4%BA%BA%E6%96%87/">人文</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -1226,7 +1342,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/elasticsearch/">
                         <span class="tag">elasticsearch</span>
-                        <span class="tag is-grey">5</span>
+                        <span class="tag is-grey">6</span>
                     </a>
                 </div>
                 
