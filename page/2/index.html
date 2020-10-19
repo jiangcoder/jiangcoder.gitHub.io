@@ -168,6 +168,111 @@ var _hmt = _hmt || [];
         <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
     
     <div class="card-image">
+        <a href="/2020/03/06/Elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="Elasticsearch 搜索模块之preference参数">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-03-06T11:04:25.660Z">2020-03-06</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-03-06 19:04:25&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-03-06T11:04:25.660Z">2020-03-06</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    6 分钟 读完 (大约 939 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/03/06/Elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/">Elasticsearch 搜索模块之preference参数</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><p>##一，preference简述</p>
+<p>elasticsearch可以使用preference参数来指定分片查询的优先级，即我们可以通过该参数来控制搜索时的索引数据分片。</p>
+<p>如不设置该参数：在所有有效的主分片以及副本间轮询。</p>
+<p>具体可看下：OperationRouting.java类</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> ShardIterator <span class="hljs-title">activeInitializingShardsRandomIt</span><span class="hljs-params">()</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> activeInitializingShardsIt(shuffler.nextSeed());</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+
+<p>自增，以实现shard间轮询操作</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">nextSeed</span><span class="hljs-params">()</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> seed.getAndIncrement();</span><br><span class="line"> }</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> ShardIterator <span class="hljs-title">activeInitializingShardsIt</span><span class="hljs-params">(<span class="hljs-keyword">int</span> seed)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">if</span> (allInitializingShards.isEmpty()) {</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> PlainShardIterator(shardId, shuffler.shuffle(activeShards, seed));</span><br><span class="line">    }</span><br><span class="line">    ArrayList<ShardRouting> ordered = <span class="hljs-keyword">new</span> ArrayList<>(activeShards.size() + allInitializingShards.size());</span><br><span class="line">    ordered.addAll(shuffler.shuffle(activeShards, seed));</span><br><span class="line">    ordered.addAll(allInitializingShards);</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> PlainShardIterator(shardId, ordered);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">private</span> ShardIterator <span class="hljs-title">preferenceActiveShardIterator</span><span class="hljs-params">(IndexShardRoutingTable indexShard, String localNodeId, DiscoveryNodes nodes, @Nullable String preference)</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">if</span> (preference == <span class="hljs-keyword">null</span> || preference.isEmpty()) {</span><br><span class="line">            <span class="hljs-keyword">if</span> (awarenessAttributes.length == <span class="hljs-number">0</span>) {</span><br><span class="line">                <span class="hljs-keyword">return</span> indexShard.activeInitializingShardsRandomIt();</span><br><span class="line">            } <span class="hljs-keyword">else</span> {</span><br><span class="line">                <span class="hljs-keyword">return</span> indexShard.preferAttributesActiveInitializingShardsIt(awarenessAttributes, nodes);</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">if</span> (preference.charAt(<span class="hljs-number">0</span>) == <span class="hljs-string">'_'</span>) {</span><br><span class="line">            Preference preferenceType = Preference.parse(preference);</span><br><span class="line">            <span class="hljs-keyword">if</span> (preferenceType == Preference.SHARDS) {</span><br><span class="line">                <span class="hljs-comment">// starts with _shards, so execute on specific ones</span></span><br><span class="line">                <span class="hljs-keyword">int</span> index = preference.indexOf(<span class="hljs-string">'|'</span>);</span><br><span class="line">                String shards;</span><br><span class="line">                <span class="hljs-keyword">if</span> (index == -<span class="hljs-number">1</span>) {</span><br><span class="line">                    shards = preference.substring(Preference.SHARDS.type().length() + <span class="hljs-number">1</span>);</span><br><span class="line">                } <span class="hljs-keyword">else</span> {</span><br><span class="line">                    shards = preference.substring(Preference.SHARDS.type().length() + <span class="hljs-number">1</span>, index);</span><br><span class="line">                }</span><br><span class="line">                String ids = Strings.splitStringByCommaToArray(shards);</span><br><span class="line">                <span class="hljs-keyword">boolean</span> found = <span class="hljs-keyword">false</span>;</span><br><span class="line">                <span class="hljs-keyword">for</span> (String id : ids) {</span><br><span class="line">                    <span class="hljs-keyword">if</span> (Integer.parseInt(id) == indexShard.shardId().id()) {</span><br><span class="line">                        found = <span class="hljs-keyword">true</span>;</span><br><span class="line">                        <span class="hljs-keyword">break</span>;</span><br><span class="line">                    }</span><br><span class="line">                }</span><br><span class="line">                <span class="hljs-keyword">if</span> (!found) {</span><br><span class="line">                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;</span><br><span class="line">                }</span><br><span class="line">                <span class="hljs-comment">// no more preference</span></span><br><span class="line">                <span class="hljs-keyword">if</span> (index == -<span class="hljs-number">1</span> || index == preference.length() - <span class="hljs-number">1</span>) {</span><br><span class="line">                    <span class="hljs-keyword">if</span> (awarenessAttributes.length == <span class="hljs-number">0</span>) {</span><br><span class="line">                        <span class="hljs-keyword">return</span> indexShard.activeInitializingShardsRandomIt();</span><br><span class="line">                    } <span class="hljs-keyword">else</span> {</span><br><span class="line">                        <span class="hljs-keyword">return</span> indexShard.preferAttributesActiveInitializingShardsIt(awarenessAttributes, nodes);</span><br><span class="line">                    }</span><br><span class="line">                } <span class="hljs-keyword">else</span> {</span><br><span class="line">                    <span class="hljs-comment">// update the preference and continue</span></span><br><span class="line">                    preference = preference.substring(index + <span class="hljs-number">1</span>);</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">            preferenceType = Preference.parse(preference);</span><br><span class="line">            <span class="hljs-keyword">switch</span> (preferenceType) {</span><br><span class="line">                <span class="hljs-keyword">case</span> PREFER_NODES:</span><br><span class="line">                    <span class="hljs-keyword">final</span> Set<String> nodesIds =</span><br><span class="line">                            Arrays.stream(</span><br><span class="line">                                    preference.substring(Preference.PREFER_NODES.type().length() + <span class="hljs-number">1</span>).split(<span class="hljs-string">","</span>)</span><br><span class="line">                            ).collect(Collectors.toSet());</span><br><span class="line">                    <span class="hljs-keyword">return</span> indexShard.preferNodeActiveInitializingShardsIt(nodesIds);</span><br><span class="line">                <span class="hljs-keyword">case</span> LOCAL:</span><br><span class="line">                    <span class="hljs-keyword">return</span> indexShard.preferNodeActiveInitializingShardsIt(Collections.singleton(localNodeId));</span><br><span class="line">                <span class="hljs-keyword">case</span> PRIMARY:</span><br><span class="line">                    <span class="hljs-keyword">return</span> indexShard.primaryActiveInitializingShardIt();</span><br><span class="line">                <span class="hljs-keyword">case</span> REPLICA:</span><br><span class="line">                    <span class="hljs-keyword">return</span> indexShard.replicaActiveInitializingShardIt();</span><br><span class="line">                <span class="hljs-keyword">case</span> PRIMARY_FIRST:</span><br><span class="line">                    <span class="hljs-keyword">return</span> indexShard.primaryFirstActiveInitializingShardsIt();</span><br><span class="line">                <span class="hljs-keyword">case</span> REPLICA_FIRST:</span><br><span class="line">                    <span class="hljs-keyword">return</span> indexShard.replicaFirstActiveInitializingShardsIt();</span><br><span class="line">                <span class="hljs-keyword">case</span> ONLY_LOCAL:</span><br><span class="line">                    <span class="hljs-keyword">return</span> indexShard.onlyNodeActiveInitializingShardsIt(localNodeId);</span><br><span class="line">                <span class="hljs-keyword">case</span> ONLY_NODES:</span><br><span class="line">                    String nodeAttributes = preference.substring(Preference.ONLY_NODES.type().length() + <span class="hljs-number">1</span>);</span><br><span class="line">                    <span class="hljs-keyword">return</span> indexShard.onlyNodeSelectorActiveInitializingShardsIt(nodeAttributes.split(<span class="hljs-string">","</span>), nodes);</span><br><span class="line">                <span class="hljs-keyword">default</span>:</span><br><span class="line">                    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException(<span class="hljs-string">"unknown preference ["</span> + preferenceType + <span class="hljs-string">"]"</span>);</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-comment">// if not, then use it as the index</span></span><br><span class="line">        <span class="hljs-keyword">if</span> (awarenessAttributes.length == <span class="hljs-number">0</span>) {</span><br><span class="line">            <span class="hljs-keyword">return</span> indexShard.activeInitializingShardsIt(Murmur3HashFunction.hash(preference));</span><br><span class="line">        } <span class="hljs-keyword">else</span> {</span><br><span class="line">            <span class="hljs-keyword">return</span> indexShard.preferAttributesActiveInitializingShardsIt(awarenessAttributes, nodes, Murmur3HashFunction.hash(preference));</span><br><span class="line">        }</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+
+
+
+<p>##二，结果震荡问题（Bouncing Results）</p>
+<p>搜索同一query，结果ES返回的顺序却不尽相同，这就是请求轮询到不同分片，而未设置排序条件，相同相关性评分情况下，是按照所在segment中​lucene id来排序的，相同数据的不同备份之间该id是不能保证一致的，故造成结果震荡问题。<br>如设置该参数，则有一下9种情况</p>
+<p><code>_primary</code>:发送到集群的相关操作请求只会在主分片上执行。<br><code>_primary_first</code>:指查询会先在主分片中查询，如果主分片找不到（挂了），就会在副本中查询。<br><code>_replica</code>:发送到集群的相关操作请求只会在副本上执行。<br><code>_replica_first</code>：指查询会先在副本中查询，如果副本找不到（挂了），就会在主分片中查询。<br><code>_local</code>: 指查询操作会优先在本地节点有的分片中查询，没有的话再在其它节点查询。<br><code>_prefer_nodes:abc,xyz</code>:在提供的节点上优先执行（在这种情况下为’abc’或’xyz’）<br><code>_shards:2,3</code>：限制操作到指定的分片。 （<code>2</code>和“3”）。这个偏好可以与其他偏好组合，但必须首先出现：<code>_shards：2,3 | _primary</code><br><code>_only_nodes:node1,node2</code>:指在指定id的节点里面进行查询，如果该节点只有要查询索引的部分分片，就只在这部分分片中查找，不同节点之间用“，”分隔。</p>
+<p>custom(自定义)：注意自定义的preference参数不能以下划线”_”开头。<br>当preference为自定义时，即该参数不为空，且开头不以“下划线”开头时，特别注意：如果以用户query作为自定义preference时，一定要处理以下划线开头的情况，这种情况下如果不属于以上8种情况，则会抛出异常。</p>
+<p>三，参考：</p>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-preference.html" target="_blank" rel="noopener">https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-preference.html</a></p>
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
         <a href="/2020/03/06/Elasticsearch%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91by%20Intellij%20Idea/" class="image is-7by1">
             <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="Elasticsearch源码编译by Intellij Idea">
         </a>
@@ -873,7 +978,7 @@ var _hmt = _hmt || [];
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        14
+                        15
                     </p>
                 </div>
             </div>
@@ -1059,6 +1164,25 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2020/10/19/Redis%E9%9D%A2%E8%AF%95%E9%A2%98/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis面试题">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T09:55:27.763Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/Redis%E9%9D%A2%E8%AF%95%E9%A2%98/" class="has-link-black-ter is-size-6">Redis面试题</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/10/19/raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="raft一致性协议">
@@ -1128,25 +1252,6 @@ var _hmt = _hmt || [];
                     <a href="/2020/03/28/Linux%E7%B3%BB%E7%BB%9F%E4%B9%8B%E7%94%A8%E6%88%B7%E6%80%81%E3%80%81%E5%86%85%E6%A0%B8%E6%80%81/" class="has-link-black-ter is-size-6">Linux系统之用户态、内核态</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/linux/">linux</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/03/27/Elasticsearch%E5%AE%9A%E5%88%B6%E5%8C%96%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="Elasticsearch定制化插件开发">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-27T14:00:39.449Z">2020-03-27</time></div>
-                    <a href="/2020/03/27/Elasticsearch%E5%AE%9A%E5%88%B6%E5%8C%96%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/" class="has-link-black-ter is-size-6">Elasticsearch定制化插件开发</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
                     </p>
                 </div>
             </div>
@@ -1224,6 +1329,25 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2020/10/19/Redis%E9%9D%A2%E8%AF%95%E9%A2%98/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis面试题">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T09:55:27.763Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/Redis%E9%9D%A2%E8%AF%95%E9%A2%98/" class="has-link-black-ter is-size-6">Redis面试题</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/10/19/raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="raft一致性协议">
@@ -1293,25 +1417,6 @@ var _hmt = _hmt || [];
                     <a href="/2020/03/28/Linux%E7%B3%BB%E7%BB%9F%E4%B9%8B%E7%94%A8%E6%88%B7%E6%80%81%E3%80%81%E5%86%85%E6%A0%B8%E6%80%81/" class="has-link-black-ter is-size-6">Linux系统之用户态、内核态</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/linux/">linux</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/03/27/Elasticsearch%E5%AE%9A%E5%88%B6%E5%8C%96%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="Elasticsearch定制化插件开发">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-03-27T14:00:39.449Z">2020-03-27</time></div>
-                    <a href="/2020/03/27/Elasticsearch%E5%AE%9A%E5%88%B6%E5%8C%96%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/" class="has-link-black-ter is-size-6">Elasticsearch定制化插件开发</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
                     </p>
                 </div>
             </div>

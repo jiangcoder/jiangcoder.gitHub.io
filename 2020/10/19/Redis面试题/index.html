@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8">
+<title>Redis面试题 - 永远年轻，永远热泪盈眶</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+
+
+    
+    <meta name="description" content="1、什么是Redis?Redis 是完全开源免费的，遵守BSD协议，是一个高性能的key-value数据库。 Redis 与其他 key - value 缓存产品有以下三个特点：Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。Redis不仅仅支持简单的key-value类型的数据，同时还提供list，set，zset，hash等数据结构的存储。Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis面试题">
+<meta property="og:url" content="https://jiangcoder.github.io/2020/10/19/Redis%E9%9D%A2%E8%AF%95%E9%A2%98/index.html">
+<meta property="og:site_name" content="永远年轻，永远热泪盈眶">
+<meta property="og:description" content="1、什么是Redis?Redis 是完全开源免费的，遵守BSD协议，是一个高性能的key-value数据库。 Redis 与其他 key - value 缓存产品有以下三个特点：Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。Redis不仅仅支持简单的key-value类型的数据，同时还提供list，set，zset，hash等数据结构的存储。Redis">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-19T09:55:27.763Z">
+<meta property="article:modified_time" content="2020-10-19T09:55:27.771Z">
+<meta property="article:author" content="姜涛">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+<script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?7c6f6b686c79ef47c3578297d99b3305";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+        <script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+<meta name="generator" content="Hexo 4.2.0"></head>
+<!--<body class="is-2-column">-->
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+
+
+                <!--update by thank: 修改logo方式-->
+                <!--<img src="/images/maotouying.svg" alt="蜗居年华" height="28">-->
+                <img src="https://avatars2.githubusercontent.com/u/8393744?s=400&u=6ff7deb174a4e34b1b1b6291aaccbdc23eb40b14&v=4" alt="Redis面试题" height="28">
+                <span style="font-size: 16px; display: inline-block; vertical-align: top; font-weight: 600;"></span>
+                <!--
+            % if (has_config('logo.text') && get_config('logo.text')) { 
+                <span style="font-size: 16px; display: inline-block; vertical-align: top; font-weight: 600;">%= get_config('logo.text') %</span>
+                %= get_config('logo.text') %
+            % } else { %
+                <img src="%- url_for(get_config('logo')) %" alt="%= get_config('title') %" height="28">
+            % } %
+                -->
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">首页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="文章目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+
+
+                    <div class="box01">
+                        <input type="text" id="tip" placeholder="You Know, for Search~">
+                        <i class="search_icon"></i>
+                    </div>
+
+                    <!--<i class="fas fa-search"></i>-->
+
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main">    <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <span style="color: #7a7a7a !important;">写于2020-10-19 17:55:27&nbsp;&nbsp;&nbsp;</span>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-10-19 17:55:27&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-10-19T09:55:27.763Z">2020-10-19</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    41 分钟 读完 (大约 6168 个字)
+                </span>
+                
+
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span>次访问
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Redis面试题
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><p>1、什么是Redis?<br>Redis 是完全开源免费的，遵守BSD协议，是一个高性能的key-value数据库。</p>
+<p>Redis 与其他 key - value 缓存产品有以下三个特点：<br>Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。Redis不仅仅支持简单的key-value类型的数据，同时还提供list，set，zset，hash等数据结构的存储。Redis支持数据的备份，即master-slave模式的数据备份。</p>
+<p>Redis 优势<br>性能极高 – Redis能读的速度是110000次/s,写的速度是81000次/s 。丰富的数据类型 – Redis支持二进制案例的 Strings, Lists, Hashes, Sets 及 Ordered Sets 数据类型操作。原子 – Redis的所有操作都是原子性的，意思就是要么成功执行要么失败完全不执行。单个操作是原子性的。多个操作也支持事务，即原子性，通过MULTI和EXEC指令包起来。丰富的特性 – Redis还支持 publish/subscribe, 通知, key 过期等等特性。</p>
+<p>Redis与其他key-value存储有什么不同？<br>Redis有着更为复杂的数据结构并且提供对他们的原子性操作，这是一个不同于其他数据库的进化路径。Redis的数据类型都是基于基本数据结构的同时对程序员透明，无需进行额外的抽象。</p>
+<p>Redis运行在内存中但是可以持久化到磁盘，所以在对不同数据集进行高速读写时需要权衡内存，因为数据量不能大于硬件内存。在内存数据库方面的另一个优点是，相比在磁盘上相同的复杂的数据结构，在内存中操作起来非常简单，这样Redis可以做很多内部复杂性很强的事情。同时，在磁盘格式方面他们是紧凑的以追加的方式产生的，因为他们并不需要进行随机访问。</p>
+<p>2、Redis的数据类型？<br>答：Redis支持五种数据类型：string（字符串），hash（哈希），list（列表），set（集合）及zsetsorted set：有序集合)。</p>
+<p>我们实际项目中比较常用的是string，hash如果你是Redis中高级用户，还需要加上下面几种数据结构HyperLogLog、Geo、Pub/Sub。</p>
+<p>如果你说还玩过Redis Module，像BloomFilter，RedisSearch，Redis-ML，面试官得眼睛就开始发亮了。</p>
+<p>3、使用Redis有哪些好处？<br>1、速度快，因为数据存在内存中，类似于HashMap，HashMap的优势就是查找和操作的时间复杂度都是O1)</p>
+<p>2、支持丰富数据类型，支持string，list，set，Zset，hash等</p>
+<p>3、支持事务，操作都是原子性，所谓的原子性就是对数据的更改要么全部执行，要么全部不执行</p>
+<p>4、丰富的特性：可用于缓存，消息，按key设置过期时间，过期后将会自动删除</p>
+<p>4、Redis相比Memcached有哪些优势？<br>1、Memcached所有的值均是简单的字符串，redis作为其替代者，支持更为丰富的数据类<br>2、Redis的速度比Memcached快很<br>3、Redis可以持久化其数据</p>
+<p>5、Memcache与Redis的区别都有哪些？<br>1、存储方式 Memecache把数据全部存在内存之中，断电后会挂掉，数据不能超过内存大小。Redis有部份存在硬盘上，这样能保证数据的持久性。</p>
+<p>2、数据支持类型 Memcache对数据类型支持相对简单。Redis有复杂的数据类型。</p>
+<p>3、使用底层模型不同 它们之间底层实现方式 以及与客户端之间通信的应用协议不一样。Redis直接自己构建了VM 机制 ，因为一般的系统调用系统函数的话，会浪费一定的时间去移动和请求。</p>
+<p>6、Redis是单进程单线程的？<br>答：Redis是单进程单线程的，redis利用队列技术将并发访问变为串行访问，消除了传统数据库串行控制的开销。</p>
+<p>7、一个字符串类型的值能存储最大容量是多少？<br>答：512M</p>
+<p>8、Redis的持久化机制是什么？各自的优缺点？<br>Redis提供两种持久化机制RDB和AOF机制:<br>1、RDBRedis DataBase)持久化方式：是指用数据集快照的方式半持久化模式)记录redis数据库的所有键值对,在某个时间点将数据写入一个临时文件，持久化结束后，用这个临时文件替换上次持久化的文件，达到数据恢复。</p>
+<p>优点：<br>1、只有一个文件dump.rdb，方便持久化。</p>
+<p>2、容灾性好，一个文件可以保存到安全的磁盘。</p>
+<p>3、性能最大化，fork子进程来完成写操作，让主进程继续处理命令，所以是IO最大化。使用单独子进程来进行持久化，主进程不会进行任何IO操作，保证了redis的高性能) 4.相对于数据集大时，比AOF的启动效率更高。</p>
+<p>缺点：<br>1、数据安全性低。RDB是间隔一段时间进行持久化，如果持久化之间redis发生故障，会发生数据丢失。所以这种方式更适合数据要求不严谨的时候)</p>
+<p>2、AOFAppend-only file)持久化方式：是指所有的命令行记录以redis命令请求协议的格式完全持久化存储)保存为aof文件。</p>
+<p>优点：<br>1、数据安全，aof持久化可以配置appendfsync属性，有always，每进行一次命令操作就记录到aof文件中一次。</p>
+<p>2、通过append模式写文件，即使中途服务器宕机，可以通过redis-check-aof工具解决数据一致性问题。</p>
+<p>3、AOF机制的rewrite模式。AOF文件没被rewrite之前（文件过大时会对命令进行合并重写），可以删除其中的某些命令（比如误操作的flushall）)</p>
+<p>缺点：<br>1、AOF文件比RDB文件大，且恢复速度慢。2、数据集大的时候，比rdb启动效率低。</p>
+<p>9、Redis常见性能问题和解决方案：<br>1、Master最好不要写内存快照，如果Master写内存快照，save命令调度rdbSave函数，会阻塞主线程的工作，当快照比较大时对性能影响是非常大的，会间断性暂停服务 2、如果数据比较重要，某个Slave开启AOF备份数据，策略设置为每秒同步一 3、为了主从复制的速度和连接的稳定性，Master和Slave最好在同一个局域网 4、尽量避免在压力很大的主库上增加从 5、主从复制不要用图状结构，用单向链表结构更为稳定，即：Master <- Slave1 <- Slave2 <- Slave3…这样的结构方便解决单点故障问题，实现Slave对Master的替换。如果Master挂了，可以立刻启用Slave1做Master，其他不变。</p>
+<p>10、redis过期键的删除策略？<br>1、定时删除:在设置键的过期时间的同时，创建一个定时器timer). 让定时器在键的过期时间来临时，立即执行对键的删除操作。</p>
+<p>2、惰性删除:放任键过期不管，但是每次从键空间中获取键时，都检查取得的键是否过期，如果过期的话，就删除该键;如果没有过期，就返回该键。</p>
+<p>3、定期删除:每隔一段时间程序就对数据库进行一次检查，删除里面的过期键。至于要删除多少过期键，以及要检查多少个数据库，则由算法决定。</p>
+<p>11、Redis的回收策略（淘汰策略）?<br>volatile-lru：从已设置过期时间的数据集（server.db[i].expires）中挑选最近最少使用的数据淘汰</p>
+<p>volatile-ttl：从已设置过期时间的数据集（server.db[i].expires）中挑选将要过期的数据淘汰</p>
+<p>volatile-random：从已设置过期时间的数据集（server.db[i].expires）中任意选择数据淘汰</p>
+<p>allkeys-lru：从数据集（server.db[i].dict）中挑选最近最少使用的数据淘汰</p>
+<p>allkeys-random：从数据集（server.db[i].dict）中任意选择数据淘汰</p>
+<p>no-enviction（驱逐）：禁止驱逐数据</p>
+<p>注意这里的6种机制，volatile和allkeys规定了是对已设置过期时间的数据集淘汰数据还是从全部数据集淘汰数据，后面的lru、ttl以及random是三种不同的淘汰策略，再加上一种no-enviction永不回收的策略。</p>
+<p>使用策略规则：</p>
+<p>1、如果数据呈现幂律分布，也就是一部分数据访问频率高，一部分数据访问频率低，则使用allkeys-lru</p>
+<p>2、如果数据呈现平等分布，也就是所有的数据访问频率都相同，则使用allkeys-random</p>
+<p>12、为什么Redis需要把所有数据放到内存中？<br>答：Redis为了达到最快的读写速度将数据都读到内存中，并通过异步的方式将数据写入磁盘。所以redis具有快速和数据持久化的特征。如果不将数据放在内存中，磁盘I/O速度为严重影响redis的性能。在内存越来越便宜的今天，redis将会越来越受欢迎。如果设置了最大使用的内存，则数据已有记录数达到内存限值后不能继续插入新值。</p>
+<p>13、Redis的同步机制了解么？<br>答：Redis可以使用主从同步，从从同步。第一次同步时，主节点做一次bgsave，并同时将后续修改操作记录到内存buffer，待完成后将rdb文件全量同步到复制节点，复制节点接受完成后将rdb镜像加载到内存。加载完成后，再通知主节点将期间修改的操作记录同步到复制节点进行重放就完成了同步过程。</p>
+<p>14、Pipeline有什么好处，为什么要用pipeline？<br>答：可以将多次IO往返的时间缩减为一次，前提是pipeline执行的指令之间没有因果相关性。使用redis-benchmark进行压测的时候可以发现影响redis的QPS峰值的一个重要因素是pipeline批次指令的数目。</p>
+<p>15、是否使用过Redis集群，集群的原理是什么？<br>1)、Redis Sentinal着眼于高可用，在master宕机时会自动将slave提升为master，继续提供服务。</p>
+<p>2)、Redis Cluster着眼于扩展性，在单个redis内存不足时，使用Cluster进行分片存储。</p>
+<p>16、Redis集群方案什么情况下会导致整个集群不可用？<br>答：有A，B，C三个节点的集群,在没有复制模型的情况下,如果节点B失败了，那么整个集群就会以为缺少5501-11000这个范围的槽而不可用。</p>
+<p>17、Redis支持的Java客户端都有哪些？官方推荐用哪个？<br>答：Redisson、Jedis、lettuce等等，官方推荐使用Redisson。</p>
+<p>18、Jedis与Redisson对比有什么优缺点？<br>答：Jedis是Redis的Java实现的客户端，其API提供了比较全面的Redis命令的支持；Redisson实现了分布式和可扩展的Java数据结构，和Jedis相比，功能较为简单，不支持字符串操作，不支持排序、事务、管道、分区等Redis特性。Redisson的宗旨是促进使用者对Redis的关注分离，从而让使用者能够将精力更集中地放在处理业务逻辑上。</p>
+<p>19、Redis如何设置密码及验证密码？<br>设置密码：config set requirepass 123456</p>
+<p>授权密码：auth 123456</p>
+<p>20、说说Redis哈希槽的概念？<br>答：Redis集群没有使用一致性hash,而是引入了哈希槽的概念，Redis集群有16384个哈希槽，每个key通过CRC16校验后对16384取模来决定放置哪个槽，集群的每个节点负责一部分hash槽。</p>
+<p>21、Redis集群的主从复制模型是怎样的？<br>答：为了使在部分节点失败或者大部分节点无法通信的情况下集群仍然可用，所以集群使用了主从复制模型,每个节点都会有N-1个复制品.</p>
+<p>22、Redis集群会有写操作丢失吗？为什么？<br>答：Redis并不能保证数据的强一致性，这意味这在实际中集群在特定的条件下可能会丢失写操作。</p>
+<p>23、Redis集群之间是如何复制的？<br>答：异步复制</p>
+<p>24、Redis集群最大节点个数是多少？<br>答：16384个。</p>
+<p>25、Redis集群如何选择数据库？<br>答：Redis集群目前无法做数据库选择，默认在0数据库。</p>
+<p>26、怎么测试Redis的连通性？<br>答：使用ping命令。</p>
+<p>27、怎么理解Redis事务？<br>答：</p>
+<p>1）事务是一个单独的隔离操作：事务中的所有命令都会序列化、按顺序地执行。事务在执行的过程中，不会被其他客户端发送来的命令请求所打断。</p>
+<p>2）事务是一个原子操作：事务中的命令要么全部被执行，要么全部都不执行。</p>
+<p>28、Redis事务相关的命令有哪几个？<br>答：MULTI、EXEC、DISCARD、WATCH</p>
+<p>29、Redis key的过期时间和永久有效分别怎么设置？<br>答：EXPIRE和PERSIST命令。</p>
+<p>30、Redis如何做内存优化？<br>答：尽可能使用散列表（hashes），散列表（是说散列表里面存储的数少）使用的内存非常小，所以你应该尽可能的将你的数据模型抽象到一个散列表里面。比如你的web系统中有一个用户对象，不要为这个用户的名称，姓氏，邮箱，密码设置单独的key,而是应该把这个用户的所有信息存储到一张散列表里面.</p>
+<p>31、Redis回收进程如何工作的？<br>答：一个客户端运行了新的命令，添加了新的数据。Redi检查内存使用情况，如果大于maxmemory的限制, 则根据设定好的策略进行回收。一个新的命令被执行，等等。所以我们不断地穿越内存限制的边界，通过不断达到边界然后不断地回收回到边界以下。如果一个命令的结果导致大量内存被使用（例如很大的集合的交集保存到一个新的键），不用多久内存限制就会被这个内存使用量超越。</p>
+<p>32、都有哪些办法可以降低Redis的内存使用情况呢？<br>答：如果你使用的是32位的Redis实例，可以好好利用Hash,list,sorted set,set等集合类型数据，因为通常情况下很多小的Key-Value可以用更紧凑的方式存放到一起。</p>
+<p>33、Redis的内存用完了会发生什么？<br>答：如果达到设置的上限，Redis的写命令会返回错误信息（但是读命令还可以正常返回。）或者你可以将Redis当缓存来使用配置淘汰机制，当Redis达到内存上限时会冲刷掉旧的内容。</p>
+<p>34、一个Redis实例最多能存放多少的keys？List、Set、Sorted Set他们最多能存放多少元素？<br>答：理论上Redis可以处理多达232的keys，并且在实际中进行了测试，每个实例至少存放了2亿5千万的keys。我们正在测试一些较大的值。任何list、set、和sorted set都可以放232个元素。换句话说，Redis的存储极限是系统中的可用内存值。</p>
+<p>35、MySQL里有2000w数据，redis中只存20w的数据，如何保证redis中的数据都是热点数据？<br>答：Redis内存数据集大小上升到一定大小的时候，就会施行数据淘汰策略。</p>
+<p>相关知识：Redis提供6种数据淘汰策略：</p>
+<p>volatile-lru：从已设置过期时间的数据集（server.db[i].expires）中挑选最近最少使用的数据淘汰</p>
+<p>volatile-ttl：从已设置过期时间的数据集（server.db[i].expires）中挑选将要过期的数据淘汰</p>
+<p>volatile-random：从已设置过期时间的数据集（server.db[i].expires）中任意选择数据淘汰</p>
+<p>allkeys-lru：从数据集（server.db[i].dict）中挑选最近最少使用的数据淘汰</p>
+<p>allkeys-random：从数据集（server.db[i].dict）中任意选择数据淘汰</p>
+<p>no-enviction（驱逐）：禁止驱逐数据</p>
+<p>36、Redis最适合的场景？<br>1、会话缓存（Session Cache）<br>最常用的一种使用Redis的情景是会话缓存（session cache）。用Redis缓存会话比其他存储（如Memcached）的优势在于：Redis提供持久化。当维护一个不是严格要求一致性的缓存时，如果用户的购物车信息全部丢失，大部分人都会不高兴的，现在，他们还会这样吗？幸运的是，随着 Redis 这些年的改进，很容易找到怎么恰当的使用Redis来缓存会话的文档。甚至广为人知的商业平台Magento也提供Redis的插件。</p>
+<p>2、全页缓存（FPC）<br>除基本的会话token之外，Redis还提供很简便的FPC平台。回到一致性问题，即使重启了Redis实例，因为有磁盘的持久化，用户也不会看到页面加载速度的下降，这是一个极大改进，类似PHP本地FPC。再次以Magento为例，Magento提供一个插件来使用Redis作为全页缓存后端。此外，对WordPress的用户来说，Pantheon有一个非常好的插件 wp-redis，这个插件能帮助你以最快速度加载你曾浏览过的页面。</p>
+<p>3、队列<br>Reids在内存存储引擎领域的一大优点是提供 list 和 set 操作，这使得Redis能作为一个很好的消息队列平台来使用。Redis作为队列使用的操作，就类似于本地程序语言（如Python）对 list 的 push/pop 操作。如果你快速的在Google中搜索“Redis queues”，你马上就能找到大量的开源项目，这些项目的目的就是利用Redis创建非常好的后端工具，以满足各种队列需求。例如，Celery有一个后台就是使用Redis作为broker，你可以从这里去查看。</p>
+<p>4，排行榜/计数器<br>Redis在内存中对数字进行递增或递减的操作实现的非常好。集合（Set）和有序集合（Sorted Set）也使得我们在执行这些操作的时候变的非常简单，Redis只是正好提供了这两种数据结构。所以，我们要从排序集合中获取到排名最靠前的10个用户–我们称之为“userscores”，我们只需要像下面一样执行即可：当然，这是假定你是根据你用户的分数做递增的排序。如果你想返回用户及用户的分数，你需要这样执行：ZRANGE userscores 0 10 WITHSCORES Agora Games就是一个很好的例子，用Ruby实现的，它的排行榜就是使用Redis来存储数据的，你可以在这里看到。</p>
+<p>5、发布/订阅<br>最后（但肯定不是最不重要的）是Redis的发布/订阅功能。发布/订阅的使用场景确实非常多。我已看见人们在社交网络连接中使用，还可作为基于发布/订阅的脚本触发器，甚至用Redis的发布/订阅功能来建立聊天系统！</p>
+<p>37、假如Redis里面有1亿个key，其中有10w个key是以某个固定的已知的前缀开头的，如果将它们全部找出来？<br>答：使用keys指令可以扫出指定模式的key列表。</p>
+<p>对方接着追问：如果这个redis正在给线上的业务提供服务，那使用keys指令会有什么问题？</p>
+<p>这个时候你要回答redis关键的一个特性：redis的单线程的。keys指令会导致线程阻塞一段时间，线上服务会停顿，直到指令执行完毕，服务才能恢复。这个时候可以使用scan指令，scan指令可以无阻塞的提取出指定模式的key列表，但是会有一定的重复概率，在客户端做一次去重就可以了，但是整体所花费的时间会比直接用keys指令长。</p>
+<p>38、如果有大量的key需要设置同一时间过期，一般需要注意什么？<br>答：如果大量的key过期时间设置的过于集中，到过期的那个时间点，redis可能会出现短暂的卡顿现象。一般需要在时间上加一个随机值，使得过期时间分散一些。</p>
+<p>39、使用过Redis做异步队列么，你是怎么用的？<br>答：一般使用list结构作为队列，rpush生产消息，lpop消费消息。当lpop没有消息的时候，要适当sleep一会再重试。</p>
+<p>如果对方追问可不可以不用sleep呢？<br>list还有个指令叫blpop，在没有消息的时候，它会阻塞住直到消息到来。如果对方追问能不能生产一次消费多次呢？使用pub/sub主题订阅者模式，可以实现1:N的消息队列。</p>
+<p>如果对方追问pub/sub有什么缺点？<br>在消费者下线的情况下，生产的消息会丢失，得使用专业的消息队列如RabbitMQ等。</p>
+<p>如果对方追问redis如何实现延时队列？<br>我估计现在你很想把面试官一棒打死如果你手上有一根棒球棍的话，怎么问的这么详细。但是你很克制，然后神态自若的回答道：使用sortedset，拿时间戳作为score，消息内容作为key调用zadd来生产消息，消费者用zrangebyscore指令获取N秒之前的数据轮询进行处理。到这里，面试官暗地里已经对你竖起了大拇指。但是他不知道的是此刻你却竖起了中指，在椅子背后。</p>
+<p>40、使用过Redis分布式锁么，它是什么回事？<br>先拿setnx来争抢锁，抢到之后，再用expire给锁加一个过期时间防止锁忘记了释放。</p>
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+            <ul class="post-copyright">
+                <li><strong>本文标题：</strong><a href="https://jiangcoder.github.io/2020/10/19/Redis%E9%9D%A2%E8%AF%95%E9%A2%98/">Redis面试题</a></li>
+                <li><strong>本文作者：</strong><a href="https://jiangcoder.github.io">姜涛</a></li>
+                <li><strong>本文链接：</strong><a href="https://jiangcoder.github.io/2020/10/19/Redis%E9%9D%A2%E8%AF%95%E9%A2%98/">https://jiangcoder.github.io/2020/10/19/Redis%E9%9D%A2%E8%AF%95%E9%A2%98/</a></li>
+                <li><strong>发布时间：</strong>2020-10-19</li>
+                <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+                </li>
+            </ul>
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/10/19/raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/">
+                <span class="level-item">raft一致性协议</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="valine-thread" class="content"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/js/Valine.min.js"></script>
+<!--<script src='//unpkg.com/valine/dist/Valine.min.js'></script>-->
+<script>
+    new Valine({
+        el: '#valine-thread' ,
+        notify: false,
+        verify: false,
+        app_id: 'c396kVomOARgi7Y8rXWn4IC4-gzGzoHsz',
+        app_key: 'kPum1sRhcKHKGqovrBI5hh8w',
+        placeholder: 'Just go go, 支持Markdown~'
+    });
+
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered">
+                <div>
+                    
+                        <img class="image is-128x128 has-mb-6" src="https://avatars2.githubusercontent.com/u/8393744?s=400&amp;u=6ff7deb174a4e34b1b1b6291aaccbdc23eb40b14&amp;v=4" alt="姜涛"
+                        style="border-radius: 50%">
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        姜涛
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        Just for fun
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>北京市海淀区</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        15
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        6
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        5
+                    </p>
+                </div>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/jiangcoder" target="_blank" >
+                关注我</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+
+            <!--
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Github" href="https://github.com/jiangcoder">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+           
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="RSS" href="/">
+                
+                <i class="fas fa-rss"></i>
+                
+            </a>
+           
+            -->
+
+            <a class="level-item button is-white is-marginless" target="_blank" title="github" href="https://github.com/jiangcoder" name>
+                <img src="/images/github.svg" style="width: 20px; height: 20px;">
+            </a>
+<!--             <a class="level-item button is-white is-marginless" target="_blank" title="gitee" href="https://gitee.com/thank037" name>
+                <img src="/images/gitee.svg" style="width: 20px; height: 20px;">
+            </a>
+            <a class="level-item button is-white is-marginless" target="_blank" title="weibo" href="https://weibo.com/u/2139090054" name>
+                <img src="/images/weibo.svg" style="width: 20px; height: 20px;">
+            </a> -->
+            <a class="level-item button is-white is-marginless" target="_blank" title="email" href="mailto:jiangcoder@163.com" name>
+                <img src="/images/email.svg" style="width: 20px; height: 20px;">
+            </a>
+
+        </div>
+        
+    </div>
+</div>
+    
+        
+<!--<div class="card widget" id="toc">-->
+<div class="card widget column-left is-sticky" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                文章目录
+            </h3>
+            
+        </div>
+    </div>
+</div>
+
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen is-sticky">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <!-- <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/%5Bobject%20Object%5D" alt="Redis面试题" height="28">
+                
+                </a> -->
+                <p class="is-size-7">
+                &copy; 2016—2020 姜涛&nbsp;
+                由<a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动
+                    <!--& <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>-->
+                
+                <br>
+                <span id="busuanzi_container_site_uv">
+                您是第<span id="busuanzi_value_site_uv">0</span>个访客
+                </span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="https://github.com/jiangcoder">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="全文搜索站内文章~" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+
+    <!--背景线条-->
+    <!--<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-1" count="99" src="dist/canvas-nest.js"></script>-->
+    <!--<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-1" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>-->
+</body>
+</html>
