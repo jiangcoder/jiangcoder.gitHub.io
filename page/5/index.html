@@ -168,6 +168,760 @@ var _hmt = _hmt || [];
         <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
     
     <div class="card-image">
+        <a href="/2020/03/28/Linux%E7%B3%BB%E7%BB%9F%E4%B9%8B%E7%94%A8%E6%88%B7%E6%80%81%E3%80%81%E5%86%85%E6%A0%B8%E6%80%81/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/qiye.jpeg" alt="Linux系统之用户态、内核态">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-03-28T09:14:32.266Z">2020-03-28</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-03-28 17:14:32&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-03-28T09:14:32.266Z">2020-03-28</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/linux/">linux</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    8 分钟 读完 (大约 1216 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/03/28/Linux%E7%B3%BB%E7%BB%9F%E4%B9%8B%E7%94%A8%E6%88%B7%E6%80%81%E3%80%81%E5%86%85%E6%A0%B8%E6%80%81/">Linux系统之用户态、内核态</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><p>#什么是内核态、用户态？<br>内核态：cpu可以访问内存的所有数据，包括外围设备，例如硬盘，网卡，cpu也可以将自己从一个程序切换到另一个程序。<br>用户态：只能受限的访问内存，且不允许访问外围设备，占用cpu的能力被剥夺，cpu资源可以被其他程序获取。</p>
+<p>#为什么要有用户态和内核态？<br>由于需要限制不同的程序之间的访问能力, 防止他们获取别的程序的内存数据, 或者获取外围设备的数据, 并发送到网络,<br>CPU划分出两个权限等级 – 用户态和内核态。</p>
+<p>#用户态与内核态的切换</p>
+<p>所有用户程序都是运行在用户态的, 但是有时候程序确实需要做一些内核态的事情, 例如从硬盘读取数据, 或者从键盘获取输入等. 而唯一可以做这些事情的就是操作系统, 所以此时程序就需要先操作系统请求以程序的名义来执行这些操作.<br>这时需要一个这样的机制: 用户态程序切换到内核态, 但是不能控制在内核态中执行的指令<br>这种机制叫系统调用, 在CPU中的实现称之为陷阱指令(Trap Instruction)<br>他们的工作流程如下:<br>用户态程序将一些数据值放在寄存器中, 或者使用参数创建一个堆栈(stack frame), 以此表明需要操作系统提供的服务.<br>用户态程序执行陷阱指令<br>CPU切换到内核态, 并跳到位于内存指定位置的指令, 这些指令是操作系统的一部分, 他们具有内存保护, 不可被用户态程序访问<br>这些指令称之为陷阱(trap)或者系统调用处理器(system call handler). 他们会读取程序放入内存的数据参数, 并执行程序请求的服务<br>系统调用完成后, 操作系统会重置CPU为用户态并返回系统调用的结果<br>当一个任务（进程）执行系统调用而陷入内核代码中执行时，我们就称进程处于内核运行态（或简称为内核态）。此时处理器处于特权级最高的（0级）内核代码中执行。当进程处于内核态时，执行的内核代码会使用当前进程的内核栈。每个进程都有自己的内核栈。当进程在执行用户自己的代码时，则称其处于用户运行态（用户态）。即此时处理器在特权级最低的（3级）用户代码中运行。当正在执行用户程序而突然被中断程序中断时，此时用户程序也可以象征性地称为处于进程的内核态。因为中断处理程序将使用当前进程的内核栈。这与处于内核态的进程的状态有些类似。 </p>
+<p>内核态与用户态是操作系统的两种运行级别,跟intel cpu没有必然的联系, intel cpu提供Ring0-Ring3三种级别的运行模式，Ring0级别最高，Ring3最低。Linux使用了Ring3级别运行用户态，Ring0作为 内核态，没有使用Ring1和Ring2。Ring3状态不能访问Ring0的地址空间，包括代码和数据。Linux进程的4GB地址空间，3G-4G部 分大家是共享的，是内核态的地址空间，这里存放在整个内核的代码和所有的内核模块，以及内核所维护的数据。用户运行一个程序，该程序所创建的进程开始是运 行在用户态的，如果要执行文件操作，网络数据发送等操作，必须通过write，send等系统调用，这些系统调用会调用内核中的代码来完成操作，这时，必 须切换到Ring0，然后进入3GB-4GB中的内核地址空间去执行这些代码完成操作，完成后，切换回Ring3，回到用户态。这样，用户态的程序就不能 随意操作内核地址空间，具有一定的安全保护作用。<br>至于说保护模式，是说通过内存页表操作等机制，保证进程间的地址空间不会互相冲突，一个进程的操作不会修改另一个进程的地址空间中的数据。</p>
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
+        <a href="/2020/03/27/Elasticsearch%E5%AE%9A%E5%88%B6%E5%8C%96%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="Elasticsearch定制化插件开发">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-03-27T14:00:39.449Z">2020-03-27</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-03-27 22:00:39&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-03-27T14:00:39.449Z">2020-03-27</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    5 分钟 读完 (大约 796 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/03/27/Elasticsearch%E5%AE%9A%E5%88%B6%E5%8C%96%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/">Elasticsearch定制化插件开发</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><p>一，一般的插件开发方式：<br>    按照官网教程，每次都得打包、替换、重启，这是一个很不方便的过程，固然可以通过testCase来做debug，但是所见即所得的编码习惯，直接上手debug，才是最高效的方式。<br>   介绍插件开发的博客何其多，个人私以为都没有get到G点，其实深入研究下elasticsearch源码，fix 这个问题并不难，下面希望通过这篇文章帮助到大家。<br>二，elasticsearch插件的加载机制<br>①：Node节点启动过程，Elasticsearch.java会调用Bootstrap.java中的init函数。</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">(...)</span>  </span>{</span><br><span class="line">        ...</span><br><span class="line">        INSTANCE = <span class="hljs-keyword">new</span> Bootstrap();</span><br><span class="line">        INSTANCE.setup(<span class="hljs-keyword">true</span>, environment);</span><br><span class="line">        ...</span><br><span class="line">        INSTANCE.start();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>②：Node节点通过setup方法进行实例化。</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setup</span><span class="hljs-params">(<span class="hljs-keyword">boolean</span> addShutdownHook, Environment environment)</span> <span class="hljs-keyword">throws</span> BootstrapException </span>{</span><br><span class="line">         </span><br><span class="line">    node = <span class="hljs-keyword">new</span> Node(environment) {</span><br><span class="line"> </span><br><span class="line">     ...</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>③：Node.java类中会包含各类的service服务，其中包括PluginsService服务。在实例化PluginsService服务时会传参</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">environment.pluginsFile(),classpathPlugins等参数。而pluginsFile()即是elasticsearch所指定的plugin目录，elasticsearch会扫描该路径下所有的插件，并加载进来。</span><br><span class="line">   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Node</span><span class="hljs-params">(Environment environment)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">this</span>(environment, Collections.emptyList());</span><br><span class="line">}</span><br><span class="line"> </span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-title">Node</span><span class="hljs-params">(<span class="hljs-keyword">final</span> Environment environment, Collection<Class<? extends Plugin>> classpathPlugins)</span> </span>{</span><br><span class="line">    ...</span><br><span class="line">    <span class="hljs-keyword">this</span>.pluginsService = <span class="hljs-keyword">new</span> PluginsService(tmpSettings, environment.modulesFile(), environment.pluginsFile(), classpathPlugins);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>④：classpathPlugins参数介绍：</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Node</span><span class="hljs-params">(Environment environment)</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">this</span>(environment, Collections.emptyList());</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
+<p>在elasticsearch源码中，这个参数Collection<Class<? extends Plugin>> classpathPlugins一直都是空集合。<br>没有任何地方注入修改该参数。elasticsearch不但会扫描插件所在路径中的插件，同样也会加载classpathPlugins中所指定的插件，只不过问题是elasticsearch没有给我们提供相应的参数！！！！<br>三，如何更优雅的开发开发插件<br>    接上一段小节④，我们只要利用classpathPlugins该参数，就可以在elasticsearch源码环境中进行debug了！！！<br>    我的实现思路如下，通过继承Node.java，并重写Node类的构造方法，然后在bootstrap中直接实例化该子类，便可以通过elasticsearch直接bug 插件源码了。<br>   下面贴出我的实现代码，供大家参考：</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> org.elasticsearch.Version;</span><br><span class="line"><span class="hljs-keyword">import</span> org.elasticsearch.env.Environment;</span><br><span class="line"><span class="hljs-keyword">import</span> org.elasticsearch.node.Node;</span><br><span class="line"><span class="hljs-keyword">import</span> org.elasticsearch.plugins.Plugin;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">import</span> java.util.Collection;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">EmbeddedNode</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Node</span> </span>{</span><br><span class="line"></span><br><span class="line">  <span class="hljs-keyword">private</span> Version version;</span><br><span class="line">  <span class="hljs-keyword">private</span> Collection<Class<? extends Plugin>> plugins;</span><br><span class="line"></span><br><span class="line">  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">EmbeddedNode</span><span class="hljs-params">(Environment environment, Version version, Collection<Class<? extends Plugin>> classpathPlugins)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">super</span>(environment,  classpathPlugins);</span><br><span class="line">    <span class="hljs-keyword">this</span>.version = version;</span><br><span class="line">    <span class="hljs-keyword">this</span>.plugins = classpathPlugins;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="hljs-keyword">public</span> Collection<Class<? extends Plugin>> getPlugins() {</span><br><span class="line">    <span class="hljs-keyword">return</span> plugins;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="hljs-function"><span class="hljs-keyword">public</span> Version <span class="hljs-title">getVersion</span><span class="hljs-params">()</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> version;</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setup</span><span class="hljs-params">(<span class="hljs-keyword">boolean</span> addShutdownHook, Environment environment)</span> <span class="hljs-keyword">throws</span> BootstrapException </span>{</span><br><span class="line">      .....</span><br><span class="line">       <span class="hljs-comment">//注释Node初始化源码</span></span><br><span class="line">       <span class="hljs-comment">/* node = new Node(environment) {</span></span><br><span class="line"><span class="hljs-comment">            @Override</span></span><br><span class="line"><span class="hljs-comment">            protected void validateNodeBeforeAcceptingRequests(</span></span><br><span class="line"><span class="hljs-comment">                final Settings settings,</span></span><br><span class="line"><span class="hljs-comment">                final BoundTransportAddress boundTransportAddress, List<BootstrapCheck> checks) throws NodeValidationException {</span></span><br><span class="line"><span class="hljs-comment">                BootstrapChecks.check(settings, boundTransportAddress, checks);</span></span><br><span class="line"><span class="hljs-comment">            }</span></span><br><span class="line"><span class="hljs-comment">        };*/</span></span><br><span class="line"></span><br><span class="line">        Collection plugins = <span class="hljs-keyword">new</span> ArrayList<>();</span><br><span class="line">        Collections.addAll(plugins,   AnalysisIkPlugin<span class="hljs-class">.<span class="hljs-keyword">class</span>, <span class="hljs-title">HelloPlugin</span>.<span class="hljs-title">class</span>, <span class="hljs-title">AnalysisMMsegPlugin</span>.<span class="hljs-title">class</span>)</span>;<span class="hljs-comment">//, ,AnalysisMMsegPlugin.class</span></span><br><span class="line">        node = <span class="hljs-keyword">new</span> EmbeddedNode(environment, Version.CURRENT, plugins) {</span><br><span class="line">            <span class="hljs-meta">@Override</span></span><br><span class="line">            <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">validateNodeBeforeAcceptingRequests</span><span class="hljs-params">(<span class="hljs-keyword">final</span> Settings settings, <span class="hljs-keyword">final</span> BoundTransportAddress boundTransportAddress, List<BootstrapCheck> checks)</span> <span class="hljs-keyword">throws</span> NodeValidationException </span>{</span><br><span class="line">                BootstrapChecks.check(settings, boundTransportAddress, checks);</span><br><span class="line">            }</span><br><span class="line">        };</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
+
+<p>四，部署插件相关的注意事项：<br>     有关插件开发的详细配置，es插件的种类，在此不再赘述，具体可参考官方文档，更权威，更直接。<br>下面贴个图，本人在elasticsearch中同时整合了多个插件，以供学习研究时用，直接debug，个人感觉十分不错。</p>
+<p><img alt src="/logo/plugin.jpg"></p>
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
+        <a href="/2020/03/27/Java%E4%B9%8BBuffer/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/java.jpg" alt="Java之Buffer">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-03-27T05:54:09.968Z">2020-03-27</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-03-27 13:54:09&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-03-27T05:54:09.968Z">2020-03-27</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/java/">java</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    4 分钟 读完 (大约 596 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/03/27/Java%E4%B9%8BBuffer/">Java之Buffer</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><h2 id="一，Buffer概念"><a href="#一，Buffer概念" class="headerlink" title="一，Buffer概念"></a>一，Buffer概念</h2><p>Buffer 类是 java.nio 的构造基础。<br>一个 Buffer 对象是固定数量的数据的容器，其作用是一个存储器，或者分段运输区.<br>每个非布尔原始数据类型都有一个缓冲区类.<br>子类有</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ByteBuffer</span><br><span class="line">CharBuffer</span><br><span class="line">IntBuffer</span><br><span class="line">LongBuffer</span><br><span class="line">DoubleBuffer</span><br><span class="line">FloatBuffer</span><br><span class="line">ShortBuffer</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="二，缓存区的四个属性"><a href="#二，缓存区的四个属性" class="headerlink" title="二，缓存区的四个属性"></a>二，缓存区的四个属性</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> mark = -<span class="hljs-number">1</span>;<span class="hljs-comment">//一个备忘位置。标记在设定前是未定义的(undefined)。使用场景是，假设缓冲区中有 10 个元素，position 目前的位置为 2(也就是如果get的话是第三个元素)，现在只想发送 6 - 10 之间的缓冲数据，此时我们可以 buffer.mark(buffer.position())，即把当前的 position 记入 mark 中，然后 buffer.postion(6)，此时发送给 channel 的数据就是 6 - 10 的数据。发送完后，我们可以调用 buffer.reset() 使得 position = mark，因此这里的 mark 只是用于临时记录一下位置用的</span></span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> position = <span class="hljs-number">0</span>;<span class="hljs-comment">//下一个要被读或写的元素的索引。位置会自动由相应的 get() 和 put() 函数更新。 这里需要注意的是positon的位置是从0开始的</span></span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> limit;<span class="hljs-comment">//缓冲区的第一个不能被读或写的元素。缓冲创建时，limit 的值等于 capacity 的值。假设 capacity = 1024，我们在程序中设置了 limit = 512，说明，Buffer 的容量为 1024，但是从 512 之后既不能读也不能写，因此可以理解成，Buffer 的实际可用大小为 512</span></span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> capacity;<span class="hljs-comment">//缓冲区能够容纳的数据元素的最大数量。这一容量在缓冲区创建时被设定，并且永远不能被改变。</span></span><br></pre></td></tr></tbody></table></figure>
+<h2 id="三，flip"><a href="#三，flip" class="headerlink" title="三，flip"></a>三，flip</h2><p>flip() :写模式转到读模式<br>clear()或者compact():重新从Buffer中读取数据<br>such as :</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> java.nio.ByteBuffer;</span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CreateBuffer</span> </span>{</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span>  <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String args[])</span> </span>{</span><br><span class="line">        ByteBuffer buffer = ByteBuffer.allocate(<span class="hljs-number">1024</span>);</span><br><span class="line"></span><br><span class="line">        buffer.put((<span class="hljs-keyword">byte</span>) <span class="hljs-string">'a'</span>);</span><br><span class="line">        buffer.put((<span class="hljs-keyword">byte</span>) <span class="hljs-string">'b'</span>);</span><br><span class="line">        buffer.put((<span class="hljs-keyword">byte</span>) <span class="hljs-string">'c'</span>);</span><br><span class="line"></span><br><span class="line">        <span class="hljs-comment">//调用flip之后，读写指针指到缓存头部，并且设置了最多只能读出之前写入的数据长度(而不是整个缓存的容量大小)</span></span><br><span class="line">        buffer.flip();</span><br><span class="line">        System.out.println((<span class="hljs-keyword">char</span>) buffer.get());<span class="hljs-comment">//a</span></span><br><span class="line">        System.out.println((<span class="hljs-keyword">char</span>) buffer.get());<span class="hljs-comment">//b</span></span><br><span class="line">        System.out.println((<span class="hljs-keyword">char</span>) buffer.get());<span class="hljs-comment">//c</span></span><br><span class="line">        <span class="hljs-comment">//重新从Buffer中读取数据</span></span><br><span class="line">        buffer.compact();</span><br><span class="line">        System.out.println((<span class="hljs-keyword">char</span>) buffer.get());<span class="hljs-comment">//a</span></span><br><span class="line">        System.out.println((<span class="hljs-keyword">char</span>) buffer.get());<span class="hljs-comment">//b</span></span><br><span class="line">        System.out.println((<span class="hljs-keyword">char</span>) buffer.get());<span class="hljs-comment">//c        </span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
+        <a href="/2020/03/22/%E3%80%8A%E5%8F%AF%E5%A4%8D%E5%88%B6%E7%9A%84%E9%A2%86%E5%AF%BC%E5%8A%9B%E3%80%8B%E8%AF%BB%E5%90%8E%E6%9C%89%E6%84%9F/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/ciqi.jpeg" alt="《可复制的领导力》读后有感">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-03-22T11:49:02.614Z">2020-03-22</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-03-22 19:49:02&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-03-22T11:49:02.614Z">2020-03-22</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/%E4%BA%BA%E6%96%87/">人文</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    7 分钟 读完 (大约 1120 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/03/22/%E3%80%8A%E5%8F%AF%E5%A4%8D%E5%88%B6%E7%9A%84%E9%A2%86%E5%AF%BC%E5%8A%9B%E3%80%8B%E8%AF%BB%E5%90%8E%E6%9C%89%E6%84%9F/">《可复制的领导力》读后有感</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>   2020年以来，一直想读一本关于管理类的书籍，前中央电视台主持人樊登创办了《樊登读书会》，仅用4年时间，付费会员人数便突破300万，发展势头非常良好。<br>   樊登老师的《可复制的领导力》在京东商城管理类书籍排名第一，抱着高山仰止的心态，选择了这本书，<br>进行拜读学习。</p>
+<h2 id="《樊登读书会》火爆带来的思考"><a href="#《樊登读书会》火爆带来的思考" class="headerlink" title="《樊登读书会》火爆带来的思考"></a>《樊登读书会》火爆带来的思考</h2><p>   在我高中的时候，学校来了一位中国最年轻的演讲家，在学校的大操场慷慨激昂，励志事迹娓娓道来，音响里重复播放着《感恩的心》，最后领着我们宣誓，<br>让我们很多同学，尤其是女同学哭的稀里哗啦，最后很多人买了演讲家100多元的书。<br>  《樊登读书会》能够为那些没有时间阅读、不知道阅读哪些书和阅读效率低下的人，每年吸收50本书的精华。<br>旨在让更多的中国人爱上阅读，通过传播知识不断提升自己，造福社会。<br>我恰好同学在参加了《樊登读书会》，故有了解一些，其大概每年收取365元会费，加入会属于班级以及小组，营造一种共同学习的氛围。<br>读书的重要性不必自说，樊登老师是成功者，也毋庸讳言，不过加入这种每年付费的读书会，我个人感觉是非常不必要的，通过阅读其作品，领悟到其思想中精华就好了。</p>
+<h2 id="《可复制的领导力》读后有感一"><a href="#《可复制的领导力》读后有感一" class="headerlink" title="《可复制的领导力》读后有感一"></a>《可复制的领导力》读后有感一</h2><p>   樊登老师在该书中总结了一些关于管理的观点<br>   1、领导力就是一个工具包，可习得、可复制、可传递。<br>      感悟：大概类似两千多年前秦朝的陈胜吧，在地头里喊出”王侯将相，宁有种乎”。<br>这本书也想向我们说明，管理能力不是某些人具备的一种天赋，也不是不可意会的艺术，而是人人都可以掌握的一种能力，跟学习语文、数学没什么区别。<br>   2、团队是一只球队，而不是家，需要明确彼此的目标，才能更有效的合作；<br>      感悟：建立一个团队目标，大家一起朝着目标努力。<br>   3、管理者的几个关键步骤。<br>      先建立感情，信任；再激发源动力，培养责任感；努力营造好的团队氛围；以身作则，知行合一； 良好的沟通，客观的反馈。<br>      感悟：总结的很好；</p>
+<h2 id="《可复制的领导力》读后有感二"><a href="#《可复制的领导力》读后有感二" class="headerlink" title="《可复制的领导力》读后有感二"></a>《可复制的领导力》读后有感二</h2><p>   管理是一门科学，更是一门艺术。犹如看大豆结出果实。需要有种豆、浇水，施肥，开花，结果等等一系列的过程。<br>管理能力虽说不是天生的，我们需要不断练习即可获得，但是也不要看完樊登老师举的”海底捞、麦当劳”成功小事例，就盲目自信，<br>给自己一种很容易学习到的感觉。<br>   《可复制的执行力》在京东商城管理类书籍排名第一，但在我看来，的确不能算一本好书。跟我看高中时买的演讲家自编的励志故事书味道差不多；<br>一本书，一篇文章到底好不好，大概需要经历岁月的洗涤，历久弥新，给人以启发吧。<br>买书学管理，我个人感觉还是不要看京东上热销的管理学的书了，别抱着太强的功利心了，或许读书更有启发吧；<br>正如：孙子兵法第一句：”兵者，国之大事，死生之地，存亡之道，不可不察也”。孙子兵法流传千年，靠的不是打仗的小诀窍，<br>而是站在民族、国家、军队的一个领导者一个应有的战略高度！</p>
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
+        <a href="/2020/03/20/Elasticsearch%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="Elasticsearch负载高问题排查">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-03-20T13:35:30.731Z">2020-03-20</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-03-20 21:35:30&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-03-20T13:35:30.731Z">2020-03-20</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    4 分钟 读完 (大约 629 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/03/20/Elasticsearch%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">Elasticsearch负载高问题排查</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><ol>
+<li><p>我们Elasticsearch集群近几日负载飙高，排查思路记录如下；</p>
+</li>
+<li><p>查看日志信息，确定是否存在异常情况</p>
+</li>
+</ol>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ${ES_HOME}/logs</span><br><span class="line">tail -<span class="hljs-number">100f</span> ES.log</span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="3">
+<li>频繁Full GC往往会引起负载飙高，故查看ES集群GC 情况，</li>
+</ol>
+<p>使用命令：</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jstat -gcutil <pid> <period> <times></span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200320205733385.png" alt="在这里插入图片描述"><br>近一个多月，服务共Full GC700余次，平均每次Full GC耗时90ms，符合预期，排除Full GC问题导致负载飙高；<br>4. 找到ES中占用CPU的线程ID</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">top -Hp PID</span><br></pre></td></tr></tbody></table></figure>
+<p>如找到ES进程中2291线程较费CPU<br><img src="https://img-blog.csdnimg.cn/20200320210618219.png" alt="在这里插入图片描述"></p>
+<ol start="5">
+<li>将得到的线程id，转化为16进制</li>
+</ol>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">printf %x <span class="hljs-number">2291</span></span><br><span class="line">输出结果：<span class="hljs-number">8f</span>3</span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="7">
+<li>使用jstack分析线程状态<br>jstack命令主要用于调试java程序运行过程中的线程堆栈信息</li>
+</ol>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jstack PID  >> pid.txt</span><br></pre></td></tr></tbody></table></figure>
+<p>8.查看pid.txt文件，分析线程对应的堆栈信息<br>由步骤6得到 16进制线程“8f3”</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim pid.txt</span><br><span class="line"><span class="hljs-comment">//查找线程“8f3”对应信息</span></span><br></pre></td></tr></tbody></table></figure>
+<p>内容如下</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">"elasticsearch[data-es12][write][T#3]" #94 daemon prio=5 os_prio=0 tid=0x00007f3254017800 nid=0x8f3 waiting for monitor entry [0x00007f2d37a7a000]</span><br><span class="line">   java.lang.Thread.State: BLOCKED (on object monitor)</span><br><span class="line">        at org.elasticsearch.index.translog.TranslogWriter.syncUpTo(TranslogWriter.java:<span class="hljs-number">342</span>)</span><br><span class="line">        - waiting to lock <<span class="hljs-number">0x000000055ff5f220</span>> (a java.lang.Object)</span><br><span class="line">        at org.elasticsearch.index.translog.Translog.ensureSynced(Translog.java:<span class="hljs-number">797</span>)</span><br><span class="line">        at org.elasticsearch.index.translog.Translog.ensureSynced(Translog.java:<span class="hljs-number">818</span>)</span><br><span class="line">        at org.elasticsearch.index.engine.InternalEngine.ensureTranslogSynced(InternalEngine.java:<span class="hljs-number">489</span>)</span><br><span class="line">        at org.elasticsearch.index.shard.IndexShard$<span class="hljs-number">5</span>.write(IndexShard.java:<span class="hljs-number">2782</span>)</span><br><span class="line">        at org.elasticsearch.common.util.concurrent.AsyncIOProcessor.processList(AsyncIOProcessor.java:<span class="hljs-number">107</span>)</span><br><span class="line">        at org.elasticsearch.common.util.concurrent.AsyncIOProcessor.drainAndProcess(AsyncIOProcessor.java:<span class="hljs-number">99</span>)</span><br><span class="line">        at org.elasticsearch.common.util.concurrent.AsyncIOProcessor.put(AsyncIOProcessor.java:<span class="hljs-number">82</span>)</span><br><span class="line">        at org.elasticsearch.index.shard.IndexShard.sync(IndexShard.java:<span class="hljs-number">2804</span>)</span><br><span class="line">        at org.elasticsearch.action.support.replication.TransportWriteAction$AsyncAfterWriteAction.run(TransportWriteAction.java:<span class="hljs-number">355</span>)</span><br><span class="line">        at org.elasticsearch.action.support.replication.TransportWriteAction$WritePrimaryResult.<init>(TransportWriteAction.java:<span class="hljs-number">151</span>)</span><br><span class="line">        at</span><br></pre></td></tr></tbody></table></figure>
+
+<p>该线程正处于堵塞状态。</p>
+<p>9，原因分析<br>从ES索引数据创建机制说起<br>写请求首先先写到内存一份数据，然后写translog，默认每1秒进行refresh，将索引写入到文件系统；<br>该ES集群是ELK日志查询服务，特点读多写少，我们TB级数据，上千个索引，refresh_interval参数1s，在日志服务中显然不太合适，是时候调整下该参数配置了。</p>
+<p>10，参数调整</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="hljs-comment">//ip:port/logstash*/_settings PUT</span></span><br><span class="line">{</span><br><span class="line">  <span class="hljs-string">"settings"</span>: {</span><br><span class="line">    <span class="hljs-string">"refresh_interval"</span>: <span class="hljs-string">"5m"</span></span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/20200320212733184.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2FjbTM2NQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>11，问题解决</p>
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
+        <a href="/2020/03/20/Git%E5%A6%82%E4%BD%95%E5%9B%9E%E9%80%80%E7%89%88%E6%9C%AC/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/github.jpg" alt="Git如何回退版本">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-03-20T12:47:07.461Z">2020-03-20</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-03-20 20:47:07&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-03-20T12:47:07.461Z">2020-03-20</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/git/">git</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    几秒 读完 (大约 64 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/03/20/Git%E5%A6%82%E4%BD%95%E5%9B%9E%E9%80%80%E7%89%88%E6%9C%AC/">Git如何回退版本</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><ol>
+<li><p>首先使用git log查看最近几次提交的版本号，如版本号”0250cd”;</p>
+</li>
+<li><p>在命令行输入 git reset –hard 0250cd，成功后会提示”head is now at 0250cd”；</p>
+</li>
+<li><p>git push -f -u origin you_branch,you_branch需要回退的分支名</p>
+</li>
+</ol>
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
+        <a href="/2020/03/06/Elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="Elasticsearch 搜索模块之preference参数">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-03-06T11:04:25.660Z">2020-03-06</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-03-06 19:04:25&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-03-06T11:04:25.660Z">2020-03-06</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    6 分钟 读完 (大约 939 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/03/06/Elasticsearch%20%E6%90%9C%E7%B4%A2%E6%A8%A1%E5%9D%97%E4%B9%8Bpreference%E5%8F%82%E6%95%B0/">Elasticsearch 搜索模块之preference参数</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><p>##一，preference简述</p>
+<p>elasticsearch可以使用preference参数来指定分片查询的优先级，即我们可以通过该参数来控制搜索时的索引数据分片。</p>
+<p>如不设置该参数：在所有有效的主分片以及副本间轮询。</p>
+<p>具体可看下：OperationRouting.java类</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> ShardIterator <span class="hljs-title">activeInitializingShardsRandomIt</span><span class="hljs-params">()</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> activeInitializingShardsIt(shuffler.nextSeed());</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+
+<p>自增，以实现shard间轮询操作</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">nextSeed</span><span class="hljs-params">()</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">return</span> seed.getAndIncrement();</span><br><span class="line"> }</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> ShardIterator <span class="hljs-title">activeInitializingShardsIt</span><span class="hljs-params">(<span class="hljs-keyword">int</span> seed)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">if</span> (allInitializingShards.isEmpty()) {</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> PlainShardIterator(shardId, shuffler.shuffle(activeShards, seed));</span><br><span class="line">    }</span><br><span class="line">    ArrayList<ShardRouting> ordered = <span class="hljs-keyword">new</span> ArrayList<>(activeShards.size() + allInitializingShards.size());</span><br><span class="line">    ordered.addAll(shuffler.shuffle(activeShards, seed));</span><br><span class="line">    ordered.addAll(allInitializingShards);</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> PlainShardIterator(shardId, ordered);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">private</span> ShardIterator <span class="hljs-title">preferenceActiveShardIterator</span><span class="hljs-params">(IndexShardRoutingTable indexShard, String localNodeId, DiscoveryNodes nodes, @Nullable String preference)</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">if</span> (preference == <span class="hljs-keyword">null</span> || preference.isEmpty()) {</span><br><span class="line">            <span class="hljs-keyword">if</span> (awarenessAttributes.length == <span class="hljs-number">0</span>) {</span><br><span class="line">                <span class="hljs-keyword">return</span> indexShard.activeInitializingShardsRandomIt();</span><br><span class="line">            } <span class="hljs-keyword">else</span> {</span><br><span class="line">                <span class="hljs-keyword">return</span> indexShard.preferAttributesActiveInitializingShardsIt(awarenessAttributes, nodes);</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">if</span> (preference.charAt(<span class="hljs-number">0</span>) == <span class="hljs-string">'_'</span>) {</span><br><span class="line">            Preference preferenceType = Preference.parse(preference);</span><br><span class="line">            <span class="hljs-keyword">if</span> (preferenceType == Preference.SHARDS) {</span><br><span class="line">                <span class="hljs-comment">// starts with _shards, so execute on specific ones</span></span><br><span class="line">                <span class="hljs-keyword">int</span> index = preference.indexOf(<span class="hljs-string">'|'</span>);</span><br><span class="line">                String shards;</span><br><span class="line">                <span class="hljs-keyword">if</span> (index == -<span class="hljs-number">1</span>) {</span><br><span class="line">                    shards = preference.substring(Preference.SHARDS.type().length() + <span class="hljs-number">1</span>);</span><br><span class="line">                } <span class="hljs-keyword">else</span> {</span><br><span class="line">                    shards = preference.substring(Preference.SHARDS.type().length() + <span class="hljs-number">1</span>, index);</span><br><span class="line">                }</span><br><span class="line">                String ids = Strings.splitStringByCommaToArray(shards);</span><br><span class="line">                <span class="hljs-keyword">boolean</span> found = <span class="hljs-keyword">false</span>;</span><br><span class="line">                <span class="hljs-keyword">for</span> (String id : ids) {</span><br><span class="line">                    <span class="hljs-keyword">if</span> (Integer.parseInt(id) == indexShard.shardId().id()) {</span><br><span class="line">                        found = <span class="hljs-keyword">true</span>;</span><br><span class="line">                        <span class="hljs-keyword">break</span>;</span><br><span class="line">                    }</span><br><span class="line">                }</span><br><span class="line">                <span class="hljs-keyword">if</span> (!found) {</span><br><span class="line">                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;</span><br><span class="line">                }</span><br><span class="line">                <span class="hljs-comment">// no more preference</span></span><br><span class="line">                <span class="hljs-keyword">if</span> (index == -<span class="hljs-number">1</span> || index == preference.length() - <span class="hljs-number">1</span>) {</span><br><span class="line">                    <span class="hljs-keyword">if</span> (awarenessAttributes.length == <span class="hljs-number">0</span>) {</span><br><span class="line">                        <span class="hljs-keyword">return</span> indexShard.activeInitializingShardsRandomIt();</span><br><span class="line">                    } <span class="hljs-keyword">else</span> {</span><br><span class="line">                        <span class="hljs-keyword">return</span> indexShard.preferAttributesActiveInitializingShardsIt(awarenessAttributes, nodes);</span><br><span class="line">                    }</span><br><span class="line">                } <span class="hljs-keyword">else</span> {</span><br><span class="line">                    <span class="hljs-comment">// update the preference and continue</span></span><br><span class="line">                    preference = preference.substring(index + <span class="hljs-number">1</span>);</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">            preferenceType = Preference.parse(preference);</span><br><span class="line">            <span class="hljs-keyword">switch</span> (preferenceType) {</span><br><span class="line">                <span class="hljs-keyword">case</span> PREFER_NODES:</span><br><span class="line">                    <span class="hljs-keyword">final</span> Set<String> nodesIds =</span><br><span class="line">                            Arrays.stream(</span><br><span class="line">                                    preference.substring(Preference.PREFER_NODES.type().length() + <span class="hljs-number">1</span>).split(<span class="hljs-string">","</span>)</span><br><span class="line">                            ).collect(Collectors.toSet());</span><br><span class="line">                    <span class="hljs-keyword">return</span> indexShard.preferNodeActiveInitializingShardsIt(nodesIds);</span><br><span class="line">                <span class="hljs-keyword">case</span> LOCAL:</span><br><span class="line">                    <span class="hljs-keyword">return</span> indexShard.preferNodeActiveInitializingShardsIt(Collections.singleton(localNodeId));</span><br><span class="line">                <span class="hljs-keyword">case</span> PRIMARY:</span><br><span class="line">                    <span class="hljs-keyword">return</span> indexShard.primaryActiveInitializingShardIt();</span><br><span class="line">                <span class="hljs-keyword">case</span> REPLICA:</span><br><span class="line">                    <span class="hljs-keyword">return</span> indexShard.replicaActiveInitializingShardIt();</span><br><span class="line">                <span class="hljs-keyword">case</span> PRIMARY_FIRST:</span><br><span class="line">                    <span class="hljs-keyword">return</span> indexShard.primaryFirstActiveInitializingShardsIt();</span><br><span class="line">                <span class="hljs-keyword">case</span> REPLICA_FIRST:</span><br><span class="line">                    <span class="hljs-keyword">return</span> indexShard.replicaFirstActiveInitializingShardsIt();</span><br><span class="line">                <span class="hljs-keyword">case</span> ONLY_LOCAL:</span><br><span class="line">                    <span class="hljs-keyword">return</span> indexShard.onlyNodeActiveInitializingShardsIt(localNodeId);</span><br><span class="line">                <span class="hljs-keyword">case</span> ONLY_NODES:</span><br><span class="line">                    String nodeAttributes = preference.substring(Preference.ONLY_NODES.type().length() + <span class="hljs-number">1</span>);</span><br><span class="line">                    <span class="hljs-keyword">return</span> indexShard.onlyNodeSelectorActiveInitializingShardsIt(nodeAttributes.split(<span class="hljs-string">","</span>), nodes);</span><br><span class="line">                <span class="hljs-keyword">default</span>:</span><br><span class="line">                    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException(<span class="hljs-string">"unknown preference ["</span> + preferenceType + <span class="hljs-string">"]"</span>);</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-comment">// if not, then use it as the index</span></span><br><span class="line">        <span class="hljs-keyword">if</span> (awarenessAttributes.length == <span class="hljs-number">0</span>) {</span><br><span class="line">            <span class="hljs-keyword">return</span> indexShard.activeInitializingShardsIt(Murmur3HashFunction.hash(preference));</span><br><span class="line">        } <span class="hljs-keyword">else</span> {</span><br><span class="line">            <span class="hljs-keyword">return</span> indexShard.preferAttributesActiveInitializingShardsIt(awarenessAttributes, nodes, Murmur3HashFunction.hash(preference));</span><br><span class="line">        }</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+
+
+
+<p>##二，结果震荡问题（Bouncing Results）</p>
+<p>搜索同一query，结果ES返回的顺序却不尽相同，这就是请求轮询到不同分片，而未设置排序条件，相同相关性评分情况下，是按照所在segment中​lucene id来排序的，相同数据的不同备份之间该id是不能保证一致的，故造成结果震荡问题。<br>如设置该参数，则有一下9种情况</p>
+<p><code>_primary</code>:发送到集群的相关操作请求只会在主分片上执行。<br><code>_primary_first</code>:指查询会先在主分片中查询，如果主分片找不到（挂了），就会在副本中查询。<br><code>_replica</code>:发送到集群的相关操作请求只会在副本上执行。<br><code>_replica_first</code>：指查询会先在副本中查询，如果副本找不到（挂了），就会在主分片中查询。<br><code>_local</code>: 指查询操作会优先在本地节点有的分片中查询，没有的话再在其它节点查询。<br><code>_prefer_nodes:abc,xyz</code>:在提供的节点上优先执行（在这种情况下为’abc’或’xyz’）<br><code>_shards:2,3</code>：限制操作到指定的分片。 （<code>2</code>和“3”）。这个偏好可以与其他偏好组合，但必须首先出现：<code>_shards：2,3 | _primary</code><br><code>_only_nodes:node1,node2</code>:指在指定id的节点里面进行查询，如果该节点只有要查询索引的部分分片，就只在这部分分片中查找，不同节点之间用“，”分隔。</p>
+<p>custom(自定义)：注意自定义的preference参数不能以下划线”_”开头。<br>当preference为自定义时，即该参数不为空，且开头不以“下划线”开头时，特别注意：如果以用户query作为自定义preference时，一定要处理以下划线开头的情况，这种情况下如果不属于以上8种情况，则会抛出异常。</p>
+<p>三，参考：</p>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-preference.html" target="_blank" rel="noopener">https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-preference.html</a></p>
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
+        <a href="/2020/03/06/Elasticsearch%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91by%20Intellij%20Idea/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="Elasticsearch源码编译by Intellij Idea">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-03-06T10:56:32.358Z">2020-03-06</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-03-06 18:56:32&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-03-06T10:56:32.358Z">2020-03-06</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    6 分钟 读完 (大约 939 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/03/06/Elasticsearch%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91by%20Intellij%20Idea/">Elasticsearch源码编译by Intellij Idea</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><p>##一、软件环境<br>Intellij Idea:2017.1版本<br>Elasticsearch源码版本:5.3.1<br>JDK:1.8.0_111<br>Gradle :建议3.3及以上版本。官网：<a href="https://gradle.org/" target="_blank" rel="noopener">https://gradle.org/</a><br>##二、下载Elasticsearch源码<br>到github clone源码，<a href="https://github.com/elastic/elasticsearch.git，建议选择稳定版本分支。" target="_blank" rel="noopener">https://github.com/elastic/elasticsearch.git，建议选择稳定版本分支。</a></p>
+<p>##三、导入idea<br>1，##编译执行gradle build.gradle，报错：<br>you must run gradle idea from the root of elasticsearch before importing into intellij<br>解决办法：运行命令：gradle idea。同理如使用eclipse编译器，运行gradle eclipse。该过程会向mvn仓库下载响应的jar包，视网络情况，大概会持续20分钟。</p>
+<p>##2，运行org.elasticsearch.bootstrap.Elasticsearch 方法，报错：<br>“path.home is not configured” when starting ES in transport and client mode“，<br>解决办法：在VM options中加入配置：-Des.path.home=/home/jiangtao/code/elasticsearch/core，即指向相应的core模块的路径。</p>
+<p>##3，报错：org.elasticsearch.bootstrap.BootstrapException: java.nio.file.NoSuchFileException<br>  </p><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Exception in thread <span class="hljs-string">"main"</span> org.elasticsearch.bootstrap.BootstrapException: java.nio.file.NoSuchFileException: /home/jiangtao/code/elasticsearch/core/config Likely root cause: java.nio.file.NoSuchFileException: /home/jiangtao/code/elasticsearch/core/config</span><br><span class="line">    at sun.nio.fs.UnixException.translateToIOException(UnixException.java:<span class="hljs-number">86</span>)</span><br><span class="line">    at sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:<span class="hljs-number">102</span>)</span><br><span class="line">    at sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:<span class="hljs-number">107</span>)</span><br><span class="line">    at sun.nio.fs.UnixFileAttributeViews$Basic.readAttributes(UnixFileAttributeViews.java:<span class="hljs-number">55</span>)</span><br><span class="line">   at sun.nio.fs.UnixFileSystemProvider.readAttributes(UnixFileSystemProvider.java:<span class="hljs-number">144</span>)</span><br><span class="line">   at sun.nio.fs.LinuxFileSystemProvider.readAttributes(LinuxFileSystemProvider.java:<span class="hljs-number">99</span>)</span><br><span class="line">   at java.nio.file.Files.readAttributes(Files.java:<span class="hljs-number">1737</span>)</span><br><span class="line">   at java.nio.file.FileTreeWalker.getAttributes(FileTreeWalker.java:<span class="hljs-number">225</span>)</span><br><span class="line">   at java.nio.file.FileTreeWalker.visit(FileTreeWalker.java:<span class="hljs-number">276</span>)</span><br><span class="line">   at java.nio.file.FileTreeWalker.walk(FileTreeWalker.java:<span class="hljs-number">322</span>)</span><br><span class="line">   at java.nio.file.Files.walkFileTree(Files.java:<span class="hljs-number">2662</span>)</span><br></pre></td></tr></tbody></table></figure><p></p>
+<p>解决办法：将distribution模块src路径下的config整个文件copy到core模块中</p>
+<p>##4，报错： ERROR Could not register mbeans java.security.AccessControlException</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-number">2017</span>-<span class="hljs-number">06</span>-<span class="hljs-number">06</span> <span class="hljs-number">09</span>:<span class="hljs-number">52</span>:<span class="hljs-number">08</span>,<span class="hljs-number">007</span> main ERROR Could not register mbeans java.security.AccessControlException: <span class="hljs-function">access <span class="hljs-title">denied</span> <span class="hljs-params">(<span class="hljs-string">"javax.management.MBeanTrustPermission"</span> <span class="hljs-string">"register"</span>)</span></span></span><br><span class="line"><span class="hljs-function">             at java.security.AccessControlContext.<span class="hljs-title">checkPermission</span><span class="hljs-params">(AccessControlContext.java:<span class="hljs-number">472</span>)</span></span></span><br><span class="line"><span class="hljs-function">            at java.lang.SecurityManager.<span class="hljs-title">checkPermission</span><span class="hljs-params">(SecurityManager.java:<span class="hljs-number">585</span>)</span></span></span><br><span class="line"><span class="hljs-function">            at com.sun.jmx.interceptor.DefaultMBeanServerInterceptor.<span class="hljs-title">checkMBeanTrustPermission</span><span class="hljs-params">(DefaultMBeanServerInterceptor.java:<span class="hljs-number">1848</span>)</span></span></span><br><span class="line"><span class="hljs-function">            at com.sun.jmx.interceptor.DefaultMBeanServerInterceptor.<span class="hljs-title">registerMBean</span><span class="hljs-params">(DefaultMBeanServerInterceptor.java:<span class="hljs-number">322</span>)</span></span></span><br><span class="line"><span class="hljs-function">            at com.sun.jmx.mbeanserver.JmxMBeanServer.<span class="hljs-title">registerMBean</span><span class="hljs-params">(JmxMBeanServer.java:<span class="hljs-number">522</span>)</span></span></span><br><span class="line"><span class="hljs-function">             </span></span><br><span class="line"><span class="hljs-function">           at org.elasticsearch.bootstrap.Elasticsearch.<span class="hljs-title">main</span><span class="hljs-params">(Elasticsearch.java:<span class="hljs-number">91</span>)</span></span></span><br><span class="line"><span class="hljs-function">           at org.elasticsearch.bootstrap.Elasticsearch.<span class="hljs-title">main</span><span class="hljs-params">(Elasticsearch.java:<span class="hljs-number">84</span>)</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<pre><code>解决办法：禁用jmx,在VM options中继续添加配置：  -Dlog4j2.disable.jmx=true。注意：在VM options中多个配置中间用空格分隔。</code></pre><figure class="highlight plain hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">##5，报错： java.lang.IllegalStateException: Unsupported transport.type </span><br><span class="line">错误栈如下：</span><br><span class="line">```java</span><br><span class="line">[2017-06-06T10:04:21,327][WARN ][o.e.b.ElasticsearchUncaughtExceptionHandler]  uncaught exception in thread [main]</span><br><span class="line">org.elasticsearch.bootstrap.StartupException: java.lang.IllegalStateException: Unsupported transport.type </span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:127) ~[main/:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.execute(Elasticsearch.java:114) ~[main/:?]</span><br><span class="line">at org.elasticsearch.cli.EnvironmentAwareCommand.execute(EnvironmentAwareCommand.java:58) ~[main/:?]</span><br><span class="line">at org.elasticsearch.cli.Command.mainWithoutErrorHandling(Command.java:122) ~[main/:?]</span><br><span class="line">at org.elasticsearch.cli.Command.main(Command.java:88) ~[main/:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:91) ~[main/:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:84) ~[main/:?]</span><br><span class="line">Caused by: java.lang.IllegalStateException: Unsupported transport.type </span><br><span class="line">at org.elasticsearch.common.network.NetworkModule.getTransportSupplier(NetworkModule.java:213) ~[main/:?]</span><br><span class="line">at org.elasticsearch.node.Node.<init>(Node.java:421) ~[main/:?]</span><br><span class="line">at org.elasticsearch.node.Node.<init>(Node.java:242) ~[main/:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Bootstrap$6.<init>(Bootstrap.java:242) ~[main/:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Bootstrap.setup(Bootstrap.java:242) ~[main/:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Bootstrap.init(Bootstrap.java:360) ~[main/:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:123) ~[main/:?]</span><br><span class="line">... 6 more</span><br></pre></td></tr></tbody></table></figure>
+
+<p>这个是由于依赖的transport等jar并没有找到，可以在项目根目录找到models模块，然后将下面目录打包，然后copy到distribution/src/main/models目录下，<br>也可以直接去官网（<a href="https://www.elastic.co/downloads/elasticsearch）下载zip包，解压后直接copy。" target="_blank" rel="noopener">https://www.elastic.co/downloads/elasticsearch）下载zip包，解压后直接copy。</a><br>我直接去官网下载的zip包：从官网下载完毕zip包后，具体解决办法请看：错误 6。</p>
+<p>##6，copy module版本冲突<br>错误栈如下： </p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">org.elasticsearch.bootstrap.StartupException: java.lang.IllegalArgumentException: Plugin [lang-expression] is incompatible with Elasticsearch [<span class="hljs-number">5.3</span><span class="hljs-number">.4</span>]. Was designed <span class="hljs-keyword">for</span> version [<span class="hljs-number">5.3</span><span class="hljs-number">.1</span>]</span><br><span class="line"> at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:<span class="hljs-number">127</span>) ~[main/:?]</span><br><span class="line"> at org.elasticsearch.bootstrap.Elasticsearch.execute(Elasticsearch.java:<span class="hljs-number">114</span>) ~[main/:?]</span><br><span class="line"> at org.elasticsearch.cli.EnvironmentAwareCommand.execute(EnvironmentAwareCommand.java:<span class="hljs-number">58</span>) ~[main/:?]</span><br><span class="line"> at org.elasticsearch.cli.Command.mainWithoutErrorHandling(Command.java:<span class="hljs-number">122</span>) ~[main/:?]</span><br><span class="line"> at org.elasticsearch.cli.Command.main(Command.java:<span class="hljs-number">88</span>) ~[main/:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:<span class="hljs-number">91</span>) ~[main/:?]</span><br><span class="line">at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:<span class="hljs-number">84</span>) ~[main/:?]</span><br><span class="line">Caused by: java.lang.IllegalArgumentException: Plugin [lang-expression] is incompatible with Elasticsearch [<span class="hljs-number">5.3</span><span class="hljs-number">.4</span>]. Was designed <span class="hljs-keyword">for</span> version [<span class="hljs-number">5.3</span><span class="hljs-number">.1</span>]</span><br></pre></td></tr></tbody></table></figure>
+
+<p>解决办法：修改es当前版本<br>将core模块中的Version.java类由<br>public static final Version CURRENT = V_5_3_4_UNRELEASED;<br>修改为：<br>public static final Version CURRENT = V_5_3_1;</p>
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
         <a href="/2020/03/06/ElasticSearch%E4%B9%8B%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF/" class="image is-7by1">
             <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="ElasticSearch之索引模板">
         </a>
@@ -404,317 +1158,6 @@ var _hmt = _hmt || [];
 
 
 
-        <div class="card">
-
-        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
-    
-    <div class="card-image">
-        <a href="/2020/02/26/jvm-GC-and-GC-Tuning/" class="image is-7by1">
-            <img class="thumbnail" src="/logo/java.jpg" alt="Git如何回退版本">
-        </a>
-    </div>
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-
-                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
-                
-                <time class="level-item has-text-grey" datetime="2020-02-26T02:29:19.384Z">2020-02-26</time>
-                
-
-                <!--<span style="color: #7a7a7a !important;">2020-02-26 10:29:19&nbsp;&nbsp;&nbsp;</span>-->
-                <!--<time class="level-item has-text-grey" datetime="2020-02-26T02:29:19.384Z">2020-02-26</time>-->
-                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
-
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/java/">java</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    12 分钟 读完 (大约 1772 个字)
-                </span>
-                
-
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/02/26/jvm-GC-and-GC-Tuning/">Git如何回退版本</a>
-            
-        </h1>
-
-        <div class="content">
-
-            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
-            
-                <html><head></head><body><div id="article_content" class="article_content clearfix">
-            <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/ck_htmledit_views-833878f763.css">
-                                        <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/ck_htmledit_views-833878f763.css">
-                <div class="htmledit_views" id="content_views">
-                                            <p id="main-toc"><strong>目录</strong></p>
-
-<p id="1%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E5%9E%83%E5%9C%BE-toc" style="margin-left:0px;"><a href="#1%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E5%9E%83%E5%9C%BE" rel="nofollow" target="_self">1、什么是垃圾</a></p>
-
-<p id="2%E3%80%81%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D%E5%9E%83%E5%9C%BE-toc" style="margin-left:0px;"><a href="#2%E3%80%81%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D%E5%9E%83%E5%9C%BE" rel="nofollow" target="_self">2、如何定位垃圾</a></p>
-
-<p id="reference%20count-toc" style="margin-left:40px;"><a href="#reference%20count" rel="nofollow" target="_self">reference count</a></p>
-
-<p id="Root%20Searching-toc" style="margin-left:40px;"><a href="#Root%20Searching" rel="nofollow" target="_self">Root Searching</a></p>
-
-<p id="3%E3%80%81%E5%B8%B8%E8%A7%81%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95-toc" style="margin-left:0px;"><a href="#3%E3%80%81%E5%B8%B8%E8%A7%81%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95" rel="nofollow" target="_self">3、常见的垃圾回收算法</a></p>
-
-<p id="Mark-Sweep(%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4)-toc" style="margin-left:40px;"><a href="#Mark-Sweep(%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4)" rel="nofollow" target="_self">Mark-Sweep(标记清除)</a></p>
-
-<p id="Copying(%E6%8B%B7%E8%B4%9D%E7%AE%97%E6%B3%95%EF%BC%89-toc" style="margin-left:40px;"><a href="#Copying(%E6%8B%B7%E8%B4%9D%E7%AE%97%E6%B3%95%EF%BC%89" rel="nofollow" target="_self">Copying(拷贝算法）</a></p>
-
-<p id="Mark-Compact%EF%BC%88%E6%A0%87%E8%AE%B0%E5%8E%8B%E7%BC%A9)-toc" style="margin-left:40px;"><a href="#Mark-Compact%EF%BC%88%E6%A0%87%E8%AE%B0%E5%8E%8B%E7%BC%A9)" rel="nofollow" target="_self">Mark-Compact（标记压缩)</a><a href="#%E2%80%8B" rel="nofollow" target="_self">​</a></p>
-
-<p id="4%E3%80%81JVM%E5%86%85%E5%AD%98%E5%88%86%E4%BB%A3%E6%A8%A1%E5%9E%8B(%E7%94%A8%E4%BA%8E%E5%88%86%E4%BB%A3%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%EF%BC%89-toc" style="margin-left:0px;"><a href="#4%E3%80%81JVM%E5%86%85%E5%AD%98%E5%88%86%E4%BB%A3%E6%A8%A1%E5%9E%8B(%E7%94%A8%E4%BA%8E%E5%88%86%E4%BB%A3%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%EF%BC%89" rel="nofollow" target="_self">4、JVM内存分代模型(用于分代垃圾回收算法）</a></p>
-
-<p id="%E5%A0%86%E5%86%85%E5%AD%98%E9%80%BB%E8%BE%91%E5%88%86%E5%8C%BA-toc" style="margin-left:40px;"><a href="#%E5%A0%86%E5%86%85%E5%AD%98%E9%80%BB%E8%BE%91%E5%88%86%E5%8C%BA" rel="nofollow" target="_self">堆内存逻辑分区</a></p>
-
-<p id="5%E3%80%81%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8-toc" style="margin-left:0px;"><a href="#5%E3%80%81%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8" rel="nofollow" target="_self">5、垃圾回收器</a></p>
-
-<p id="Serial-toc" style="margin-left:40px;"><a href="#Serial" rel="nofollow" target="_self">Serial</a></p>
-
-<p id="Parallel%20Scavenge-toc" style="margin-left:40px;"><a href="#Parallel%20Scavenge" rel="nofollow" target="_self">Parallel Scavenge</a></p>
-
-<p id="ParNew-toc" style="margin-left:40px;"><a href="#ParNew" rel="nofollow" target="_self">ParNew</a></p>
-
-<p id="SerialOld-toc" style="margin-left:40px;"><a href="#SerialOld" rel="nofollow" target="_self">SerialOld</a></p>
-
-<p id="Parallel%20Old-toc" style="margin-left:40px;"><a href="#Parallel%20Old" rel="nofollow" target="_self">Parallel Old</a></p>
-
-<p id="CMS-toc" style="margin-left:40px;"><a href="#CMS" rel="nofollow" target="_self">CMS</a></p>
-
-<p id="6%E3%80%81JVM%E5%8F%82%E6%95%B0-toc" style="margin-left:0px;"><a href="#6%E3%80%81JVM%E5%8F%82%E6%95%B0" rel="nofollow" target="_self">6、JVM参数</a></p>
-
-<p id="7%E3%80%81%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE-toc" style="margin-left:0px;"><a href="#7%E3%80%81%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE" rel="nofollow" target="_self">7、思维导图</a></p>
-
-<hr id="hr-toc"><h1 id="1%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E5%9E%83%E5%9C%BE"><a name="t0"></a><a name="t0"></a>1、什么是垃圾</h1>
-
-<p>内存分配与回收方式：</p>
-
-<ul><li>
-    <p>C语言：malloc、free</p>
-    </li>
-    <li>
-    <p>C++：new、delete</p>
-    </li>
-    <li>
-    <p>Java：new  自动回收内存</p>
-    </li>
-</ul><p>自动回收内存系统不容易出错，手动回收内存，容易出现以下的错误：</p>
-
-<ul><li>
-    <p>忘记回收</p>
-    </li>
-    <li>
-    <p>多次回收</p>
-    </li>
-</ul><p>垃圾的定义：没有任何引用指向的一个对象或者多个对象(循环引用）。</p>
-
-<p><img alt height="263" src="https://img-blog.csdnimg.cn/20200218153041603.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="489"></p>
-
-<p>当把成员变量设置为空(null)之后，不再指向任何引用对象，那么该对象就被称作垃圾：</p>
-
-<h2 id="%E2%80%8B"><a name="t1"></a><img alt height="259" src="https://img-blog.csdnimg.cn/20200218154813459.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="503"></h2>
-
-<p>还有一种情况，多个对象之间互相引用，但是没有其他的引用指向这个循环的对象。  </p>
-
-<h2><a name="t2"></a><img alt height="320" src="https://img-blog.csdnimg.cn/20200218155228678.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="503"></h2>
-
-<h1 id="2%E3%80%81%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D%E5%9E%83%E5%9C%BE"><a name="t3"></a><a name="t3"></a>2、如何定位垃圾</h1>
-
-<ul><li>
-    <h2 id="reference%20count"><a name="t4"></a><a name="t4"></a>reference count</h2>
-    </li>
-</ul><h2><a name="t5"></a><img alt height="381" src="https://img-blog.csdnimg.cn/20200218160722764.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="508"></h2>
-
-<p>当引用计数变为0的时候，这个对象就成为垃圾了。但是引用计数不能解决对象循环引用</p>
-
-<p>如下：</p>
-
-<p><img alt height="320" src="https://img-blog.csdnimg.cn/20200218155228678.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="503"></p>
-
-<p>每个引用计数都是1，但是它们全部是垃圾，所以用引用计数的方式的话，这些垃圾就找不到了，会发生内存泄漏。</p>
-
-<ul><li>
-    <h2 id="Root%20Searching"><a name="t6"></a><a name="t6"></a>Root Searching</h2>
-    </li>
-</ul><p>根可达或者根搜索算法。</p>
-
-<p>通过程序找到一些根对象，通过根对象找到它所连接的那些对象不是垃圾，其他的都是垃圾。</p>
-
-<p>Roots：线程栈变量、静态变量、常量池、JNI指针</p>
-
-<h2><a name="t7"></a><img alt height="334" src="https://img-blog.csdnimg.cn/20200218163811236.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="684"></h2>
-
-<h1 id="3%E3%80%81%E5%B8%B8%E8%A7%81%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95"><a name="t8"></a><a name="t8"></a>3、常见的垃圾回收算法</h1>
-
-<ul><li>
-    <h2 id="Mark-Sweep(%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4)"><a name="t9"></a><a name="t9"></a>Mark-Sweep(标记清除)</h2>
-    </li>
-</ul><p><img alt height="461" src="https://img-blog.csdnimg.cn/2020021817055046.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="698"></p>
-
-<p>将可回收的对象标记为非垃圾。</p>
-
-<p>缺点：位置不连续，产生内存碎片。</p>
-
-<ul><li>
-    <h2 id="Copying(%E6%8B%B7%E8%B4%9D%E7%AE%97%E6%B3%95%EF%BC%89"><a name="t10"></a><a name="t10"></a>Copying(拷贝算法）</h2>
-    </li>
-</ul><p><img alt height="409" src="https://img-blog.csdnimg.cn/20200218171626281.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="697"></p>
-
-<p>内存一分为二，将存活对象复制到未使用的内存中，原内存全部标记为可使用；新分配内存时先分配存活对象所在的那段内存，垃圾回收时，重复上述操作。</p>
-
-<p>特点：没有碎片，但是内浪费空间。最大的问题：内存浪费。</p>
-
-<ul><li>
-    <h2 id="Mark-Compact%EF%BC%88%E6%A0%87%E8%AE%B0%E5%8E%8B%E7%BC%A9)"><a name="t11"></a><a name="t11"></a>Mark-Compact（标记压缩)</h2>
-    </li>
-</ul><h2><a name="t12"></a><img alt height="460" src="https://img-blog.csdnimg.cn/20200218174827773.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="691"></h2>
-
-<p>将存活对象依次复制到垃圾对象和未使用的区域中，结合了标记清除和拷贝的做法，但是效率比copy略低。</p>
-
-<p>三种方法找垃圾的效率是一致的，区别在于找到垃圾后对其进行整理的方式。拷贝算法是内存拷贝，是线性地址的拷贝，速度很快的，效率很高。但是压缩算法却不这么简单，因为任意一个内存进行移动时，如果是多线程， 都要进行线程同步；如果是单线程，那单线程的效率本来就低。 所以任何一块内存挪动都要进行线程同步，所以效率肯定是很低的。</p>
-
-<h1 id="4%E3%80%81JVM%E5%86%85%E5%AD%98%E5%88%86%E4%BB%A3%E6%A8%A1%E5%9E%8B(%E7%94%A8%E4%BA%8E%E5%88%86%E4%BB%A3%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%EF%BC%89"><a name="t13"></a><a name="t13"></a>4、JVM内存分代模型(用于分代垃圾回收算法）</h1>
-
-<p>目前，生产环境中普遍使用的是JDK1.7或JDK1.8，根据JDK版本不同，分代也不同。</p>
-
-<p>JVM中分代：新生代+老年代+永久代(JDK1.7)/元数据区(JDK1.8)Metaspace。</p>
-
-<ul><li>永久代和元数据区是装载Class的，将硬盘上的Class对象load到内存的时候，装载了永久代或者元数据区域，具体放在哪里区别于使用的JDK版本</li>
-    <li>永久代必须指定大小限制，而元数据可以设置，也可不设置，无上限(受限于物理内存）</li>
-    <li>字符串常量在JDK1.7中，是放在永久代区域；而JDK1.8中，是放在堆里</li>
-    <li>MethodArea是一个逻辑概念，并不是指的一个区域，在JDK1.7中对应的就是永久代，JDK1.8中对应的是元数据</li>
-</ul><h2 id="%E5%A0%86%E5%86%85%E5%AD%98%E9%80%BB%E8%BE%91%E5%88%86%E5%8C%BA"><a name="t14"></a><a name="t14"></a>堆内存逻辑分区</h2>
-
-<p><img alt height="467" src="https://img-blog.csdnimg.cn/20200220122652988.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="817"></p>
-
-<ul><li>新生代中分了两类区域，eden和survivor，而survivor有两块。默认的比例，新生代：老年代=1：3，新生代中eden: survivor：survivor = 8:1:1。</li>
-</ul><p>之所以新生代中按照这个比例分配，是因为eden区在GC的时候，90%的对象都会被回收，剩下的存活对象在survivor区是可以放下的。</p>
-
-<p>当创建一个对象时，默认会去找eden区， 如果对象特别大，eden区装不下则直接进入老年代。</p>
-
-<p><span style="color:#f33b45;"><strong>新生代 = Eden + 2个survivor区(survivor0、survivor1）</strong>：</span></p>
-
-<ul><li>YGC(Young GC)回收后，大多数的对象会被回收，活着的对象进入survivor0</li>
-    <li>再次YGC，活着的对象eden+s0拷贝到s1，将eden和s0清空</li>
-    <li>再次YGC，活着的对象eden+s1拷贝到s0，将eden和s1清空</li>
-    <li>年龄足够->老年代(年龄足够：15，CMS 6)</li>
-    <li>survivor区装不下的时候，装不下的部分直接进入老年代</li>
-</ul><p><span style="color:#f33b45;"><strong>老年代：</strong></span></p>
-
-<ul><li>顽固份子</li>
-    <li>老年代区域满了，就进行Full GC(简称FGC, FGC包括新生代和老年代同时GC)</li>
-</ul><p><span style="color:#f33b45;"><strong>GC Tuning：</strong></span>尽量减少FGC。</p>
-
-<h1 id="5%E3%80%81%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><a name="t15"></a><a name="t15"></a>5、垃圾回收器</h1>
-
-<p><img alt height="414" src="https://img-blog.csdnimg.cn/20200220125708117.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="863"></p>
-
-<ul><li>Serial、ParNew、Parallel Scavenge是用于回收Young Generation</li>
-    <li>CMS、Serial Old、Parallel Old是用于回收Old Generation</li>
-    <li>G1、ZGC、Shenandoah不区分老年代和新生代。</li>
-    <li>Epsilon是一个空的GC，仅仅用于调试JDK。</li>
-    <li>图中的红色虚线表示可以配合使用。</li>
-</ul><h2 id="Serial"><a name="t16"></a><a name="t16"></a>Serial</h2>
-
-<p><img alt height="436" src="https://img-blog.csdnimg.cn/20200220130215487.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="815"></p>
-
-<p>垃圾回收的时候，程序是无法执行的。stop-the-world(STW)是停止程序运行，回收线程开始运行，回收结束后程序再接着运行。</p>
-
-<h2 id="Parallel%20Scavenge"><a name="t17"></a><a name="t17"></a>Parallel Scavenge</h2>
-
-<p><img alt height="471" src="https://img-blog.csdnimg.cn/20200220130956610.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="808"></p>
-
-<p>并行回收，多个线程同时进行垃圾回收。</p>
-
-<h2 id="ParNew"><a name="t18"></a><a name="t18"></a>ParNew</h2>
-
-<p><img alt height="474" src="https://img-blog.csdnimg.cn/2020022013122529.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="827"></p>
-
-<p>配合CMS的年轻代并行回收。</p>
-
-<h2 id="SerialOld"><a name="t19"></a><a name="t19"></a>SerialOld</h2>
-
-<p>单线程回收算法用于old区域</p>
-
-<h2 id="Parallel%20Old"><a name="t20"></a><a name="t20"></a>Parallel Old</h2>
-
-<p>多线程回收算法用于old区域</p>
-
-<h2 id="CMS"><a name="t21"></a><a name="t21"></a>CMS</h2>
-
-<p>ConcurrentMarkSweep，用于回收老年代，在垃圾回收的同时程序也能运行。(黄色的表示垃圾回收线程，蓝色表示程序执行线程）</p>
-
-<p><img alt height="456" src="https://img-blog.csdnimg.cn/20200220132715191.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="835"></p>
-
-<p><img alt height="445" src="https://img-blog.csdnimg.cn/20200220133005356.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70" width="836"></p>
-
-<p>调优针对的是Serial、Parallel Scavenge和Serial Old、Parallel New，因为JDK1.8默认的垃圾回收：Parallel Scavenge + Parallel Old。</p>
-
-<h1 id="6%E3%80%81JVM%E5%8F%82%E6%95%B0"><a name="t22"></a><a name="t22"></a>6、JVM参数</h1>
-
-<p>JVM的命令行参数参考：https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html</p>
-
-<p>JVM参数分类：</p>
-
-<ul><li>标准：-开头，所有的HotSpot都支持。 如：java -version</li>
-    <li>非标准：-X开头，特定版本HotSpot支持特定命令</li>
-    <li>不稳定：-XX开头，下个版本可能取消
-    <ol><li>-XX: +PrintFlagsFinal   --- 设置值（最终生效值)</li>
-        <li>-XX:+PrintFlagsInitial  --- 默认值</li>
-        <li>-XX:+PrintCommandLineFlags ---命令行参数</li>
-    </ol></li>
-</ul><h1 id="7%E3%80%81%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE"><a name="t23"></a><a name="t23"></a>7、思维导图</h1>
-
-<p><img alt src="https://img-blog.csdnimg.cn/20200220151948590.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTEzODYxNzM=,size_16,color_FFFFFF,t_70"></p>
-
-<p>参考文档：</p>
-
-<p><a href="https://blogs.oracle.com/jonthecollector/our-collectors" target="_blank" rel="nofollow noopener">https://blogs.oracle.com/jonthecollector/our-collectors</a></p>
-
-<p><a href="https://blogs.oracle.com/jonthecollector/why-not-a-grand-unified-garbage-collector" target="_blank" rel="nofollow noopener">https://blogs.oracle.com/jonthecollector/why-not-a-grand-unified-garbage-collector</a></p>
-</div></div></body></html>
-            
-
-            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
-        </div>
-
-        
-
-
-        
-        
-
-        <!--% if (!index && has_config('share.type')) { %-->
-<!--        % if (index && has_config('share.type')) { %-->
-        
-        <div class="social-share"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
-<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
 
     
 <div class="card card-transparent">
@@ -722,7 +1165,7 @@ var _hmt = _hmt || [];
         <div class="pagination-previous">
             <a class="is-flex-grow has-text-black-ter" href="/page/4/">上一页</a>
         </div>
-        <div class="pagination-next is-invisible is-hidden-mobile">
+        <div class="pagination-next">
             <a class="is-flex-grow has-text-black-ter" href="/page/6/">下一页</a>
         </div>
         <ul class="pagination-list is-hidden-mobile">
@@ -734,6 +1177,8 @@ var _hmt = _hmt || [];
             <li><a class="pagination-link has-text-black-ter" href="/page/4/">4</a></li>
             
             <li><a class="pagination-link is-current" href="/page/5/">5</a></li>
+            
+            <li><a class="pagination-link has-text-black-ter" href="/page/6/">6</a></li>
             
         </ul>
     </nav>
@@ -782,7 +1227,7 @@ var _hmt = _hmt || [];
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        43
+                        51
                     </p>
                 </div>
             </div>
@@ -945,7 +1390,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">算法</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">22</span>
+                <span class="level-item tag">29</span>
             </span>
         </a></li>
             </ul>
@@ -976,35 +1421,16 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
-            <a href="/2020/10/19/%E7%BA%A2%E5%8C%85%E7%AE%97%E6%B3%95/" class="media-left">
+            <a href="/2020/10/19/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="红包算法">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="队列实现栈">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:53:22.463Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E7%BA%A2%E5%8C%85%E7%AE%97%E6%B3%95/" class="has-link-black-ter is-size-6">红包算法</a>
-                    <p class="is-size-7 is-uppercase">
-                        
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/10/19/sqrt/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="sqrt">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:52:47.501Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/sqrt/" class="has-link-black-ter is-size-6">sqrt</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:07:17.987Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88/" class="has-link-black-ter is-size-6">队列实现栈</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
                     </p>
@@ -1014,16 +1440,16 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
-            <a href="/2020/10/19/%E6%9C%80%E5%B0%8F%E6%A0%88/" class="media-left">
+            <a href="/2020/10/19/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="最小栈">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="有效的括号">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:51:59.578Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E6%9C%80%E5%B0%8F%E6%A0%88/" class="has-link-black-ter is-size-6">最小栈</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:06:30.103Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/" class="has-link-black-ter is-size-6">有效的括号</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
                     </p>
@@ -1033,16 +1459,16 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
-            <a href="/2020/10/19/LRUCache%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="media-left">
+            <a href="/2020/10/19/%E5%8D%95%E8%AF%8D%E5%8F%8D%E8%BD%AC/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="LRUCache数据结构">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="单词反转">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:51:19.136Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/LRUCache%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="has-link-black-ter is-size-6">LRUCache数据结构</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:05:48.395Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E5%8D%95%E8%AF%8D%E5%8F%8D%E8%BD%AC/" class="has-link-black-ter is-size-6">单词反转</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
                     </p>
@@ -1052,16 +1478,35 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
-            <a href="/2020/10/19/%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA/" class="media-left">
+            <a href="/2020/10/19/%E5%88%A4%E5%AE%9A%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="卖股票的最佳时机">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="判定是否有环">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:49:36.842Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA/" class="has-link-black-ter is-size-6">卖股票的最佳时机</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:05:00.176Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E5%88%A4%E5%AE%9A%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF/" class="has-link-black-ter is-size-6">判定是否有环</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/10/19/%E9%93%BE%E8%A1%A8%E4%BA%A4%E6%8D%A2%E5%85%83%E7%B4%A0/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="链表交换元素">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:04:07.212Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E9%93%BE%E8%A1%A8%E4%BA%A4%E6%8D%A2%E5%85%83%E7%B4%A0/" class="has-link-black-ter is-size-6">链表交换元素</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
                     </p>
@@ -1098,7 +1543,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/java/">
                         <span class="tag">java</span>
-                        <span class="tag is-grey">26</span>
+                        <span class="tag is-grey">33</span>
                     </a>
                 </div>
                 
@@ -1141,35 +1586,16 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
-            <a href="/2020/10/19/%E7%BA%A2%E5%8C%85%E7%AE%97%E6%B3%95/" class="media-left">
+            <a href="/2020/10/19/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="红包算法">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="队列实现栈">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:53:22.463Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E7%BA%A2%E5%8C%85%E7%AE%97%E6%B3%95/" class="has-link-black-ter is-size-6">红包算法</a>
-                    <p class="is-size-7 is-uppercase">
-                        
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/10/19/sqrt/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="sqrt">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:52:47.501Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/sqrt/" class="has-link-black-ter is-size-6">sqrt</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:07:17.987Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88/" class="has-link-black-ter is-size-6">队列实现栈</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
                     </p>
@@ -1179,16 +1605,16 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
-            <a href="/2020/10/19/%E6%9C%80%E5%B0%8F%E6%A0%88/" class="media-left">
+            <a href="/2020/10/19/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="最小栈">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="有效的括号">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:51:59.578Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E6%9C%80%E5%B0%8F%E6%A0%88/" class="has-link-black-ter is-size-6">最小栈</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:06:30.103Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/" class="has-link-black-ter is-size-6">有效的括号</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
                     </p>
@@ -1198,16 +1624,16 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
-            <a href="/2020/10/19/LRUCache%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="media-left">
+            <a href="/2020/10/19/%E5%8D%95%E8%AF%8D%E5%8F%8D%E8%BD%AC/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="LRUCache数据结构">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="单词反转">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:51:19.136Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/LRUCache%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="has-link-black-ter is-size-6">LRUCache数据结构</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:05:48.395Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E5%8D%95%E8%AF%8D%E5%8F%8D%E8%BD%AC/" class="has-link-black-ter is-size-6">单词反转</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
                     </p>
@@ -1217,16 +1643,35 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
-            <a href="/2020/10/19/%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA/" class="media-left">
+            <a href="/2020/10/19/%E5%88%A4%E5%AE%9A%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="卖股票的最佳时机">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="判定是否有环">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:49:36.842Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA/" class="has-link-black-ter is-size-6">卖股票的最佳时机</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:05:00.176Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E5%88%A4%E5%AE%9A%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF/" class="has-link-black-ter is-size-6">判定是否有环</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/10/19/%E9%93%BE%E8%A1%A8%E4%BA%A4%E6%8D%A2%E5%85%83%E7%B4%A0/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="链表交换元素">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:04:07.212Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E9%93%BE%E8%A1%A8%E4%BA%A4%E6%8D%A2%E5%85%83%E7%B4%A0/" class="has-link-black-ter is-size-6">链表交换元素</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
                     </p>
@@ -1263,7 +1708,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/java/">
                         <span class="tag">java</span>
-                        <span class="tag is-grey">26</span>
+                        <span class="tag is-grey">33</span>
                     </a>
                 </div>
                 

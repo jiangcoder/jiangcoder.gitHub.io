@@ -178,6 +178,574 @@ var _hmt = _hmt || [];
         <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
     
     <div class="card-image">
+        <a href="/2020/10/19/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/suanfa.jpg" alt="队列实现栈">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-10-19T12:07:17.987Z">2020-10-19</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-10-19 20:07:17&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-10-19T12:07:17.987Z">2020-10-19</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    1 分钟 读完 (大约 199 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/10/19/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88/">队列实现栈</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><h2 id="队列实现栈"><a href="#队列实现栈" class="headerlink" title="队列实现栈"></a>队列实现栈</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyStack</span> </span>{</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">private</span> Queue<Integer> addQueue;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">private</span> Queue<Integer> rmQueue;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">/** Initialize your data structure here. */</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">MyStack</span><span class="hljs-params">()</span> </span>{</span><br><span class="line">        addQueue = <span class="hljs-keyword">new</span> LinkedList();</span><br><span class="line"></span><br><span class="line">        rmQueue = <span class="hljs-keyword">new</span> LinkedList();</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">/** Push element x onto stack. */</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">push</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span> </span>{</span><br><span class="line">        addQueue.offer(x);</span><br><span class="line">        <span class="hljs-keyword">while</span> (!rmQueue.isEmpty())</span><br><span class="line">            addQueue.offer(rmQueue.poll());</span><br><span class="line">        Queue temp = addQueue;</span><br><span class="line">        addQueue = rmQueue;</span><br><span class="line">        rmQueue = temp;</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">/** Removes the element on top of the stack and returns that element. */</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">pop</span><span class="hljs-params">()</span> </span>{</span><br><span class="line">       <span class="hljs-keyword">return</span>  rmQueue.poll();</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">/** Get the top element. */</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">top</span><span class="hljs-params">()</span> </span>{</span><br><span class="line">       <span class="hljs-keyword">return</span> rmQueue.peek();</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">/** Returns whether the stack is empty. */</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">empty</span><span class="hljs-params">()</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">return</span> rmQueue.isEmpty();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+
+<h2 id="栈实现队列"><a href="#栈实现队列" class="headerlink" title="栈实现队列"></a>栈实现队列</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyQueue</span> </span>{</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">private</span> Stack<Integer> addStack;</span><br><span class="line">    <span class="hljs-keyword">private</span> Stack<Integer> rmStack;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">/** Initialize your data structure here. */</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">MyQueue</span><span class="hljs-params">()</span> </span>{</span><br><span class="line">        addStack = <span class="hljs-keyword">new</span> Stack<>();</span><br><span class="line">        rmStack = <span class="hljs-keyword">new</span> Stack<>();</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">/** Push element x to the back of queue. */</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">push</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span> </span>{</span><br><span class="line">        addStack.add(x);</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">/** Removes the element from in front of queue and returns that element. */</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">pop</span><span class="hljs-params">()</span> </span>{</span><br><span class="line">       <span class="hljs-keyword">if</span> (rmStack.isEmpty()) {</span><br><span class="line">           <span class="hljs-keyword">while</span>(!addStack.isEmpty()) {</span><br><span class="line">               rmStack.push(addStack.pop());</span><br><span class="line">           }</span><br><span class="line">       }</span><br><span class="line">       <span class="hljs-keyword">return</span> rmStack.pop();</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">/** Get the front element. */</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">peek</span><span class="hljs-params">()</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">if</span>(rmStack.isEmpty()) {</span><br><span class="line">            <span class="hljs-keyword">while</span>(!addStack.isEmpty()) {</span><br><span class="line">                rmStack.push(addStack.pop());</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">return</span> rmStack.peek();</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">/** Returns whether the queue is empty. */</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">empty</span><span class="hljs-params">()</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">return</span> rmStack.isEmpty() && addStack.isEmpty();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
+        <a href="/2020/10/19/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/suanfa.jpg" alt="有效的括号">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-10-19T12:06:30.103Z">2020-10-19</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-10-19 20:06:30&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-10-19T12:06:30.103Z">2020-10-19</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    几秒 读完 (大约 57 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/10/19/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/">有效的括号</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><h2 id="有效的括号"><a href="#有效的括号" class="headerlink" title="有效的括号"></a>有效的括号</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isValid</span><span class="hljs-params">(String s)</span> </span>{</span><br><span class="line">        Map<Character, Character> map = <span class="hljs-keyword">new</span> HashMap<>();</span><br><span class="line">        map.put( <span class="hljs-string">')'</span>,<span class="hljs-string">'('</span>);</span><br><span class="line">        map.put( <span class="hljs-string">'}'</span>,<span class="hljs-string">'{'</span>);</span><br><span class="line">        map.put( <span class="hljs-string">']'</span>,<span class="hljs-string">'['</span>);</span><br><span class="line">        Stack stack = <span class="hljs-keyword">new</span> Stack();</span><br><span class="line">        <span class="hljs-keyword">char</span>[] ss = s.toCharArray();</span><br><span class="line">        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">char</span> ch : ss) {</span><br><span class="line">            <span class="hljs-keyword">if</span> (!map.containsKey(ch )) {</span><br><span class="line">                stack.push(ch);</span><br><span class="line">            } <span class="hljs-keyword">else</span> {</span><br><span class="line">                <span class="hljs-keyword">if</span> (stack.isEmpty() || !stack.pop().equals(map.get(ch)))</span><br><span class="line">                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">return</span> stack.isEmpty();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
+        <a href="/2020/10/19/%E5%8D%95%E8%AF%8D%E5%8F%8D%E8%BD%AC/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/suanfa.jpg" alt="单词反转">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-10-19T12:05:48.395Z">2020-10-19</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-10-19 20:05:48&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-10-19T12:05:48.395Z">2020-10-19</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    几秒 读完 (大约 40 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/10/19/%E5%8D%95%E8%AF%8D%E5%8F%8D%E8%BD%AC/">单词反转</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><h2 id="单词反转"><a href="#单词反转" class="headerlink" title="单词反转"></a>单词反转</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">reverseWords</span><span class="hljs-params">(String s)</span> </span>{</span><br><span class="line">    String[] strs = s.split(<span class="hljs-string">"\\s"</span>);</span><br><span class="line">    StringBuilder stringBuilder = <span class="hljs-keyword">new</span> StringBuilder();</span><br><span class="line">    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = strs.length - <span class="hljs-number">1</span>; i >= <span class="hljs-number">0</span>; i--) {</span><br><span class="line">        <span class="hljs-keyword">if</span> (strs[i].equals(<span class="hljs-string">""</span>))</span><br><span class="line">            <span class="hljs-keyword">continue</span>;</span><br><span class="line">        stringBuilder.append(strs[i].trim() + <span class="hljs-string">" "</span>);</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> stringBuilder.toString().trim();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
+        <a href="/2020/10/19/%E5%88%A4%E5%AE%9A%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/suanfa.jpg" alt="判定是否有环">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-10-19T12:05:00.176Z">2020-10-19</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-10-19 20:05:00&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-10-19T12:05:00.176Z">2020-10-19</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    几秒 读完 (大约 46 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/10/19/%E5%88%A4%E5%AE%9A%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF/">判定是否有环</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><h2 id="判定是否有环"><a href="#判定是否有环" class="headerlink" title="判定是否有环"></a>判定是否有环</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">hasCycle</span><span class="hljs-params">(ListNode node)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">if</span> (node == <span class="hljs-keyword">null</span> || node.next == <span class="hljs-keyword">null</span>)</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;</span><br><span class="line">    ListNode fastNode = node;</span><br><span class="line">    ListNode slowNode = node;</span><br><span class="line">    <span class="hljs-keyword">while</span> (fastNode != <span class="hljs-keyword">null</span> && fastNode.next != <span class="hljs-keyword">null</span>) {</span><br><span class="line">        slowNode = slowNode.next;</span><br><span class="line">        fastNode = fastNode.next.next;</span><br><span class="line">        <span class="hljs-keyword">if</span> (slowNode == fastNode)</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
+        <a href="/2020/10/19/%E9%93%BE%E8%A1%A8%E4%BA%A4%E6%8D%A2%E5%85%83%E7%B4%A0/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/suanfa.jpg" alt="链表交换元素">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-10-19T12:04:07.212Z">2020-10-19</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-10-19 20:04:07&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-10-19T12:04:07.212Z">2020-10-19</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    几秒 读完 (大约 36 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/10/19/%E9%93%BE%E8%A1%A8%E4%BA%A4%E6%8D%A2%E5%85%83%E7%B4%A0/">链表交换元素</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><h2 id="链表交换元素"><a href="#链表交换元素" class="headerlink" title="链表交换元素"></a>链表交换元素</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> ListNode <span class="hljs-title">swapPairs</span><span class="hljs-params">(ListNode head)</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">if</span> (head == <span class="hljs-keyword">null</span> || head.next == <span class="hljs-keyword">null</span>)</span><br><span class="line">            <span class="hljs-keyword">return</span> head;</span><br><span class="line">        ListNode newNode = head.next;</span><br><span class="line">        head.next = swapPairs(newNode.next);</span><br><span class="line">        newNode.next = head;</span><br><span class="line">        <span class="hljs-keyword">return</span> newNode;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
+        <a href="/2020/10/19/%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/suanfa.jpg" alt="反转链表">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-10-19T12:02:38.698Z">2020-10-19</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-10-19 20:02:38&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-10-19T12:02:38.698Z">2020-10-19</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    几秒 读完 (大约 37 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/10/19/%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/">反转链表</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><h2 id="反转链表"><a href="#反转链表" class="headerlink" title="反转链表"></a>反转链表</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span>  ListNode <span class="hljs-title">reverseList</span><span class="hljs-params">(ListNode head)</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">if</span> (head == <span class="hljs-keyword">null</span> || head.next == <span class="hljs-keyword">null</span>)</span><br><span class="line">            <span class="hljs-keyword">return</span> head;</span><br><span class="line">        ListNode temp = head.next;</span><br><span class="line">        ListNode newHead = reverseList(head.next);</span><br><span class="line">        temp.next = head;</span><br><span class="line">        head.next = <span class="hljs-keyword">null</span>;</span><br><span class="line">        <span class="hljs-keyword">return</span> newHead;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
+        <a href="/2020/10/19/%E9%AA%8C%E8%AF%81%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/suanfa.jpg" alt="验证二叉搜索树">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-10-19T12:00:59.277Z">2020-10-19</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-10-19 20:00:59&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-10-19T12:00:59.277Z">2020-10-19</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    1 分钟 读完 (大约 148 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/10/19/%E9%AA%8C%E8%AF%81%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/">验证二叉搜索树</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><h2 id="最小栈"><a href="#最小栈" class="headerlink" title="最小栈"></a>最小栈</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isValidBST</span><span class="hljs-params">(TreeNode node)</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">return</span> valid(node, Long.MIN_VALUE, Long.MAX_VALUE);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">valid</span><span class="hljs-params">(TreeNode node, <span class="hljs-keyword">long</span> min, <span class="hljs-keyword">long</span> max)</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">if</span> (node == <span class="hljs-keyword">null</span>)</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;</span><br><span class="line">        <span class="hljs-keyword">if</span> (node.val <= min || node.val >= max)</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;</span><br><span class="line">        <span class="hljs-keyword">return</span> valid(node.left, min, node.val) && valid(node.right,  node.val, max);</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">Long preValue = Long.MIN_VALUE;</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isValidBST</span><span class="hljs-params">(TreeNode node)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">if</span> (node != <span class="hljs-keyword">null</span>) {</span><br><span class="line">        <span class="hljs-keyword">if</span> (!isValidBST(node.left))</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;</span><br><span class="line">        <span class="hljs-keyword">if</span> (node.val <= preValue)</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;</span><br><span class="line">        preValue = Long.parseLong(node.val + <span class="hljs-string">""</span>);</span><br><span class="line">        <span class="hljs-keyword">if</span> (!isValidBST(node.right))</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;</span><br><span class="line">}</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isValidBST</span><span class="hljs-params">(TreeNode node)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">if</span> (node == <span class="hljs-keyword">null</span>)</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;</span><br><span class="line">    Stack<TreeNode> stack = <span class="hljs-keyword">new</span> Stack<>();</span><br><span class="line">    TreeNode temp = node;</span><br><span class="line">    TreeNode pre = <span class="hljs-keyword">null</span>;</span><br><span class="line">    <span class="hljs-keyword">while</span> (temp != <span class="hljs-keyword">null</span> || !stack.isEmpty()) {</span><br><span class="line">        <span class="hljs-keyword">while</span> (temp != <span class="hljs-keyword">null</span>) {</span><br><span class="line">            stack.push(temp);</span><br><span class="line">            temp = temp.left;</span><br><span class="line">        }</span><br><span class="line">        TreeNode t = stack.pop();</span><br><span class="line">        <span class="hljs-keyword">if</span> (pre != <span class="hljs-keyword">null</span> && t.val <= pre.val)</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;</span><br><span class="line">        pre = t;</span><br><span class="line">        temp = t.right;</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
         <a href="/2020/10/19/sqrt/" class="image is-7by1">
             <img class="thumbnail" src="/logo/suanfa.jpg" alt="sqrt">
         </a>
@@ -413,573 +981,6 @@ var _hmt = _hmt || [];
 
 
 
-        <div class="card">
-
-        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
-    
-    <div class="card-image">
-        <a href="/2020/10/19/%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA/" class="image is-7by1">
-            <img class="thumbnail" src="/logo/suanfa.jpg" alt="卖股票的最佳时机">
-        </a>
-    </div>
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-
-                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
-                
-                <time class="level-item has-text-grey" datetime="2020-10-19T11:49:36.842Z">2020-10-19</time>
-                
-
-                <!--<span style="color: #7a7a7a !important;">2020-10-19 19:49:36&nbsp;&nbsp;&nbsp;</span>-->
-                <!--<time class="level-item has-text-grey" datetime="2020-10-19T11:49:36.842Z">2020-10-19</time>-->
-                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
-
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    1 分钟 读完 (大约 147 个字)
-                </span>
-                
-
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/10/19/%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA/">卖股票的最佳时机</a>
-            
-        </h1>
-
-        <div class="content">
-
-            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
-            
-                <html><head></head><body><h2 id="卖股票的最佳时机"><a href="#卖股票的最佳时机" class="headerlink" title="卖股票的最佳时机"></a>卖股票的最佳时机</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxProfit</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] a)</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">int</span> maxProfit = <span class="hljs-number">0</span>;</span><br><span class="line">        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = a.length -<span class="hljs-number">1</span>; i >= <span class="hljs-number">1</span> ; i--) {</span><br><span class="line">            <span class="hljs-keyword">int</span> j = i - <span class="hljs-number">1</span>;</span><br><span class="line">            <span class="hljs-keyword">while</span>(j >= <span class="hljs-number">0</span>) {</span><br><span class="line">                <span class="hljs-keyword">int</span> profit = a[i] - a[j];</span><br><span class="line">                maxProfit = Math.max(profit, maxProfit);</span><br><span class="line">                j--;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">return</span> maxProfit;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxProfit</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] prices)</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">int</span> minPrice = Integer.MAX_VALUE;</span><br><span class="line">        <span class="hljs-keyword">int</span> maxProfit = <span class="hljs-number">0</span>;</span><br><span class="line">        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i < prices.length; i++) {</span><br><span class="line">            <span class="hljs-keyword">if</span> (prices[i] < minPrice) {</span><br><span class="line">                minPrice = prices[i];</span><br><span class="line">            }</span><br><span class="line">            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (prices[i] - minPrice > maxProfit) {</span><br><span class="line">                maxProfit = prices[i] - minPrice;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">return</span> maxProfit;</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxProfit</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] prices)</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">int</span> maxProfit = <span class="hljs-number">0</span>;</span><br><span class="line">        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i < prices.length; i++) {</span><br><span class="line">            <span class="hljs-keyword">if</span> (prices[i-<span class="hljs-number">1</span>] < prices[i])</span><br><span class="line">                maxProfit += (prices[i] - prices[i-<span class="hljs-number">1</span>]);</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">return</span> maxProfit;                    </span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxProfit</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] prices)</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">if</span>(prices.length <= <span class="hljs-number">1</span>)</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">        <span class="hljs-keyword">int</span> min = prices[<span class="hljs-number">0</span>], max = <span class="hljs-number">0</span>;</span><br><span class="line">        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i < prices.length; i++) {</span><br><span class="line">            max = Math.max(max, prices[i] - min);</span><br><span class="line">            min = Math.min(min, prices[i]);</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">return</span> max;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-</body></html>
-            
-
-            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
-        </div>
-
-        
-
-
-        
-        
-
-        <!--% if (!index && has_config('share.type')) { %-->
-<!--        % if (index && has_config('share.type')) { %-->
-        
-        <div class="social-share"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
-<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-        <div class="card">
-
-        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
-    
-    <div class="card-image">
-        <a href="/2020/10/19/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%94%AF%E9%BD%BF%E5%BD%A2%E9%81%8D%E5%8E%86/" class="image is-7by1">
-            <img class="thumbnail" src="/logo/suanfa.jpg" alt="二叉树的锯齿形遍历">
-        </a>
-    </div>
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-
-                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
-                
-                <time class="level-item has-text-grey" datetime="2020-10-19T11:48:46.786Z">2020-10-19</time>
-                
-
-                <!--<span style="color: #7a7a7a !important;">2020-10-19 19:48:46&nbsp;&nbsp;&nbsp;</span>-->
-                <!--<time class="level-item has-text-grey" datetime="2020-10-19T11:48:46.786Z">2020-10-19</time>-->
-                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
-
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    几秒 读完 (大约 97 个字)
-                </span>
-                
-
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/10/19/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%94%AF%E9%BD%BF%E5%BD%A2%E9%81%8D%E5%8E%86/">二叉树的锯齿形遍历</a>
-            
-        </h1>
-
-        <div class="content">
-
-            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
-            
-                <html><head></head><body><h2 id="二叉树的锯齿形遍历"><a href="#二叉树的锯齿形遍历" class="headerlink" title="二叉树的锯齿形遍历"></a>二叉树的锯齿形遍历</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">public</span> List<List<Integer>> zigzagLevelOrder(TreeNode root) {</span><br><span class="line">        List<List<Integer>> resultList = <span class="hljs-keyword">new</span> ArrayList<>();</span><br><span class="line">        <span class="hljs-keyword">if</span> (root == <span class="hljs-keyword">null</span>)</span><br><span class="line">            <span class="hljs-keyword">return</span> resultList;</span><br><span class="line">        LinkedList<TreeNode> linkedList = <span class="hljs-keyword">new</span> LinkedList<>();</span><br><span class="line">        linkedList.addLast(root);</span><br><span class="line">        linkedList.addLast(<span class="hljs-keyword">null</span>);</span><br><span class="line">        LinkedList<Integer> levelList = <span class="hljs-keyword">new</span> LinkedList<>();</span><br><span class="line">        <span class="hljs-keyword">boolean</span> isOrderLeft = <span class="hljs-keyword">true</span>;</span><br><span class="line">        <span class="hljs-keyword">while</span> (linkedList.size() > <span class="hljs-number">0</span>) {</span><br><span class="line">            TreeNode currNode = linkedList.pollFirst();</span><br><span class="line">            <span class="hljs-keyword">if</span> (currNode != <span class="hljs-keyword">null</span>) {</span><br><span class="line">                <span class="hljs-keyword">if</span> (isOrderLeft)</span><br><span class="line">                    levelList.addLast(currNode.val);</span><br><span class="line">                <span class="hljs-keyword">else</span> levelList.addFirst(currNode.val);</span><br><span class="line">                <span class="hljs-keyword">if</span> (currNode.left != <span class="hljs-keyword">null</span>)</span><br><span class="line">                    linkedList.addLast(currNode.left);</span><br><span class="line">                <span class="hljs-keyword">if</span> (currNode.right != <span class="hljs-keyword">null</span>)</span><br><span class="line">                    linkedList.addLast(currNode.right);</span><br><span class="line">            } <span class="hljs-keyword">else</span> {</span><br><span class="line">                resultList.add(levelList);</span><br><span class="line">                levelList = <span class="hljs-keyword">new</span> LinkedList<>();</span><br><span class="line">                <span class="hljs-keyword">if</span> (linkedList.size() > <span class="hljs-number">0</span>)</span><br><span class="line">                    linkedList.addLast(<span class="hljs-keyword">null</span>);</span><br><span class="line">                isOrderLeft = !isOrderLeft;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">return</span> resultList;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></body></html>
-            
-
-            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
-        </div>
-
-        
-
-
-        
-        
-
-        <!--% if (!index && has_config('share.type')) { %-->
-<!--        % if (index && has_config('share.type')) { %-->
-        
-        <div class="social-share"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
-<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-        <div class="card">
-
-        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
-    
-    <div class="card-image">
-        <a href="/2020/10/19/%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8%E7%9A%84%E5%85%A5%E5%8F%A3/" class="image is-7by1">
-            <img class="thumbnail" src="/logo/suanfa.jpg" alt="环形链表的入口">
-        </a>
-    </div>
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-
-                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
-                
-                <time class="level-item has-text-grey" datetime="2020-10-19T11:47:43.465Z">2020-10-19</time>
-                
-
-                <!--<span style="color: #7a7a7a !important;">2020-10-19 19:47:43&nbsp;&nbsp;&nbsp;</span>-->
-                <!--<time class="level-item has-text-grey" datetime="2020-10-19T11:47:43.465Z">2020-10-19</time>-->
-                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
-
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    几秒 读完 (大约 63 个字)
-                </span>
-                
-
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/10/19/%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8%E7%9A%84%E5%85%A5%E5%8F%A3/">环形链表的入口</a>
-            
-        </h1>
-
-        <div class="content">
-
-            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
-            
-                <html><head></head><body><h2 id="环形链表的入口"><a href="#环形链表的入口" class="headerlink" title="环形链表的入口"></a>环形链表的入口</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> ListNode <span class="hljs-title">detectCycle</span><span class="hljs-params">(ListNode head)</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">if</span> (head == <span class="hljs-keyword">null</span> || head.next == <span class="hljs-keyword">null</span>)</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;</span><br><span class="line">        ListNode fastNode = head;</span><br><span class="line">        ListNode slowNode = head;</span><br><span class="line">        <span class="hljs-keyword">while</span> (fastNode != <span class="hljs-keyword">null</span> && fastNode.next != <span class="hljs-keyword">null</span>) {</span><br><span class="line">            fastNode = fastNode.next.next;</span><br><span class="line">            slowNode = slowNode.next;</span><br><span class="line">            <span class="hljs-keyword">if</span> (fastNode != <span class="hljs-keyword">null</span> && slowNode == fastNode) {</span><br><span class="line">                fastNode = head;</span><br><span class="line">                <span class="hljs-keyword">while</span> (fastNode != slowNode) {</span><br><span class="line">                    fastNode = fastNode.next;</span><br><span class="line">                    slowNode = slowNode.next;</span><br><span class="line">                }</span><br><span class="line">                <span class="hljs-keyword">return</span> fastNode;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></body></html>
-            
-
-            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
-        </div>
-
-        
-
-
-        
-        
-
-        <!--% if (!index && has_config('share.type')) { %-->
-<!--        % if (index && has_config('share.type')) { %-->
-        
-        <div class="social-share"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
-<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-        <div class="card">
-
-        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
-    
-    <div class="card-image">
-        <a href="/2020/10/19/%E7%9B%B8%E4%BA%A4%E9%93%BE%E8%A1%A8/" class="image is-7by1">
-            <img class="thumbnail" src="/logo/suanfa.jpg" alt="相交链表">
-        </a>
-    </div>
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-
-                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
-                
-                <time class="level-item has-text-grey" datetime="2020-10-19T11:46:41.874Z">2020-10-19</time>
-                
-
-                <!--<span style="color: #7a7a7a !important;">2020-10-19 19:46:41&nbsp;&nbsp;&nbsp;</span>-->
-                <!--<time class="level-item has-text-grey" datetime="2020-10-19T11:46:41.874Z">2020-10-19</time>-->
-                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
-
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    几秒 读完 (大约 38 个字)
-                </span>
-                
-
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/10/19/%E7%9B%B8%E4%BA%A4%E9%93%BE%E8%A1%A8/">相交链表</a>
-            
-        </h1>
-
-        <div class="content">
-
-            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
-            
-                <html><head></head><body><h2 id="相交链表"><a href="#相交链表" class="headerlink" title="相交链表"></a>相交链表</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> ListNode <span class="hljs-title">getIntersectionNode</span><span class="hljs-params">(ListNode headA, ListNode headB)</span> </span>{</span><br><span class="line">        ListNode tempA = headA;</span><br><span class="line">        ListNode tempB = headB;</span><br><span class="line">        <span class="hljs-keyword">while</span> (tempA != tempB) {</span><br><span class="line">            tempA = tempA == <span class="hljs-keyword">null</span> ? headB : tempA.next;</span><br><span class="line">            tempB = tempB == <span class="hljs-keyword">null</span> ? headA : tempB.next;</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">return</span> tempA;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-</body></html>
-            
-
-            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
-        </div>
-
-        
-
-
-        
-        
-
-        <!--% if (!index && has_config('share.type')) { %-->
-<!--        % if (index && has_config('share.type')) { %-->
-        
-        <div class="social-share"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
-<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-        <div class="card">
-
-        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
-    
-    <div class="card-image">
-        <a href="/2020/10/19/%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8/" class="image is-7by1">
-            <img class="thumbnail" src="/logo/suanfa.jpg" alt="合并两个有序链表">
-        </a>
-    </div>
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-
-                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
-                
-                <time class="level-item has-text-grey" datetime="2020-10-19T11:44:54.052Z">2020-10-19</time>
-                
-
-                <!--<span style="color: #7a7a7a !important;">2020-10-19 19:44:54&nbsp;&nbsp;&nbsp;</span>-->
-                <!--<time class="level-item has-text-grey" datetime="2020-10-19T11:44:54.052Z">2020-10-19</time>-->
-                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
-
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    几秒 读完 (大约 71 个字)
-                </span>
-                
-
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/10/19/%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8/">合并两个有序链表</a>
-            
-        </h1>
-
-        <div class="content">
-
-            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
-            
-                <html><head></head><body><h2 id="合并两个有序链表"><a href="#合并两个有序链表" class="headerlink" title="合并两个有序链表"></a>合并两个有序链表</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> ListNode <span class="hljs-title">mergeTwoLists</span><span class="hljs-params">(ListNode l1, ListNode l2)</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">if</span> (l1 == <span class="hljs-keyword">null</span>)</span><br><span class="line">            <span class="hljs-keyword">return</span> l2;</span><br><span class="line">        <span class="hljs-keyword">if</span> (l2 == <span class="hljs-keyword">null</span>)</span><br><span class="line">            <span class="hljs-keyword">return</span> l1;</span><br><span class="line">        ListNode newNode = <span class="hljs-keyword">new</span> ListNode(<span class="hljs-number">0</span>);</span><br><span class="line">        <span class="hljs-keyword">if</span> (l1.val <= l2.val) {</span><br><span class="line">            ListNode tempNode = <span class="hljs-keyword">new</span> ListNode(l1.val);</span><br><span class="line">            newNode.next = tempNode;</span><br><span class="line">            tempNode.next = mergeTwoLists(l1.next, l2);</span><br><span class="line">        } <span class="hljs-keyword">else</span> {</span><br><span class="line">            ListNode tempNode = <span class="hljs-keyword">new</span> ListNode(l2.val);</span><br><span class="line">            newNode.next = tempNode;</span><br><span class="line">            tempNode.next = mergeTwoLists(l1, l2.next);</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">return</span> newNode.next;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-</body></html>
-            
-
-            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
-        </div>
-
-        
-
-
-        
-        
-
-        <!--% if (!index && has_config('share.type')) { %-->
-<!--        % if (index && has_config('share.type')) { %-->
-        
-        <div class="social-share"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
-<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-        <div class="card">
-
-        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
-    
-    <div class="card-image">
-        <a href="/2020/10/19/%E6%95%B0%E7%BB%84%E5%89%8Dk%E5%A4%A7%E7%9A%84%E6%95%B0/" class="image is-7by1">
-            <img class="thumbnail" src="/logo/suanfa.jpg" alt="数组前k大的数">
-        </a>
-    </div>
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-
-                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
-                
-                <time class="level-item has-text-grey" datetime="2020-10-19T11:42:46.192Z">2020-10-19</time>
-                
-
-                <!--<span style="color: #7a7a7a !important;">2020-10-19 19:42:46&nbsp;&nbsp;&nbsp;</span>-->
-                <!--<time class="level-item has-text-grey" datetime="2020-10-19T11:42:46.192Z">2020-10-19</time>-->
-                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
-
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    几秒 读完 (大约 59 个字)
-                </span>
-                
-
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/10/19/%E6%95%B0%E7%BB%84%E5%89%8Dk%E5%A4%A7%E7%9A%84%E6%95%B0/">数组前k大的数</a>
-            
-        </h1>
-
-        <div class="content">
-
-            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
-            
-                <html><head></head><body><h2 id="数组前k大的数"><a href="#数组前k大的数" class="headerlink" title="数组前k大的数"></a>数组前k大的数</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">KthLargest</span> </span>{</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">final</span> PriorityQueue<Integer> queue;</span><br><span class="line">    <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> k;</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">KthLargest</span><span class="hljs-params">(<span class="hljs-keyword">int</span> k, <span class="hljs-keyword">int</span>[] nums)</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">this</span>.k = k;</span><br><span class="line">        queue = <span class="hljs-keyword">new</span> PriorityQueue<>();</span><br><span class="line">        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> num : nums) {</span><br><span class="line">            add(num);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-keyword">int</span> val)</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">if</span> (queue.size() < k)</span><br><span class="line">            queue.offer(val);</span><br><span class="line">        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (val > queue.peek()) {</span><br><span class="line">            queue.poll();</span><br><span class="line">            queue.offer(val);</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">return</span> queue.peek();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-</body></html>
-            
-
-            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
-        </div>
-
-        
-
-
-        
-        
-
-        <!--% if (!index && has_config('share.type')) { %-->
-<!--        % if (index && has_config('share.type')) { %-->
-        
-        <div class="social-share"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
-<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-        <div class="card">
-
-        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
-    
-    <div class="card-image">
-        <a href="/2020/10/19/%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C/" class="image is-7by1">
-            <img class="thumbnail" src="/logo/suanfa.jpg" alt="三数之和">
-        </a>
-    </div>
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-
-                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
-                
-                <time class="level-item has-text-grey" datetime="2020-10-19T11:41:36.061Z">2020-10-19</time>
-                
-
-                <!--<span style="color: #7a7a7a !important;">2020-10-19 19:41:36&nbsp;&nbsp;&nbsp;</span>-->
-                <!--<time class="level-item has-text-grey" datetime="2020-10-19T11:41:36.061Z">2020-10-19</time>-->
-                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
-
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    几秒 读完 (大约 110 个字)
-                </span>
-                
-
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/10/19/%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C/">三数之和</a>
-            
-        </h1>
-
-        <div class="content">
-
-            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
-            
-                <html><head></head><body><h2 id="三数之和"><a href="#三数之和" class="headerlink" title="三数之和"></a>三数之和</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">public</span> List<List<Integer>> threeSum(<span class="hljs-keyword">int</span>[] nums) {</span><br><span class="line">        <span class="hljs-keyword">if</span>(nums == <span class="hljs-keyword">null</span> || nums.length < <span class="hljs-number">3</span>)</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ArrayList<>();</span><br><span class="line">        Arrays.sort(nums);</span><br><span class="line">        List<List<Integer>> resultList = <span class="hljs-keyword">new</span> ArrayList<>();</span><br><span class="line">        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i < nums.length -<span class="hljs-number">2</span>; i++) {</span><br><span class="line">            <span class="hljs-keyword">int</span> left = i+<span class="hljs-number">1</span>;</span><br><span class="line">            <span class="hljs-keyword">int</span> right = nums.length-<span class="hljs-number">1</span>;</span><br><span class="line"></span><br><span class="line">            <span class="hljs-keyword">if</span>(i != <span class="hljs-number">0</span> && nums[i] == nums[i - <span class="hljs-number">1</span>])</span><br><span class="line">                <span class="hljs-keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">            <span class="hljs-keyword">while</span>(left < right && nums[i] < <span class="hljs-number">1</span>) {</span><br><span class="line">                <span class="hljs-keyword">if</span>(nums[i] + nums[left] + nums[right] > <span class="hljs-number">0</span>) {</span><br><span class="line">                    right--;</span><br><span class="line">                }</span><br><span class="line">                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(nums[i] + nums[left] + nums[right] < <span class="hljs-number">0</span>) {</span><br><span class="line">                    left++;</span><br><span class="line">                }</span><br><span class="line">                <span class="hljs-keyword">else</span> {</span><br><span class="line">                    List<Integer> integerList = <span class="hljs-keyword">new</span> ArrayList<>();</span><br><span class="line">                    integerList.add(nums[i]);</span><br><span class="line">                    integerList.add(nums[left]);</span><br><span class="line">                    integerList.add(nums[right]);</span><br><span class="line">                    resultList.add(integerList);</span><br><span class="line">                    <span class="hljs-keyword">while</span>(left < right && nums[left] == nums[left+<span class="hljs-number">1</span>])</span><br><span class="line">                        left++;</span><br><span class="line">                    <span class="hljs-keyword">while</span>(left < right && nums[right] == nums[right-<span class="hljs-number">1</span>]) </span><br><span class="line">                        right--;</span><br><span class="line"></span><br><span class="line">                    right--;</span><br><span class="line">                    left++;</span><br><span class="line">                }</span><br><span class="line"></span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">return</span> resultList;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></body></html>
-            
-
-            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
-        </div>
-
-        
-
-
-        
-        
-
-        <!--% if (!index && has_config('share.type')) { %-->
-<!--        % if (index && has_config('share.type')) { %-->
-        
-        <div class="social-share"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
-<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
 
     
 <div class="card card-transparent">
@@ -997,6 +998,8 @@ var _hmt = _hmt || [];
             <li><a class="pagination-link has-text-black-ter" href="/tags/java/page/2/">2</a></li>
             
             <li><a class="pagination-link has-text-black-ter" href="/tags/java/page/3/">3</a></li>
+            
+            <li><a class="pagination-link has-text-black-ter" href="/tags/java/page/4/">4</a></li>
             
         </ul>
     </nav>
@@ -1045,7 +1048,7 @@ var _hmt = _hmt || [];
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        43
+                        51
                     </p>
                 </div>
             </div>
@@ -1208,7 +1211,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">算法</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">22</span>
+                <span class="level-item tag">29</span>
             </span>
         </a></li>
             </ul>
@@ -1239,35 +1242,16 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
-            <a href="/2020/10/19/%E7%BA%A2%E5%8C%85%E7%AE%97%E6%B3%95/" class="media-left">
+            <a href="/2020/10/19/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="红包算法">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="队列实现栈">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:53:22.463Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E7%BA%A2%E5%8C%85%E7%AE%97%E6%B3%95/" class="has-link-black-ter is-size-6">红包算法</a>
-                    <p class="is-size-7 is-uppercase">
-                        
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/10/19/sqrt/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="sqrt">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:52:47.501Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/sqrt/" class="has-link-black-ter is-size-6">sqrt</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:07:17.987Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88/" class="has-link-black-ter is-size-6">队列实现栈</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
                     </p>
@@ -1277,16 +1261,16 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
-            <a href="/2020/10/19/%E6%9C%80%E5%B0%8F%E6%A0%88/" class="media-left">
+            <a href="/2020/10/19/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="最小栈">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="有效的括号">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:51:59.578Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E6%9C%80%E5%B0%8F%E6%A0%88/" class="has-link-black-ter is-size-6">最小栈</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:06:30.103Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/" class="has-link-black-ter is-size-6">有效的括号</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
                     </p>
@@ -1296,16 +1280,16 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
-            <a href="/2020/10/19/LRUCache%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="media-left">
+            <a href="/2020/10/19/%E5%8D%95%E8%AF%8D%E5%8F%8D%E8%BD%AC/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="LRUCache数据结构">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="单词反转">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:51:19.136Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/LRUCache%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="has-link-black-ter is-size-6">LRUCache数据结构</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:05:48.395Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E5%8D%95%E8%AF%8D%E5%8F%8D%E8%BD%AC/" class="has-link-black-ter is-size-6">单词反转</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
                     </p>
@@ -1315,16 +1299,35 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
-            <a href="/2020/10/19/%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA/" class="media-left">
+            <a href="/2020/10/19/%E5%88%A4%E5%AE%9A%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="卖股票的最佳时机">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="判定是否有环">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:49:36.842Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA/" class="has-link-black-ter is-size-6">卖股票的最佳时机</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:05:00.176Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E5%88%A4%E5%AE%9A%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF/" class="has-link-black-ter is-size-6">判定是否有环</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/10/19/%E9%93%BE%E8%A1%A8%E4%BA%A4%E6%8D%A2%E5%85%83%E7%B4%A0/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="链表交换元素">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:04:07.212Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E9%93%BE%E8%A1%A8%E4%BA%A4%E6%8D%A2%E5%85%83%E7%B4%A0/" class="has-link-black-ter is-size-6">链表交换元素</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
                     </p>
@@ -1361,7 +1364,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/java/">
                         <span class="tag">java</span>
-                        <span class="tag is-grey">26</span>
+                        <span class="tag is-grey">33</span>
                     </a>
                 </div>
                 
@@ -1404,35 +1407,16 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
-            <a href="/2020/10/19/%E7%BA%A2%E5%8C%85%E7%AE%97%E6%B3%95/" class="media-left">
+            <a href="/2020/10/19/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="红包算法">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="队列实现栈">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:53:22.463Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E7%BA%A2%E5%8C%85%E7%AE%97%E6%B3%95/" class="has-link-black-ter is-size-6">红包算法</a>
-                    <p class="is-size-7 is-uppercase">
-                        
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/10/19/sqrt/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="sqrt">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:52:47.501Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/sqrt/" class="has-link-black-ter is-size-6">sqrt</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:07:17.987Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88/" class="has-link-black-ter is-size-6">队列实现栈</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
                     </p>
@@ -1442,16 +1426,16 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
-            <a href="/2020/10/19/%E6%9C%80%E5%B0%8F%E6%A0%88/" class="media-left">
+            <a href="/2020/10/19/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="最小栈">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="有效的括号">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:51:59.578Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E6%9C%80%E5%B0%8F%E6%A0%88/" class="has-link-black-ter is-size-6">最小栈</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:06:30.103Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/" class="has-link-black-ter is-size-6">有效的括号</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
                     </p>
@@ -1461,16 +1445,16 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
-            <a href="/2020/10/19/LRUCache%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="media-left">
+            <a href="/2020/10/19/%E5%8D%95%E8%AF%8D%E5%8F%8D%E8%BD%AC/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="LRUCache数据结构">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="单词反转">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:51:19.136Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/LRUCache%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="has-link-black-ter is-size-6">LRUCache数据结构</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:05:48.395Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E5%8D%95%E8%AF%8D%E5%8F%8D%E8%BD%AC/" class="has-link-black-ter is-size-6">单词反转</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
                     </p>
@@ -1480,16 +1464,35 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
-            <a href="/2020/10/19/%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA/" class="media-left">
+            <a href="/2020/10/19/%E5%88%A4%E5%AE%9A%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="卖股票的最佳时机">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="判定是否有环">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T11:49:36.842Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA/" class="has-link-black-ter is-size-6">卖股票的最佳时机</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:05:00.176Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E5%88%A4%E5%AE%9A%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF/" class="has-link-black-ter is-size-6">判定是否有环</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/10/19/%E9%93%BE%E8%A1%A8%E4%BA%A4%E6%8D%A2%E5%85%83%E7%B4%A0/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="链表交换元素">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:04:07.212Z">2020-10-19</time></div>
+                    <a href="/2020/10/19/%E9%93%BE%E8%A1%A8%E4%BA%A4%E6%8D%A2%E5%85%83%E7%B4%A0/" class="has-link-black-ter is-size-6">链表交换元素</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
                     </p>
@@ -1526,7 +1529,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/java/">
                         <span class="tag">java</span>
-                        <span class="tag is-grey">26</span>
+                        <span class="tag is-grey">33</span>
                     </a>
                 </div>
                 
