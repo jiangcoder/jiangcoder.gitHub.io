@@ -2,26 +2,23 @@
 <html  lang="zh">
 <head>
     <meta charset="utf-8">
-<title>Elasticsearch 之Doc Values - 永远年轻，永远热泪盈眶</title>
+<title>raft一致性协议 - 永远年轻，永远热泪盈眶</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 
 
     
-    <meta name="description" content="一，Elasticsearch之keyword和textElasticsearch 5.0.0 版本之后 将string拆分成两个新的类型: text和keyword. Keyword类型: 用于存储邮箱号码、手机号码、主机名、状态码、邮政编码、标签、年龄、性别等数据。用于筛选数据(例如: select * from x where status&#x3D;’open’)、排序、聚合(统计)。直接将完整的文">
+    <meta name="description" content="1.raft是一个实现了解决分布式一致性问题的协议 2.分布式环境下的每个节点有三种状态： 　　follower（跟随者）　　candidate（候选人）　　leader（领导者） 3.所有的节点开始都是follower状态    一旦他们不能检测到leader就能成为candidate    candidate会请求其他节点投票，得到大多是节点的投票就会成为leader，这个过程叫做Leader">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Elasticsearch 之Doc Values">
-<meta property="og:url" content="https://jiangcoder.github.io/2020/05/11/Elasticsearch%E4%B9%8BDoc%20Values/index.html">
+<meta property="og:title" content="raft一致性协议">
+<meta property="og:url" content="https://jiangcoder.github.io/2020/10/19/raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/index.html">
 <meta property="og:site_name" content="永远年轻，永远热泪盈眶">
-<meta property="og:description" content="一，Elasticsearch之keyword和textElasticsearch 5.0.0 版本之后 将string拆分成两个新的类型: text和keyword. Keyword类型: 用于存储邮箱号码、手机号码、主机名、状态码、邮政编码、标签、年龄、性别等数据。用于筛选数据(例如: select * from x where status&#x3D;’open’)、排序、聚合(统计)。直接将完整的文">
+<meta property="og:description" content="1.raft是一个实现了解决分布式一致性问题的协议 2.分布式环境下的每个节点有三种状态： 　　follower（跟随者）　　candidate（候选人）　　leader（领导者） 3.所有的节点开始都是follower状态    一旦他们不能检测到leader就能成为candidate    candidate会请求其他节点投票，得到大多是节点的投票就会成为leader，这个过程叫做Leader">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://jiangcoder.github.io/logo/elasticsearch.jpg">
-<meta property="article:published_time" content="2020-05-11T13:10:14.655Z">
-<meta property="article:modified_time" content="2020-05-11T13:15:15.740Z">
+<meta property="article:published_time" content="2020-10-19T09:38:03.451Z">
+<meta property="article:modified_time" content="2020-10-19T09:38:03.451Z">
 <meta property="article:author" content="姜涛">
-<meta property="article:tag" content="elasticsearch">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://jiangcoder.github.io/logo/elasticsearch.jpg">
 
 
 
@@ -113,7 +110,7 @@ var _hmt = _hmt || [];
 
                 <!--update by thank: 修改logo方式-->
                 <!--<img src="/images/maotouying.svg" alt="蜗居年华" height="28">-->
-                <img src="https://avatars2.githubusercontent.com/u/8393744?s=400&u=6ff7deb174a4e34b1b1b6291aaccbdc23eb40b14&v=4" alt="Elasticsearch 之Doc Values" height="28">
+                <img src="https://avatars2.githubusercontent.com/u/8393744?s=400&u=6ff7deb174a4e34b1b1b6291aaccbdc23eb40b14&v=4" alt="raft一致性协议" height="28">
                 <span style="font-size: 16px; display: inline-block; vertical-align: top; font-weight: 600;"></span>
                 <!--
             % if (has_config('logo.text') && get_config('logo.text')) { 
@@ -182,23 +179,19 @@ var _hmt = _hmt || [];
 
                 <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
                 
-                <span style="color: #7a7a7a !important;">写于2020-05-11 21:10:14&nbsp;&nbsp;&nbsp;</span>
+                <span style="color: #7a7a7a !important;">写于2020-10-19 17:38:03&nbsp;&nbsp;&nbsp;</span>
                 
 
-                <!--<span style="color: #7a7a7a !important;">2020-05-11 21:10:14&nbsp;&nbsp;&nbsp;</span>-->
-                <!--<time class="level-item has-text-grey" datetime="2020-05-11T13:10:14.655Z">2020-05-11</time>-->
+                <!--<span style="color: #7a7a7a !important;">2020-10-19 17:38:03&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-10-19T09:38:03.451Z">2020-10-19</time>-->
                 <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
 
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
-                </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    11 分钟 读完 (大约 1703 个字)
+                    3 分钟 读完 (大约 449 个字)
                 </span>
                 
 
@@ -213,7 +206,7 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                Elasticsearch 之Doc Values
+                raft一致性协议
             
         </h1>
 
@@ -221,42 +214,21 @@ var _hmt = _hmt || [];
 
             <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
             
-                <html><head></head><body><h2 id="一，Elasticsearch之keyword和text"><a href="#一，Elasticsearch之keyword和text" class="headerlink" title="一，Elasticsearch之keyword和text"></a>一，Elasticsearch之keyword和text</h2><p>Elasticsearch 5.0.0 版本之后 将string拆分成两个新的类型: text和keyword.</p>
-<p>Keyword类型:</p>
-<p>用于存储邮箱号码、手机号码、主机名、状态码、邮政编码、标签、年龄、性别等数据。<br>用于筛选数据(例如: select * from x where status=’open’)、排序、聚合(统计)。<br>直接将完整的文本保存到倒排索引中。<br>Text类型:</p>
-<p>用于存储全文搜索数据, 例如: 邮箱内容、地址、代码块、博客文章内容等。<br>默认结合standard analyzer(标准解析器)对文本进行分词、倒排索引。<br>默认结合标准分析器进行词命中、词频相关度打分。</p>
-<h2 id="二，Elasticsearch之Doc-Values"><a href="#二，Elasticsearch之Doc-Values" class="headerlink" title="二，Elasticsearch之Doc Values"></a>二，Elasticsearch之Doc Values</h2><p>正排索引：是以文档的ID为关键字，表中记录文档中每个字段的值信息，主要场景是通过查询id来把整条文档拿出来；</p>
-<p>Doc Values数据结构如下：</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Doc      Terms</span><br><span class="line">-----------------------------------------------------------------</span><br><span class="line">Doc_1 | brown, dog, fox, jumped, lazy, over, quick, the</span><br><span class="line">Doc_2 | brown, dogs, foxes, in, lazy, leap, over, quick, summer</span><br><span class="line">Doc_3 | dog, dogs, fox, jumped, over, quick, the</span><br><span class="line">-----------------------------------------------------------------</span><br></pre></td></tr></tbody></table></figure>
-
-<p>倒排索引：以字或词为关键字进行索引，表中关键字所对应的记录项记录了出现这个字或词的所有文档；</p>
-<p>倒排索引数据结构如下：</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Term      Doc_1   Doc_2   Doc_3</span><br><span class="line">------------------------------------</span><br><span class="line">brown   |   X   |   X   |</span><br><span class="line">dog     |   X   |       |   X</span><br><span class="line">dogs    |       |   X   |   X</span><br><span class="line">fox     |   X   |       |   X</span><br><span class="line">foxes   |       |   X   |</span><br><span class="line">in      |       |   X   |</span><br><span class="line">jumped  |   X   |       |   X</span><br><span class="line">lazy    |   X   |   X   |</span><br><span class="line">leap    |       |   X   |</span><br><span class="line">over    |   X   |   X   |   X</span><br><span class="line">quick   |   X   |   X   |   X</span><br><span class="line">summer  |       |   X   |</span><br><span class="line">the     |   X   |       |   X</span><br><span class="line">------------------------------------</span><br></pre></td></tr></tbody></table></figure>
-
-<p>正排索引广泛应用在聚合、排序、访问字段值的脚本，父子关系处理（参见 父-子关系文档 ）等方面；</p>
-<h2 id="三，Doc-Values-启用"><a href="#三，Doc-Values-启用" class="headerlink" title="三，Doc Values 启用"></a>三，Doc Values 启用</h2><p>Doc Values 是在索引时与 倒排索引 同时生成。也就是说 Doc Values 和 倒排索引 一样，基于 Segement 生成并且是不可变的。同时 Doc Values 和 倒排索引 一样序列化到磁盘，这样对性能和扩展性有很大帮助。</p>
-<p>Doc Values 通过序列化把数据结构持久化到磁盘，我们可以充分利用操作系统的内存，而不是 JVM 的 Heap 。 当 working set 远小于系统的可用内存，系统会自动将 Doc Values 驻留在内存中，使得其读写十分快速；不过，当其远大于可用内存时，系统会根据需要从磁盘读取 Doc Values，然后选择性放到分页缓存中。很显然，这样性能会比在内存中差很多，但是它的大小就不再局限于服务器的内存了。如果是使用 JVM 的 Heap 来实现那么只能是因为 OutOfMemory 导致程序崩溃了。  </p>
-<p>因为 Doc Values 不是由 JVM 来管理，所以 Elasticsearch 实例可以配置一个很小的 JVM Heap，这样给系统留出来更多的内存。同时更小的 Heap 可以让 JVM 更加快速和高效的回收。</p>
-<p>之前，我们会建议分配机器内存的 50% 来给 JVM Heap。但是对于 Doc Values，这样可能不是最合适的方案了。 以 64gb 内存的机器为例，可能给 Heap 分配 4-16gb 的内存更合适，而不是 32gb。</p>
-<p>有关更详细的讨论，查看 堆内存:大小和交换.</p>
-<p>Doc Values 默认对所有字段启用，除了 analyzed strings。也就是说所有的数字、地理坐标、日期、IP 和不分析（ not_analyzed ）字符类型都会默认开启。</p>
-<h2 id="四，Doc-Values-实现细节"><a href="#四，Doc-Values-实现细节" class="headerlink" title="四，Doc Values 实现细节"></a>四，Doc Values 实现细节</h2><p>从广义来说，Doc Values 本质上是一个序列化的 列式存储 。 正如我们上一节所讨论的，列式存储 适用于聚合、排序、脚本等操作。</p>
-<p>而且，这种存储方式也非常便于压缩，特别是数字类型。这样可以减少磁盘空间并且提高访问速度。现代 CPU 的处理速度要比磁盘快几个数量级（尽管即将到来的 NVMe 驱动器正在迅速缩小差距）。所以我们必须减少直接存磁盘读取数据的大小，尽管需要额外消耗 CPU 运算用来进行解压。</p>
-<p>要了解它如何压缩数据的，来看一组数字类型的 Doc Values：</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Doc      Terms</span><br><span class="line">-----------------------------------------------------------------</span><br><span class="line">Doc_1 | <span class="hljs-number">100</span></span><br><span class="line">Doc_2 | <span class="hljs-number">1000</span></span><br><span class="line">Doc_3 | <span class="hljs-number">1500</span></span><br><span class="line">Doc_4 | <span class="hljs-number">1200</span></span><br><span class="line">Doc_5 | <span class="hljs-number">300</span></span><br><span class="line">Doc_6 | <span class="hljs-number">1900</span></span><br><span class="line">Doc_7 | <span class="hljs-number">4200</span></span><br><span class="line">-----------------------------------------------------------------</span><br></pre></td></tr></tbody></table></figure>
-
-<p>按列布局意味着我们有一个连续的数据块： [100,1000,1500,1200,300,1900,4200] 。因为我们已经知道他们都是数字（而不是像文档或行中看到的异构集合），所以我们可以使用统一的偏移来将他们紧紧排列。</p>
-<p>而且，针对这样的数字有很多种压缩技巧。你会注意到这里每个数字都是 100 的倍数，Doc Values 会检测一个段里面的所有数值，并使用一个 最大公约数 ，方便做进一步的数据压缩。</p>
-<p>如果我们保存 100 作为此段的除数，我们可以对每个数字都除以 100，然后得到： [1,10,15,12,3,19,42] 。现在这些数字变小了，只需要很少的位就可以存储下，也减少了磁盘存放的大小。</p>
-<p>Doc Values 在压缩过程中使用如下技巧。它会按依次检测以下压缩模式:</p>
-<p>如果所有的数值各不相同（或缺失），设置一个标记并记录这些值<br>如果这些值小于 256，将使用一个简单的编码表<br>如果这些值大于 256，检测是否存在一个最大公约数<br>如果没有存在最大公约数，从最小的数值开始，统一计算偏移量进行编码<br>你会发现这些压缩模式不是传统的通用的压缩方式，比如 DEFLATE 或是 LZ4。 因为列式存储的结构是严格且良好定义的，我们可以通过使用专门的模式来达到比通用压缩算法（如 LZ4 ）更高的压缩效果。</p>
-<h2 id="五，Doc-Values-使用注意的问题"><a href="#五，Doc-Values-使用注意的问题" class="headerlink" title="五，Doc Values 使用注意的问题"></a>五，Doc Values 使用注意的问题</h2><p>除数字外，keyword类型默认也开启了Doc Values ，此时必须注意size必须<= 32766，如果超出，则回提示如下错误</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.IllegalArgumentException: DocValuesField <span class="hljs-string">"xxx"</span> is too large, must be <= <span class="hljs-number">32766</span></span><br></pre></td></tr></tbody></table></figure>
-
-<p>象形文字字符(中文、韩文、日文): 10922 个字符(算法是: 32766 / 3).<br>Literal字符(印度语、俄文): 16383 个字符(算法是: 32766 / 2).<br>ASCII字符(a-zA-Z0-9以及~!@#$等特殊字符): 32766个字符(算法是: 32766).</p>
-<p>通过关闭Doc Values特性，可以解决该问题</p>
-<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="hljs-string">"content"</span>: {</span><br><span class="line">  <span class="hljs-string">"type"</span>: <span class="hljs-string">"keyword"</span>,</span><br><span class="line">  <span class="hljs-string">"index"</span>: <span class="hljs-string">"no"</span>,</span><br><span class="line">  <span class="hljs-string">"store"</span>: <span class="hljs-string">"true"</span>,</span><br><span class="line">  <span class="hljs-string">"doc_values"</span>: <span class="hljs-string">"false"</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
+                <html><head></head><body><p>1.raft是一个实现了解决分布式一致性问题的协议</p>
+<p>2.分布式环境下的每个节点有三种状态：</p>
+<p>　　follower（跟随者）<br>　　candidate（候选人）<br>　　leader（领导者）</p>
+<p>3.所有的节点开始都是follower状态</p>
+<p>   一旦他们不能检测到leader就能成为candidate</p>
+<p>   candidate会请求其他节点投票，得到大多是节点的投票就会成为leader，这个过程叫做Leader Election</p>
+<p>4.节点的每个改变都会增加节点的日志条目，提交之后leader会复制日志条目到从节点上，在大多数从节点成功增加日志条目之后，提交成功，leader值更新，leader通知从节点已经更新成功，从节点更新数据，这个过程叫做Log Replication。</p>
+<p>5.Leader Election</p>
+<p>Raft有两个timeout设置来控制选举<br>第一个是election timeout<br>　　election timeout指的是follower等待成为candidate的时间，在150ms到300ms之间<br>　　election timeout一个follower成为一个开始一个election term<br>　　投票给自己，请求其他节点投票，在得到大多数节点投票之后，重置election timeout，成为leader<br>第二个是HearBeat timeout<br>　　Append Entries 在HeartBeat timeout时发送<br>6.Log Replication<br> Log Replicaiton是通过HeartBeat timeout发送Append Entries来完成的</p>
+<p>　　客户端发送更新请求</p>
+<p>　　leader增加日志条目</p>
+<p>　　在下个HeartBeat时，日志变化发给follower</p>
+<p>　　在大多数从节点成功之后，leader提交数据并响应客户端</p>
+<p>　　下次HeartBeat Timeout之后，从节点数据更新</p>
+<p>7，如何选主过程，可以参考学习该动画<br><a href="https://raft.github.io/raftscope/index.html" target="_blank" rel="noopener">https://raft.github.io/raftscope/index.html</a></p>
 </body></html>
             
 
@@ -265,25 +237,16 @@ var _hmt = _hmt || [];
 
         
             <ul class="post-copyright">
-                <li><strong>本文标题：</strong><a href="https://jiangcoder.github.io/2020/05/11/Elasticsearch%E4%B9%8BDoc%20Values/">Elasticsearch 之Doc Values</a></li>
+                <li><strong>本文标题：</strong><a href="https://jiangcoder.github.io/2020/10/19/raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/">raft一致性协议</a></li>
                 <li><strong>本文作者：</strong><a href="https://jiangcoder.github.io">姜涛</a></li>
-                <li><strong>本文链接：</strong><a href="https://jiangcoder.github.io/2020/05/11/Elasticsearch%E4%B9%8BDoc%20Values/">https://jiangcoder.github.io/2020/05/11/Elasticsearch%E4%B9%8BDoc%20Values/</a></li>
-                <li><strong>发布时间：</strong>2020-05-11</li>
+                <li><strong>本文链接：</strong><a href="https://jiangcoder.github.io/2020/10/19/raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/">https://jiangcoder.github.io/2020/10/19/raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/</a></li>
+                <li><strong>发布时间：</strong>2020-10-19</li>
                 <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
                 </li>
             </ul>
         
 
 
-        
-        <div class="level is-size-7 is-uppercase">
-            <div class="level-start">
-                <div class="level-item">
-                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a>
-                </div>
-            </div>
-        </div>
         
         
 
@@ -304,17 +267,10 @@ var _hmt = _hmt || [];
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/10/19/raft%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">raft一致性协议</span>
-            </a>
-        </div>
-        
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2020/04/23/Kafka%E8%8A%82%E7%82%B9%E5%B9%B3%E6%BB%91%E8%BF%81%E7%A7%BB%E6%AD%A5%E9%AA%A4/">
-                <span class="level-item">Kafka节点平滑迁移</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/05/11/Elasticsearch%E4%B9%8BDoc%20Values/">
+                <span class="level-item">Elasticsearch 之Doc Values</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -467,27 +423,7 @@ var _hmt = _hmt || [];
             <h3 class="menu-label">
                 文章目录
             </h3>
-            <ul class="menu-list"><li>
-        <a class="is-flex" href="#一，Elasticsearch之keyword和text">
-        <span class="has-mr-6">1</span>
-        <span>一，Elasticsearch之keyword和text</span>
-        </a></li><li>
-        <a class="is-flex" href="#二，Elasticsearch之Doc-Values">
-        <span class="has-mr-6">2</span>
-        <span>二，Elasticsearch之Doc Values</span>
-        </a></li><li>
-        <a class="is-flex" href="#三，Doc-Values-启用">
-        <span class="has-mr-6">3</span>
-        <span>三，Doc Values 启用</span>
-        </a></li><li>
-        <a class="is-flex" href="#四，Doc-Values-实现细节">
-        <span class="has-mr-6">4</span>
-        <span>四，Doc Values 实现细节</span>
-        </a></li><li>
-        <a class="is-flex" href="#五，Doc-Values-使用注意的问题">
-        <span class="has-mr-6">5</span>
-        <span>五，Doc Values 使用注意的问题</span>
-        </a></li></ul>
+            
         </div>
     </div>
 </div>
@@ -510,7 +446,7 @@ var _hmt = _hmt || [];
             <div class="level-start has-text-centered-mobile">
                 <!-- <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/%5Bobject%20Object%5D" alt="Elasticsearch 之Doc Values" height="28">
+                    <img src="/%5Bobject%20Object%5D" alt="raft一致性协议" height="28">
                 
                 </a> -->
                 <p class="is-size-7">
