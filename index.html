@@ -167,6 +167,246 @@ var _hmt = _hmt || [];
 
         <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
     
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-10-20T03:20:16.094Z">2020-10-20</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-10-20 11:20:16&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-10-20T03:20:16.094Z">2020-10-20</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    3 分钟 读完 (大约 454 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/10/20/ThreadLocal/">ThreadLocal</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><p>title: ThreadLocal<br>toc: true<br>categories: java<br>tags:</p>
+<ul>
+<li>java<br>thumbnail: /logo/java.jpg<br>—ThreadLocal</li>
+</ul>
+<h2 id="一，ThreadLocal简介"><a href="#一，ThreadLocal简介" class="headerlink" title="一，ThreadLocal简介"></a>一，ThreadLocal简介</h2><p>ThreadLocalMap是Thread中的一个属性，<br>ThreadLocal.ThreadLocalMap<br>ThreadLocal不是为了解决多线程访问共享变量，而是为每个线程创建一个单独的变量副本，<br>提供了保持对象的方法和避免参数传递的复杂性。</p>
+<h2 id="二，ThreadLocal内存泄漏问题"><a href="#二，ThreadLocal内存泄漏问题" class="headerlink" title="二，ThreadLocal内存泄漏问题"></a>二，ThreadLocal内存泄漏问题</h2><p>每个thread中都存在一个map, map的类型是ThreadLocal.ThreadLocalMap.<br>Map中的key为一个threadlocal实例. 这个Map的确使用了弱引用,不过弱引用只是针对key.<br>每个key都弱引用指向threadlocal.<br>当把threadlocal实例置为null以后,没有任何强引用指向threadlocal实例,<br>所以threadlocal将会被gc回收. 但是,我们的value却不能回收,<br>因为存在一条从current thread连接过来的强引用. 只有当前thread结束以后,<br>current thread就不会存在栈中,强引用断开, Current Thread, Map, value将全部被GC回收。<br>所以得出一个结论就是只要这个线程对象被gc回收，就不会出现内存泄露，<br>但在threadLocal设为null和线程结束这段时间不会被回收的，就发生了我们认为的内存泄露。<br>其实这是一个对概念理解的不一致，也没什么好争论的。最要命的是线程对象不被回收的情况，<br>这就发生了真正意义上的内存泄露。比如使用线程池的时候，线程结束是不会销毁的，<br>会再次使用的就可能出现内存泄露 。<br>（在web应用中，每次http请求都是一个线程，tomcat容器配置使用线程池时会出现内存泄漏问题）</p>
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
+        <a href="/2020/10/20/AbstractQueuedSynchronizer/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/java.jpg" alt="AbstractQueuedSynchronizer">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-10-20T03:10:34.263Z">2020-10-20</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-10-20 11:10:34&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-10-20T03:10:34.263Z">2020-10-20</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/java/">java</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    4 分钟 读完 (大约 543 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/10/20/AbstractQueuedSynchronizer/">AbstractQueuedSynchronizer</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><h2 id="一，AQS如何设置链表尾巴"><a href="#一，AQS如何设置链表尾巴" class="headerlink" title="一，AQS如何设置链表尾巴"></a>一，AQS如何设置链表尾巴</h2><p>compareAndGetTail(oldTail, node);<br>一般来说锁整个链表，改为只锁尾巴，通过cas操作，不需要把原来的整个链表上锁</p>
+<h2 id="二，CLH锁"><a href="#二，CLH锁" class="headerlink" title="二，CLH锁"></a>二，CLH锁</h2><p>AQS中的等待队列：是一个双向链表，并使用了“CLH锁”的思想实现等待队列<br>（1）CLH锁是一个自旋锁，能确保无饥饿性，提供先来先服务的公平性。</p>
+<p>（2）CLH锁也是一种基于链表的可扩展、高性能、公平的自旋锁，申请线程只在本地变量上自旋，它不断轮询前驱的状态，如果发现前驱释放了锁就结束自旋。</p>
+<p>（3）在AQS中，等待队列中的每个节点也是类似的去轮训前继节点的状态。不过为了减少资源浪费，会加入线程waitting的优化。当然，这不是唯一的获取资源的方式，如果头部节点释放资源后，也会主动的去唤醒waitting状态的后继节点<br>前言<br>谈到并发，我们不得不说AQS(AbstractQueuedSynchronizer)，所谓的AQS即是抽象的队列式的同步器，内部定义了很多锁相关的方法，我们熟知的ReentrantLock、ReentrantReadWriteLock、CountDownLatch、Semaphore等都是基于AQS来实现的。</p>
+<h2 id="三，AQS实现原理"><a href="#三，AQS实现原理" class="headerlink" title="三，AQS实现原理"></a>三，AQS实现原理</h2><p>AQS中 维护了一个volatile int state（代表共享资源）和一个FIFO线程等待队列（多线程争用资源被阻塞时会进入此队列）。</p>
+<p>这里volatile能够保证多线程下的可见性，当state=1则代表当前对象锁已经被占有，其他线程来加锁时则会失败，加锁失败的线程会被放入一个FIFO的等待队列中，比列会被UNSAFE.park()操作挂起，等待其他获取锁的线程释放锁才能够被唤醒。</p>
+<p>另外state的操作都是通过CAS来保证其并发修改的安全性。</p>
+<h2 id="四，参考URL"><a href="#四，参考URL" class="headerlink" title="四，参考URL"></a>四，参考URL</h2><p><a href="https://blog.csdn.net/weixin_43314519/article/details/108160297" target="_blank" rel="noopener">https://blog.csdn.net/weixin_43314519/article/details/108160297</a></p>
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-10-20T03:10:05.545Z">2020-10-20</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-10-20 11:10:05&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-10-20T03:10:05.545Z">2020-10-20</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    2 分钟 读完 (大约 370 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/10/20/Java%E5%BC%95%E7%94%A8%E4%B9%8B%E5%BC%BA%E8%BD%AF%E5%BC%B1%E8%99%9A/">Java引用之强软弱虚</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><p>title: Java引用之强软弱虚<br>toc: true<br>categories: java<br>tags:</p>
+<ul>
+<li>java<br>thumbnail: /logo/java.jpg<br>—Java引用之强软弱虚<h2 id="一，强引用"><a href="#一，强引用" class="headerlink" title="一，强引用"></a>一，强引用</h2>默认的引用就是强引用，NormalReference<h2 id="二，软引用"><a href="#二，软引用" class="headerlink" title="二，软引用"></a>二，软引用</h2>SoftReference，当有一个对象(字节数组)被一个软引用所指向的时候，只有系统内存不够的时候，才会回收，<br>非常适合做缓存使用<h2 id="三，弱引用"><a href="#三，弱引用" class="headerlink" title="三，弱引用"></a>三，弱引用</h2>弱引用只要遇到GC就会回收<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ReferenceQueue<String> referenceQueue = <span class="hljs-keyword">new</span> ReferenceQueue<>();</span><br><span class="line">String str = <span class="hljs-keyword">new</span> String(<span class="hljs-string">"abc"</span>);</span><br><span class="line">SoftReference<String> softReference = <span class="hljs-keyword">new</span> SoftReference<>(str, referenceQueue);</span><br><span class="line"></span><br><span class="line">str = <span class="hljs-keyword">null</span>;</span><br><span class="line"><span class="hljs-comment">// Notify GC</span></span><br><span class="line">System.gc();</span><br><span class="line"></span><br><span class="line">System.out.println(softReference.get()); <span class="hljs-comment">// abc</span></span><br><span class="line"></span><br><span class="line">Reference<? extends String> reference = referenceQueue.poll();</span><br><span class="line">System.out.println(reference); <span class="hljs-comment">//null</span></span><br></pre></td></tr></tbody></table></figure>
+<h2 id="四，虚引用"><a href="#四，虚引用" class="headerlink" title="四，虚引用"></a>四，虚引用</h2>虚引用顾名思义，就是形同虚设。与其他几种引用都不同，虚引用并不会决定对象的生命周期。<br>如果一个对象仅持有虚引用，那么它就和没有任何引用一样，在任何时候都可能被垃圾回收器回收。<br>应用场景：<br>虚引用主要用来跟踪对象被垃圾回收器回收的活动。<br>虚引用与软引用和弱引用的一个区别在于：</li>
+</ul>
+<p>虚引用必须和引用队列(ReferenceQueue)联合使用。<br>当垃圾回收器准备回收一个对象时，如果发现它还有虚引用，就会在回收对象的内存之前，<br>把这个虚引用加入到与之关联的引用队列中。</p>
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
     <div class="card-image">
         <a href="/2020/10/20/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E9%94%81%E6%9C%BA%E5%88%B6/" class="image is-7by1">
             <img class="thumbnail" src="/logo/java.jpg" alt="线程同步锁机制">
@@ -196,7 +436,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey">
                     
                     
-                    4 分钟 读完 (大约 674 个字)
+                    7 分钟 读完 (大约 1073 个字)
                 </span>
                 
 
@@ -219,8 +459,12 @@ var _hmt = _hmt || [];
 
 <h2 id="二，CyclicBarrier"><a href="#二，CyclicBarrier" class="headerlink" title="二，CyclicBarrier"></a>二，CyclicBarrier</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment"> * 导游线程，都到达目的地时，发放护照和签证</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TourGuideTask</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Runnable</span></span>{</span><br><span class="line"></span><br><span class="line">    <span class="hljs-meta">@Override</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>{</span><br><span class="line">        System.out.println(<span class="hljs-string">"****导游分发护照签证****"</span>);</span><br><span class="line">        <span class="hljs-keyword">try</span> {</span><br><span class="line">            <span class="hljs-comment">//模拟发护照签证需要2秒</span></span><br><span class="line">            Thread.sleep(<span class="hljs-number">2000</span>);</span><br><span class="line">        } <span class="hljs-keyword">catch</span> (InterruptedException e) {</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">import</span> java.util.concurrent.BrokenBarrierException;</span><br><span class="line"><span class="hljs-keyword">import</span> java.util.concurrent.CyclicBarrier;</span><br><span class="line"><span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment"> * 旅行线程</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TravelTask</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Runnable</span></span>{</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">private</span> CyclicBarrier cyclicBarrier;</span><br><span class="line">    <span class="hljs-keyword">private</span> String name;</span><br><span class="line">    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> arriveTime;<span class="hljs-comment">//赶到的时间</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">TravelTask</span><span class="hljs-params">(CyclicBarrier cyclicBarrier,String name,<span class="hljs-keyword">int</span> arriveTime)</span></span>{</span><br><span class="line">        <span class="hljs-keyword">this</span>.cyclicBarrier = cyclicBarrier;</span><br><span class="line">        <span class="hljs-keyword">this</span>.name = name;</span><br><span class="line">        <span class="hljs-keyword">this</span>.arriveTime = arriveTime;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-meta">@Override</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">try</span> {</span><br><span class="line">            <span class="hljs-comment">//模拟达到需要花的时间</span></span><br><span class="line">            Thread.sleep(arriveTime * <span class="hljs-number">1000</span>);</span><br><span class="line">            System.out.println(name +<span class="hljs-string">"到达集合点"</span>);</span><br><span class="line">            cyclicBarrier.await();</span><br><span class="line">            System.out.println(name +<span class="hljs-string">"开始旅行啦～～"</span>);</span><br><span class="line">            cyclicBarrier.await();</span><br><span class="line">            System.out.println(name + <span class="hljs-string">"回家，各找各妈"</span>);</span><br><span class="line">        } <span class="hljs-keyword">catch</span> (InterruptedException e) {</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        } <span class="hljs-keyword">catch</span> (BrokenBarrierException e) {</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">import</span> java.util.concurrent.CyclicBarrier;</span><br><span class="line"><span class="hljs-keyword">import</span> java.util.concurrent.ExecutorService;</span><br><span class="line"><span class="hljs-keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Client</span> </span>{</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> Exception</span>{</span><br><span class="line"></span><br><span class="line">        CyclicBarrier cyclicBarrier = <span class="hljs-keyword">new</span> CyclicBarrier(<span class="hljs-number">3</span>,<span class="hljs-keyword">new</span> TourGuideTask());</span><br><span class="line">        ExecutorService executor = Executors.newFixedThreadPool(<span class="hljs-number">3</span>);</span><br><span class="line"></span><br><span class="line">        <span class="hljs-comment">//登哥最大牌，到的最晚</span></span><br><span class="line">        executor.execute(<span class="hljs-keyword">new</span> TravelTask(cyclicBarrier,<span class="hljs-string">"哈登"</span>,<span class="hljs-number">5</span>));</span><br><span class="line">        executor.execute(<span class="hljs-keyword">new</span> TravelTask(cyclicBarrier,<span class="hljs-string">"保罗"</span>,<span class="hljs-number">3</span>));</span><br><span class="line">        executor.execute(<span class="hljs-keyword">new</span> TravelTask(cyclicBarrier,<span class="hljs-string">"戈登"</span>,<span class="hljs-number">1</span>));</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="三，Phaser"><a href="#三，Phaser" class="headerlink" title="三，Phaser"></a>三，Phaser</h2><h2 id="四，ReadWriteLock"><a href="#四，ReadWriteLock" class="headerlink" title="四，ReadWriteLock"></a>四，ReadWriteLock</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> java.util.concurrent.locks.ReentrantReadWriteLock;</span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test1</span> </span>{</span><br><span class="line">    <span class="hljs-comment">//为同一个线程中，在没有释放读锁的情况下，就去申请写锁，这属于锁升级，ReentrantReadWriteLock是不支持的。</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{</span><br><span class="line">        ReentrantReadWriteLock rtLock = <span class="hljs-keyword">new</span> ReentrantReadWriteLock();</span><br><span class="line">        rtLock.readLock().lock();</span><br><span class="line">        System.out.println(<span class="hljs-string">"get readLock."</span>);</span><br><span class="line">        rtLock.writeLock().lock();</span><br><span class="line">        System.out.println(<span class="hljs-string">"blocking"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<h2 id="五，Semaphore"><a href="#五，Semaphore" class="headerlink" title="五，Semaphore"></a>五，Semaphore</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test2</span> </span>{</span><br><span class="line">    <span class="hljs-comment">//ReentrantReadWriteLock支持锁降级，上面代码不会产生死锁。</span></span><br><span class="line">    <span class="hljs-comment">// 这段代码虽然不会导致死锁，但没有正确的释放锁。从写锁降级成读锁，</span></span><br><span class="line">    <span class="hljs-comment">// 并不会自动释放当前线程获取的写锁，仍然需要显示的释放，否则别的线程永远也获取不到写锁。</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{</span><br><span class="line">        ReentrantReadWriteLock rtLock = <span class="hljs-keyword">new</span> ReentrantReadWriteLock();  </span><br><span class="line">        rtLock.writeLock().lock();  </span><br><span class="line">        System.out.println(<span class="hljs-string">"writeLock"</span>);  </span><br><span class="line">          </span><br><span class="line">        rtLock.readLock().lock();  </span><br><span class="line">        System.out.println(<span class="hljs-string">"get read lock"</span>);  </span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="三，Phaser"><a href="#三，Phaser" class="headerlink" title="三，Phaser"></a>三，Phaser</h2><h2 id="四，ReadWriteLock"><a href="#四，ReadWriteLock" class="headerlink" title="四，ReadWriteLock"></a>四，ReadWriteLock</h2><p>1.Java并发库中ReetrantReadWriteLock实现了ReadWriteLock接口并添加了可重入的特性<br>2.ReetrantReadWriteLock读写锁的效率明显高于synchronized关键字<br>3.ReetrantReadWriteLock读写锁的实现中，读锁使用共享模式；写锁使用独占模式，换句话说，读锁可以在没有写锁的时候被多个线程同时持有，写锁是独占的<br>4.ReetrantReadWriteLock读写锁的实现中，需要注意的，当有读锁时，写锁就不能获得；而当有写锁时，除了获得写锁的这个线程可以获得读锁外，其他线程不能获得读锁</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> java.util.concurrent.locks.ReentrantReadWriteLock;</span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test1</span> </span>{</span><br><span class="line">    <span class="hljs-comment">//为同一个线程中，在没有释放读锁的情况下，就去申请写锁，这属于锁升级，ReentrantReadWriteLock是不支持的。</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{</span><br><span class="line">        ReentrantReadWriteLock rtLock = <span class="hljs-keyword">new</span> ReentrantReadWriteLock();</span><br><span class="line">        rtLock.readLock().lock();</span><br><span class="line">        System.out.println(<span class="hljs-string">"get readLock."</span>);</span><br><span class="line">        rtLock.writeLock().lock();</span><br><span class="line">        System.out.println(<span class="hljs-string">"blocking"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test2</span> </span>{</span><br><span class="line">    <span class="hljs-comment">//ReentrantReadWriteLock支持锁降级，上面代码不会产生死锁。</span></span><br><span class="line">    <span class="hljs-comment">// 这段代码虽然不会导致死锁，但没有正确的释放锁。从写锁降级成读锁，</span></span><br><span class="line">    <span class="hljs-comment">// 并不会自动释放当前线程获取的写锁，仍然需要显示的释放，否则别的线程永远也获取不到写锁。</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{</span><br><span class="line">        ReentrantReadWriteLock rtLock = <span class="hljs-keyword">new</span> ReentrantReadWriteLock();  </span><br><span class="line">        rtLock.writeLock().lock();  </span><br><span class="line">        System.out.println(<span class="hljs-string">"writeLock"</span>);  </span><br><span class="line">          </span><br><span class="line">        rtLock.readLock().lock();  </span><br><span class="line">        System.out.println(<span class="hljs-string">"get read lock"</span>);  </span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="五，Semaphore"><a href="#五，Semaphore" class="headerlink" title="五，Semaphore"></a>五，Semaphore</h2><p>Semaphore也是一个线程同步的辅助类，可以维护当前访问自身的线程个数，并提供了同步机制。使用Semaphore可以控制同时访问资源的线程个数，例如，实现一个文件允许的并发访问数。<br>Semaphore的主要方法摘要：<br>　　void acquire():从此信号量获取一个许可，在提供一个许可前一直将线程阻塞，否则线程被中断。<br>　　void release():释放一个许可，将其返回给信号量。<br>　　int availablePermits():返回此信号量中当前可用的许可数。<br>　　boolean hasQueuedThreads():查询是否有线程正在等待获取。</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// 创建一个计数阈值为5的信号量对象</span></span><br><span class="line"><span class="hljs-comment">// 只能5个线程同时访问</span></span><br><span class="line">Semaphore semp = <span class="hljs-keyword">new</span> Semaphore(<span class="hljs-number">5</span>);</span><br><span class="line"><span class="hljs-keyword">try</span> {</span><br><span class="line">	<span class="hljs-comment">// 申请许可</span></span><br><span class="line">	semp.acquire();</span><br><span class="line">	<span class="hljs-keyword">try</span> {</span><br><span class="line">		<span class="hljs-comment">// 业务逻辑</span></span><br><span class="line">	} <span class="hljs-keyword">catch</span> (Exception e) {</span><br><span class="line"> </span><br><span class="line">	} <span class="hljs-keyword">finally</span> {</span><br><span class="line">		<span class="hljs-comment">// 释放许可</span></span><br><span class="line">		semp.release();</span><br><span class="line">	}</span><br><span class="line">} <span class="hljs-keyword">catch</span> (InterruptedException e) {</span><br><span class="line"> </span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 <h2 id="六，Exchange"><a href="#六，Exchange" class="headerlink" title="六，Exchange"></a>六，Exchange</h2><p>两个线程之间交换数据</p>
 </body></html>
             
@@ -739,226 +983,6 @@ var _hmt = _hmt || [];
 
 
 
-        <div class="card">
-
-        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
-    
-    <div class="card-image">
-        <a href="/2020/10/19/%E9%AA%8C%E8%AF%81%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/" class="image is-7by1">
-            <img class="thumbnail" src="/logo/suanfa.jpg" alt="验证二叉搜索树">
-        </a>
-    </div>
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-
-                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
-                
-                <time class="level-item has-text-grey" datetime="2020-10-19T12:00:59.277Z">2020-10-19</time>
-                
-
-                <!--<span style="color: #7a7a7a !important;">2020-10-19 20:00:59&nbsp;&nbsp;&nbsp;</span>-->
-                <!--<time class="level-item has-text-grey" datetime="2020-10-19T12:00:59.277Z">2020-10-19</time>-->
-                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
-
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    1 分钟 读完 (大约 148 个字)
-                </span>
-                
-
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/10/19/%E9%AA%8C%E8%AF%81%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/">验证二叉搜索树</a>
-            
-        </h1>
-
-        <div class="content">
-
-            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
-            
-                <html><head></head><body><h2 id="最小栈"><a href="#最小栈" class="headerlink" title="最小栈"></a>最小栈</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isValidBST</span><span class="hljs-params">(TreeNode node)</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">return</span> valid(node, Long.MIN_VALUE, Long.MAX_VALUE);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">valid</span><span class="hljs-params">(TreeNode node, <span class="hljs-keyword">long</span> min, <span class="hljs-keyword">long</span> max)</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">if</span> (node == <span class="hljs-keyword">null</span>)</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;</span><br><span class="line">        <span class="hljs-keyword">if</span> (node.val <= min || node.val >= max)</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;</span><br><span class="line">        <span class="hljs-keyword">return</span> valid(node.left, min, node.val) && valid(node.right,  node.val, max);</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">Long preValue = Long.MIN_VALUE;</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isValidBST</span><span class="hljs-params">(TreeNode node)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">if</span> (node != <span class="hljs-keyword">null</span>) {</span><br><span class="line">        <span class="hljs-keyword">if</span> (!isValidBST(node.left))</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;</span><br><span class="line">        <span class="hljs-keyword">if</span> (node.val <= preValue)</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;</span><br><span class="line">        preValue = Long.parseLong(node.val + <span class="hljs-string">""</span>);</span><br><span class="line">        <span class="hljs-keyword">if</span> (!isValidBST(node.right))</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;</span><br><span class="line">}</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isValidBST</span><span class="hljs-params">(TreeNode node)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">if</span> (node == <span class="hljs-keyword">null</span>)</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;</span><br><span class="line">    Stack<TreeNode> stack = <span class="hljs-keyword">new</span> Stack<>();</span><br><span class="line">    TreeNode temp = node;</span><br><span class="line">    TreeNode pre = <span class="hljs-keyword">null</span>;</span><br><span class="line">    <span class="hljs-keyword">while</span> (temp != <span class="hljs-keyword">null</span> || !stack.isEmpty()) {</span><br><span class="line">        <span class="hljs-keyword">while</span> (temp != <span class="hljs-keyword">null</span>) {</span><br><span class="line">            stack.push(temp);</span><br><span class="line">            temp = temp.left;</span><br><span class="line">        }</span><br><span class="line">        TreeNode t = stack.pop();</span><br><span class="line">        <span class="hljs-keyword">if</span> (pre != <span class="hljs-keyword">null</span> && t.val <= pre.val)</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;</span><br><span class="line">        pre = t;</span><br><span class="line">        temp = t.right;</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></body></html>
-            
-
-            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
-        </div>
-
-        
-
-
-        
-        
-
-        <!--% if (!index && has_config('share.type')) { %-->
-<!--        % if (index && has_config('share.type')) { %-->
-        
-        <div class="social-share"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
-<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-        <div class="card">
-
-        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-
-                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
-                
-                <time class="level-item has-text-grey" datetime="2020-10-19T11:57:54.428Z">2020-10-19</time>
-                
-
-                <!--<span style="color: #7a7a7a !important;">2020-10-19 19:57:54&nbsp;&nbsp;&nbsp;</span>-->
-                <!--<time class="level-item has-text-grey" datetime="2020-10-19T11:57:54.428Z">2020-10-19</time>-->
-                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
-
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    几秒 读完 (大约 0 个字)
-                </span>
-                
-
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/10/19/todo/top%20k%E9%97%AE%E9%A2%98/">todo/top k问题</a>
-            
-        </h1>
-
-        <div class="content">
-
-            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
-            
-                
-            
-
-            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
-        </div>
-
-        
-
-
-        
-        
-
-        <!--% if (!index && has_config('share.type')) { %-->
-<!--        % if (index && has_config('share.type')) { %-->
-        
-        <div class="social-share"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
-<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-        <div class="card">
-
-        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-
-                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
-                
-                <time class="level-item has-text-grey" datetime="2020-10-19T11:53:22.463Z">2020-10-19</time>
-                
-
-                <!--<span style="color: #7a7a7a !important;">2020-10-19 19:53:22&nbsp;&nbsp;&nbsp;</span>-->
-                <!--<time class="level-item has-text-grey" datetime="2020-10-19T11:53:22.463Z">2020-10-19</time>-->
-                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
-
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    几秒 读完 (大约 0 个字)
-                </span>
-                
-
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/10/19/todo/%E7%BA%A2%E5%8C%85%E7%AE%97%E6%B3%95/">todo/红包算法</a>
-            
-        </h1>
-
-        <div class="content">
-
-            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
-            
-                
-            
-
-            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
-        </div>
-
-        
-
-
-        
-        
-
-        <!--% if (!index && has_config('share.type')) { %-->
-<!--        % if (index && has_config('share.type')) { %-->
-        
-        <div class="social-share"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
-<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
 
     
 <div class="card card-transparent">
@@ -1026,7 +1050,7 @@ var _hmt = _hmt || [];
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        52
+                        55
                     </p>
                 </div>
             </div>
@@ -1157,7 +1181,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">java</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">4</span>
+                <span class="level-item tag">5</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/kafka/">
@@ -1220,6 +1244,63 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2020/10/20/ThreadLocal/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="ThreadLocal">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-20T03:20:16.094Z">2020-10-20</time></div>
+                    <a href="/2020/10/20/ThreadLocal/" class="has-link-black-ter is-size-6">ThreadLocal</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/10/20/AbstractQueuedSynchronizer/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/logo/java.jpg" alt="AbstractQueuedSynchronizer">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-20T03:10:34.263Z">2020-10-20</time></div>
+                    <a href="/2020/10/20/AbstractQueuedSynchronizer/" class="has-link-black-ter is-size-6">AbstractQueuedSynchronizer</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/java/">java</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/10/20/Java%E5%BC%95%E7%94%A8%E4%B9%8B%E5%BC%BA%E8%BD%AF%E5%BC%B1%E8%99%9A/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Java引用之强软弱虚">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-20T03:10:05.545Z">2020-10-20</time></div>
+                    <a href="/2020/10/20/Java%E5%BC%95%E7%94%A8%E4%B9%8B%E5%BC%BA%E8%BD%AF%E5%BC%B1%E8%99%9A/" class="has-link-black-ter is-size-6">Java引用之强软弱虚</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/10/20/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E9%94%81%E6%9C%BA%E5%88%B6/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/logo/java.jpg" alt="线程同步锁机制">
@@ -1256,63 +1337,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2020/10/19/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="有效的括号">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:06:30.103Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/" class="has-link-black-ter is-size-6">有效的括号</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/10/19/%E5%8D%95%E8%AF%8D%E5%8F%8D%E8%BD%AC/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="单词反转">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:05:48.395Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E5%8D%95%E8%AF%8D%E5%8F%8D%E8%BD%AC/" class="has-link-black-ter is-size-6">单词反转</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/10/19/%E5%88%A4%E5%AE%9A%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="判定是否有环">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:05:00.176Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E5%88%A4%E5%AE%9A%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF/" class="has-link-black-ter is-size-6">判定是否有环</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -1342,7 +1366,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/java/">
                         <span class="tag">java</span>
-                        <span class="tag is-grey">34</span>
+                        <span class="tag is-grey">35</span>
                     </a>
                 </div>
                 
@@ -1385,6 +1409,63 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2020/10/20/ThreadLocal/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="ThreadLocal">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-20T03:20:16.094Z">2020-10-20</time></div>
+                    <a href="/2020/10/20/ThreadLocal/" class="has-link-black-ter is-size-6">ThreadLocal</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/10/20/AbstractQueuedSynchronizer/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/logo/java.jpg" alt="AbstractQueuedSynchronizer">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-20T03:10:34.263Z">2020-10-20</time></div>
+                    <a href="/2020/10/20/AbstractQueuedSynchronizer/" class="has-link-black-ter is-size-6">AbstractQueuedSynchronizer</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/java/">java</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/10/20/Java%E5%BC%95%E7%94%A8%E4%B9%8B%E5%BC%BA%E8%BD%AF%E5%BC%B1%E8%99%9A/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Java引用之强软弱虚">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-20T03:10:05.545Z">2020-10-20</time></div>
+                    <a href="/2020/10/20/Java%E5%BC%95%E7%94%A8%E4%B9%8B%E5%BC%BA%E8%BD%AF%E5%BC%B1%E8%99%9A/" class="has-link-black-ter is-size-6">Java引用之强软弱虚</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/10/20/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E9%94%81%E6%9C%BA%E5%88%B6/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/logo/java.jpg" alt="线程同步锁机制">
@@ -1421,63 +1502,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2020/10/19/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="有效的括号">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:06:30.103Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/" class="has-link-black-ter is-size-6">有效的括号</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/10/19/%E5%8D%95%E8%AF%8D%E5%8F%8D%E8%BD%AC/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="单词反转">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:05:48.395Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E5%8D%95%E8%AF%8D%E5%8F%8D%E8%BD%AC/" class="has-link-black-ter is-size-6">单词反转</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/10/19/%E5%88%A4%E5%AE%9A%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="判定是否有环">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:05:00.176Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E5%88%A4%E5%AE%9A%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF/" class="has-link-black-ter is-size-6">判定是否有环</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -1507,7 +1531,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/java/">
                         <span class="tag">java</span>
-                        <span class="tag is-grey">34</span>
+                        <span class="tag is-grey">35</span>
                     </a>
                 </div>
                 
