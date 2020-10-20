@@ -168,6 +168,94 @@ var _hmt = _hmt || [];
         <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
     
     <div class="card-image">
+        <a href="/2020/10/20/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E9%94%81%E6%9C%BA%E5%88%B6/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/java.jpg" alt="线程同步锁机制">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-10-20T01:38:21.132Z">2020-10-20</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-10-20 09:38:21&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-10-20T01:38:21.132Z">2020-10-20</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/java/">java</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    4 分钟 读完 (大约 674 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/10/20/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E9%94%81%E6%9C%BA%E5%88%B6/">线程同步锁机制</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><h2 id="一，CountDownLatch"><a href="#一，CountDownLatch" class="headerlink" title="一，CountDownLatch"></a>一，CountDownLatch</h2><p>方法有await、countDown、getCount三个主要方法</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> java.util.concurrent.CountDownLatch;</span><br><span class="line"><span class="hljs-keyword">import</span> java.util.concurrent.ExecutorService;</span><br><span class="line"><span class="hljs-keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CountDownLatchDemo</span> </span>{</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> CountDownLatch startSignal = <span class="hljs-keyword">new</span> CountDownLatch(<span class="hljs-number">1</span>);</span><br><span class="line">    <span class="hljs-comment">//用来表示裁判员需要维护的是6个运动员</span></span><br><span class="line">    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> CountDownLatch endSignal = <span class="hljs-keyword">new</span> CountDownLatch(<span class="hljs-number">6</span>);</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> InterruptedException </span>{</span><br><span class="line">        ExecutorService executorService = Executors.newFixedThreadPool(<span class="hljs-number">6</span>);</span><br><span class="line">        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i < <span class="hljs-number">6</span>; i++) {</span><br><span class="line">            executorService.execute(() -> {</span><br><span class="line">                <span class="hljs-keyword">try</span> {</span><br><span class="line">                    System.out.println(Thread.currentThread().getName() + <span class="hljs-string">" 运动员等待裁判员响哨！！！"</span>);</span><br><span class="line">                    startSignal.await();</span><br><span class="line">                    System.out.println(Thread.currentThread().getName() + <span class="hljs-string">"正在全力冲刺"</span>);</span><br><span class="line">                    endSignal.countDown();<span class="hljs-comment">//当6个线程全部执行完毕，任务结束</span></span><br><span class="line">                    System.out.println(Thread.currentThread().getName() + <span class="hljs-string">"  到达终点"</span>);</span><br><span class="line">                } <span class="hljs-keyword">catch</span> (InterruptedException e) {</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                }</span><br><span class="line">            });</span><br><span class="line">        }</span><br><span class="line">        System.out.println(<span class="hljs-string">"裁判员发号施令啦！！！"</span>);</span><br><span class="line">        startSignal.countDown();<span class="hljs-comment">//使 CountDownLatch 初始值 N 减 1；，此时startSignal减为0，线程开始向下执行</span></span><br><span class="line">        endSignal.await();</span><br><span class="line">        System.out.println(<span class="hljs-string">"所有运动员到达终点，比赛结束！"</span>);</span><br><span class="line">        executorService.shutdown();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="二，CyclicBarrier"><a href="#二，CyclicBarrier" class="headerlink" title="二，CyclicBarrier"></a>二，CyclicBarrier</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment"> * 导游线程，都到达目的地时，发放护照和签证</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TourGuideTask</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Runnable</span></span>{</span><br><span class="line"></span><br><span class="line">    <span class="hljs-meta">@Override</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>{</span><br><span class="line">        System.out.println(<span class="hljs-string">"****导游分发护照签证****"</span>);</span><br><span class="line">        <span class="hljs-keyword">try</span> {</span><br><span class="line">            <span class="hljs-comment">//模拟发护照签证需要2秒</span></span><br><span class="line">            Thread.sleep(<span class="hljs-number">2000</span>);</span><br><span class="line">        } <span class="hljs-keyword">catch</span> (InterruptedException e) {</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">import</span> java.util.concurrent.BrokenBarrierException;</span><br><span class="line"><span class="hljs-keyword">import</span> java.util.concurrent.CyclicBarrier;</span><br><span class="line"><span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment"> * 旅行线程</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TravelTask</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Runnable</span></span>{</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">private</span> CyclicBarrier cyclicBarrier;</span><br><span class="line">    <span class="hljs-keyword">private</span> String name;</span><br><span class="line">    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> arriveTime;<span class="hljs-comment">//赶到的时间</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">TravelTask</span><span class="hljs-params">(CyclicBarrier cyclicBarrier,String name,<span class="hljs-keyword">int</span> arriveTime)</span></span>{</span><br><span class="line">        <span class="hljs-keyword">this</span>.cyclicBarrier = cyclicBarrier;</span><br><span class="line">        <span class="hljs-keyword">this</span>.name = name;</span><br><span class="line">        <span class="hljs-keyword">this</span>.arriveTime = arriveTime;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-meta">@Override</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>{</span><br><span class="line">        <span class="hljs-keyword">try</span> {</span><br><span class="line">            <span class="hljs-comment">//模拟达到需要花的时间</span></span><br><span class="line">            Thread.sleep(arriveTime * <span class="hljs-number">1000</span>);</span><br><span class="line">            System.out.println(name +<span class="hljs-string">"到达集合点"</span>);</span><br><span class="line">            cyclicBarrier.await();</span><br><span class="line">            System.out.println(name +<span class="hljs-string">"开始旅行啦～～"</span>);</span><br><span class="line">            cyclicBarrier.await();</span><br><span class="line">            System.out.println(name + <span class="hljs-string">"回家，各找各妈"</span>);</span><br><span class="line">        } <span class="hljs-keyword">catch</span> (InterruptedException e) {</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        } <span class="hljs-keyword">catch</span> (BrokenBarrierException e) {</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">import</span> java.util.concurrent.CyclicBarrier;</span><br><span class="line"><span class="hljs-keyword">import</span> java.util.concurrent.ExecutorService;</span><br><span class="line"><span class="hljs-keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Client</span> </span>{</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> Exception</span>{</span><br><span class="line"></span><br><span class="line">        CyclicBarrier cyclicBarrier = <span class="hljs-keyword">new</span> CyclicBarrier(<span class="hljs-number">3</span>,<span class="hljs-keyword">new</span> TourGuideTask());</span><br><span class="line">        ExecutorService executor = Executors.newFixedThreadPool(<span class="hljs-number">3</span>);</span><br><span class="line"></span><br><span class="line">        <span class="hljs-comment">//登哥最大牌，到的最晚</span></span><br><span class="line">        executor.execute(<span class="hljs-keyword">new</span> TravelTask(cyclicBarrier,<span class="hljs-string">"哈登"</span>,<span class="hljs-number">5</span>));</span><br><span class="line">        executor.execute(<span class="hljs-keyword">new</span> TravelTask(cyclicBarrier,<span class="hljs-string">"保罗"</span>,<span class="hljs-number">3</span>));</span><br><span class="line">        executor.execute(<span class="hljs-keyword">new</span> TravelTask(cyclicBarrier,<span class="hljs-string">"戈登"</span>,<span class="hljs-number">1</span>));</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="三，Phaser"><a href="#三，Phaser" class="headerlink" title="三，Phaser"></a>三，Phaser</h2><h2 id="四，ReadWriteLock"><a href="#四，ReadWriteLock" class="headerlink" title="四，ReadWriteLock"></a>四，ReadWriteLock</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> java.util.concurrent.locks.ReentrantReadWriteLock;</span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test1</span> </span>{</span><br><span class="line">    <span class="hljs-comment">//为同一个线程中，在没有释放读锁的情况下，就去申请写锁，这属于锁升级，ReentrantReadWriteLock是不支持的。</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{</span><br><span class="line">        ReentrantReadWriteLock rtLock = <span class="hljs-keyword">new</span> ReentrantReadWriteLock();</span><br><span class="line">        rtLock.readLock().lock();</span><br><span class="line">        System.out.println(<span class="hljs-string">"get readLock."</span>);</span><br><span class="line">        rtLock.writeLock().lock();</span><br><span class="line">        System.out.println(<span class="hljs-string">"blocking"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="五，Semaphore"><a href="#五，Semaphore" class="headerlink" title="五，Semaphore"></a>五，Semaphore</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test2</span> </span>{</span><br><span class="line">    <span class="hljs-comment">//ReentrantReadWriteLock支持锁降级，上面代码不会产生死锁。</span></span><br><span class="line">    <span class="hljs-comment">// 这段代码虽然不会导致死锁，但没有正确的释放锁。从写锁降级成读锁，</span></span><br><span class="line">    <span class="hljs-comment">// 并不会自动释放当前线程获取的写锁，仍然需要显示的释放，否则别的线程永远也获取不到写锁。</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{</span><br><span class="line">        ReentrantReadWriteLock rtLock = <span class="hljs-keyword">new</span> ReentrantReadWriteLock();  </span><br><span class="line">        rtLock.writeLock().lock();  </span><br><span class="line">        System.out.println(<span class="hljs-string">"writeLock"</span>);  </span><br><span class="line">          </span><br><span class="line">        rtLock.readLock().lock();  </span><br><span class="line">        System.out.println(<span class="hljs-string">"get read lock"</span>);  </span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="六，Exchange"><a href="#六，Exchange" class="headerlink" title="六，Exchange"></a>六，Exchange</h2><p>两个线程之间交换数据</p>
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
         <a href="/2020/10/19/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88/" class="image is-7by1">
             <img class="thumbnail" src="/logo/suanfa.jpg" alt="队列实现栈">
         </a>
@@ -871,86 +959,6 @@ var _hmt = _hmt || [];
 
 
 
-        <div class="card">
-
-        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
-    
-    <div class="card-image">
-        <a href="/2020/10/19/sqrt/" class="image is-7by1">
-            <img class="thumbnail" src="/logo/suanfa.jpg" alt="sqrt">
-        </a>
-    </div>
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-
-                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
-                
-                <time class="level-item has-text-grey" datetime="2020-10-19T11:52:47.501Z">2020-10-19</time>
-                
-
-                <!--<span style="color: #7a7a7a !important;">2020-10-19 19:52:47&nbsp;&nbsp;&nbsp;</span>-->
-                <!--<time class="level-item has-text-grey" datetime="2020-10-19T11:52:47.501Z">2020-10-19</time>-->
-                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
-
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    几秒 读完 (大约 34 个字)
-                </span>
-                
-
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/10/19/sqrt/">sqrt</a>
-            
-        </h1>
-
-        <div class="content">
-
-            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
-            
-                <html><head></head><body><h2 id="sqrt"><a href="#sqrt" class="headerlink" title="sqrt"></a>sqrt</h2><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">mySqrt</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span> </span>{</span><br><span class="line">    <span class="hljs-keyword">if</span> (x == <span class="hljs-number">0</span>)</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">    <span class="hljs-keyword">long</span> left = <span class="hljs-number">1</span>;</span><br><span class="line">    <span class="hljs-keyword">long</span> right = x/<span class="hljs-number">2</span>;</span><br><span class="line">    <span class="hljs-keyword">while</span> (left < right) {</span><br><span class="line">        <span class="hljs-keyword">long</span> mid = (right + left) / <span class="hljs-number">2</span> + <span class="hljs-number">1</span>;</span><br><span class="line">        <span class="hljs-keyword">if</span> (mid >  x / mid) {</span><br><span class="line">            right = mid - <span class="hljs-number">1</span>;</span><br><span class="line">        } <span class="hljs-keyword">else</span> {</span><br><span class="line">            left = mid;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>)left;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></body></html>
-            
-
-            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
-        </div>
-
-        
-
-
-        
-        
-
-        <!--% if (!index && has_config('share.type')) { %-->
-<!--        % if (index && has_config('share.type')) { %-->
-        
-        <div class="social-share"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
-<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
 
     
 <div class="card card-transparent">
@@ -1018,7 +1026,7 @@ var _hmt = _hmt || [];
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        51
+                        52
                     </p>
                 </div>
             </div>
@@ -1149,7 +1157,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">java</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">3</span>
+                <span class="level-item tag">4</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/kafka/">
@@ -1212,6 +1220,25 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2020/10/20/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E9%94%81%E6%9C%BA%E5%88%B6/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/logo/java.jpg" alt="线程同步锁机制">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-20T01:38:21.132Z">2020-10-20</time></div>
+                    <a href="/2020/10/20/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E9%94%81%E6%9C%BA%E5%88%B6/" class="has-link-black-ter is-size-6">线程同步锁机制</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/java/">java</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/10/19/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/logo/suanfa.jpg" alt="队列实现栈">
@@ -1286,25 +1313,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2020/10/19/%E9%93%BE%E8%A1%A8%E4%BA%A4%E6%8D%A2%E5%85%83%E7%B4%A0/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="链表交换元素">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:04:07.212Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E9%93%BE%E8%A1%A8%E4%BA%A4%E6%8D%A2%E5%85%83%E7%B4%A0/" class="has-link-black-ter is-size-6">链表交换元素</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -1334,7 +1342,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/java/">
                         <span class="tag">java</span>
-                        <span class="tag is-grey">33</span>
+                        <span class="tag is-grey">34</span>
                     </a>
                 </div>
                 
@@ -1377,6 +1385,25 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2020/10/20/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E9%94%81%E6%9C%BA%E5%88%B6/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/logo/java.jpg" alt="线程同步锁机制">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-20T01:38:21.132Z">2020-10-20</time></div>
+                    <a href="/2020/10/20/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E9%94%81%E6%9C%BA%E5%88%B6/" class="has-link-black-ter is-size-6">线程同步锁机制</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/java/">java</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/10/19/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/logo/suanfa.jpg" alt="队列实现栈">
@@ -1451,25 +1478,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2020/10/19/%E9%93%BE%E8%A1%A8%E4%BA%A4%E6%8D%A2%E5%85%83%E7%B4%A0/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/logo/suanfa.jpg" alt="链表交换元素">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-19T12:04:07.212Z">2020-10-19</time></div>
-                    <a href="/2020/10/19/%E9%93%BE%E8%A1%A8%E4%BA%A4%E6%8D%A2%E5%85%83%E7%B4%A0/" class="has-link-black-ter is-size-6">链表交换元素</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -1499,7 +1507,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/java/">
                         <span class="tag">java</span>
-                        <span class="tag is-grey">33</span>
+                        <span class="tag is-grey">34</span>
                     </a>
                 </div>
                 
