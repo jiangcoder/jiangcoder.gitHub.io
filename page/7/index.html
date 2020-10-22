@@ -168,6 +168,123 @@ var _hmt = _hmt || [];
         <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
     
     <div class="card-image">
+        <a href="/2020/03/20/Elasticsearch%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" class="image is-7by1">
+            <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="Elasticsearch负载高问题排查">
+        </a>
+    </div>
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+
+                <!--updated by thank: 列表页显示几年前, 文章页显示具体日期-->
+                
+                <time class="level-item has-text-grey" datetime="2020-03-20T13:35:30.731Z">2020-03-20</time>
+                
+
+                <!--<span style="color: #7a7a7a !important;">2020-03-20 21:35:30&nbsp;&nbsp;&nbsp;</span>-->
+                <!--<time class="level-item has-text-grey" datetime="2020-03-20T13:35:30.731Z">2020-03-20</time>-->
+                <!--<time class="level-item has-text-grey"  datetime="2019-12-12 22:22:22">2018-12-12 22:22:22</time>-->
+
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    4 分钟 读完 (大约 629 个字)
+                </span>
+                
+
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/03/20/Elasticsearch%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">Elasticsearch负载高问题排查</a>
+            
+        </h1>
+
+        <div class="content">
+
+            <!--update by thank: 控制首页摘要信息不显示样式(去掉Markdown生成的html标签)-->
+            
+                <html><head></head><body><ol>
+<li><p>我们Elasticsearch集群近几日负载飙高，排查思路记录如下；</p>
+</li>
+<li><p>查看日志信息，确定是否存在异常情况</p>
+</li>
+</ol>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ${ES_HOME}/logs</span><br><span class="line">tail -<span class="hljs-number">100f</span> ES.log</span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="3">
+<li>频繁Full GC往往会引起负载飙高，故查看ES集群GC 情况，</li>
+</ol>
+<p>使用命令：</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jstat -gcutil <pid> <period> <times></span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200320205733385.png" alt="在这里插入图片描述"><br>近一个多月，服务共Full GC700余次，平均每次Full GC耗时90ms，符合预期，排除Full GC问题导致负载飙高；<br>4. 找到ES中占用CPU的线程ID</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">top -Hp PID</span><br></pre></td></tr></tbody></table></figure>
+<p>如找到ES进程中2291线程较费CPU<br><img src="https://img-blog.csdnimg.cn/20200320210618219.png" alt="在这里插入图片描述"></p>
+<ol start="5">
+<li>将得到的线程id，转化为16进制</li>
+</ol>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">printf %x <span class="hljs-number">2291</span></span><br><span class="line">输出结果：<span class="hljs-number">8f</span>3</span><br></pre></td></tr></tbody></table></figure>
+
+<ol start="7">
+<li>使用jstack分析线程状态<br>jstack命令主要用于调试java程序运行过程中的线程堆栈信息</li>
+</ol>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jstack PID  >> pid.txt</span><br></pre></td></tr></tbody></table></figure>
+<p>8.查看pid.txt文件，分析线程对应的堆栈信息<br>由步骤6得到 16进制线程“8f3”</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim pid.txt</span><br><span class="line"><span class="hljs-comment">//查找线程“8f3”对应信息</span></span><br></pre></td></tr></tbody></table></figure>
+<p>内容如下</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">"elasticsearch[data-es12][write][T#3]" #94 daemon prio=5 os_prio=0 tid=0x00007f3254017800 nid=0x8f3 waiting for monitor entry [0x00007f2d37a7a000]</span><br><span class="line">   java.lang.Thread.State: BLOCKED (on object monitor)</span><br><span class="line">        at org.elasticsearch.index.translog.TranslogWriter.syncUpTo(TranslogWriter.java:<span class="hljs-number">342</span>)</span><br><span class="line">        - waiting to lock <<span class="hljs-number">0x000000055ff5f220</span>> (a java.lang.Object)</span><br><span class="line">        at org.elasticsearch.index.translog.Translog.ensureSynced(Translog.java:<span class="hljs-number">797</span>)</span><br><span class="line">        at org.elasticsearch.index.translog.Translog.ensureSynced(Translog.java:<span class="hljs-number">818</span>)</span><br><span class="line">        at org.elasticsearch.index.engine.InternalEngine.ensureTranslogSynced(InternalEngine.java:<span class="hljs-number">489</span>)</span><br><span class="line">        at org.elasticsearch.index.shard.IndexShard$<span class="hljs-number">5</span>.write(IndexShard.java:<span class="hljs-number">2782</span>)</span><br><span class="line">        at org.elasticsearch.common.util.concurrent.AsyncIOProcessor.processList(AsyncIOProcessor.java:<span class="hljs-number">107</span>)</span><br><span class="line">        at org.elasticsearch.common.util.concurrent.AsyncIOProcessor.drainAndProcess(AsyncIOProcessor.java:<span class="hljs-number">99</span>)</span><br><span class="line">        at org.elasticsearch.common.util.concurrent.AsyncIOProcessor.put(AsyncIOProcessor.java:<span class="hljs-number">82</span>)</span><br><span class="line">        at org.elasticsearch.index.shard.IndexShard.sync(IndexShard.java:<span class="hljs-number">2804</span>)</span><br><span class="line">        at org.elasticsearch.action.support.replication.TransportWriteAction$AsyncAfterWriteAction.run(TransportWriteAction.java:<span class="hljs-number">355</span>)</span><br><span class="line">        at org.elasticsearch.action.support.replication.TransportWriteAction$WritePrimaryResult.<init>(TransportWriteAction.java:<span class="hljs-number">151</span>)</span><br><span class="line">        at</span><br></pre></td></tr></tbody></table></figure>
+
+<p>该线程正处于堵塞状态。</p>
+<p>9，原因分析<br>从ES索引数据创建机制说起<br>写请求首先先写到内存一份数据，然后写translog，默认每1秒进行refresh，将索引写入到文件系统；<br>该ES集群是ELK日志查询服务，特点读多写少，我们TB级数据，上千个索引，refresh_interval参数1s，在日志服务中显然不太合适，是时候调整下该参数配置了。</p>
+<p>10，参数调整</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="hljs-comment">//ip:port/logstash*/_settings PUT</span></span><br><span class="line">{</span><br><span class="line">  <span class="hljs-string">"settings"</span>: {</span><br><span class="line">    <span class="hljs-string">"refresh_interval"</span>: <span class="hljs-string">"5m"</span></span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/20200320212733184.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2FjbTM2NQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>11，问题解决</p>
+</body></html>
+            
+
+            <!--%- index && post.excerpt ? post.excerpt : post.content %-->
+        </div>
+
+        
+
+
+        
+        
+
+        <!--% if (!index && has_config('share.type')) { %-->
+<!--        % if (index && has_config('share.type')) { %-->
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+        <div class="card">
+
+        <!--update by thank: 文章详情页面不显示文章图片thumbnail-->
+    
+    <div class="card-image">
         <a href="/2020/03/20/Git%E5%A6%82%E4%BD%95%E5%9B%9E%E9%80%80%E7%89%88%E6%9C%AC/" class="image is-7by1">
             <img class="thumbnail" src="/logo/github.jpg" alt="Git如何回退版本">
         </a>
@@ -1070,7 +1187,7 @@ var _hmt = _hmt || [];
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        66
+                        67
                     </p>
                 </div>
             </div>
@@ -1185,7 +1302,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">elasticsearch</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">6</span>
+                <span class="level-item tag">7</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/git/">
@@ -1264,6 +1381,25 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2020/10/22/todo/%E8%85%BE%E8%AE%AF%E4%BA%91ES%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="腾讯云ES优化实践">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-22T03:50:29.992Z">2020-10-22</time></div>
+                    <a href="/2020/10/22/todo/%E8%85%BE%E8%AE%AF%E4%BA%91ES%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/" class="has-link-black-ter is-size-6">腾讯云ES优化实践</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/10/21/todo/Java%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/logo/github.jpg" alt="Java运行时数据区">
@@ -1338,25 +1474,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2020/10/20/todo/elasticsearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="todo/elasticsearch搜索优化">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-20T10:42:01.616Z">2020-10-20</time></div>
-                    <a href="/2020/10/20/todo/elasticsearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/" class="has-link-black-ter is-size-6">todo/elasticsearch搜索优化</a>
-                    <p class="is-size-7 is-uppercase">
-                        
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -1372,7 +1489,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/elasticsearch/">
                         <span class="tag">elasticsearch</span>
-                        <span class="tag is-grey">6</span>
+                        <span class="tag is-grey">7</span>
                     </a>
                 </div>
                 
@@ -1429,6 +1546,25 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2020/10/22/todo/%E8%85%BE%E8%AE%AF%E4%BA%91ES%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/logo/elasticsearch.jpg" alt="腾讯云ES优化实践">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-22T03:50:29.992Z">2020-10-22</time></div>
+                    <a href="/2020/10/22/todo/%E8%85%BE%E8%AE%AF%E4%BA%91ES%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/" class="has-link-black-ter is-size-6">腾讯云ES优化实践</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/elasticsearch/">elasticsearch</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/10/21/todo/Java%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/logo/github.jpg" alt="Java运行时数据区">
@@ -1503,25 +1639,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2020/10/20/todo/elasticsearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="todo/elasticsearch搜索优化">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-10-20T10:42:01.616Z">2020-10-20</time></div>
-                    <a href="/2020/10/20/todo/elasticsearch%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96/" class="has-link-black-ter is-size-6">todo/elasticsearch搜索优化</a>
-                    <p class="is-size-7 is-uppercase">
-                        
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -1537,7 +1654,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/tags/elasticsearch/">
                         <span class="tag">elasticsearch</span>
-                        <span class="tag is-grey">6</span>
+                        <span class="tag is-grey">7</span>
                     </a>
                 </div>
                 
